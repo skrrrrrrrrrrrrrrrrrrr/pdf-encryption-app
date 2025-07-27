@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PDF Tools - Professional PDF Processing</title>
+    <style>
+        /* Reset and basic styles */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f9fafb; min-height: 100vh; }
+        
+        /* Layout */
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 1rem; }
+        .flex { display: flex; }
+        .items-center { align-items: center; }
+        .justify-between { justify-content: space-between; }
+        .space-x-3 > * + * { margin-left: 0.75rem; }
+        .space-y-4 > * + * { margin-top: 1rem; }
+        .grid { display: grid; }
+        .grid-5 { grid-template-columns: repeat(5, 1fr); gap: 1rem; }
+        .grid-2 { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+        .grid-3 { grid-template-columns: repeat(3, 1fr); gap: 0.75rem; }
+        
+        /* Header */
+        header { background: white; border-bottom: 1px solid #e5e7eb; box-shadow: 0 1px 2px rgba(0,0,0,0.05); }
+        .header-content { padding: 1rem 0; }
+        .logo { font-size: 1.5rem; font-weight: bold; color: #111827; }
+        .tagline { font-size: 0.875rem; color: #6b7280; }
+        .privacy-btn { background: #dcfce7; color: #166534; padding: 0.5rem 1rem; border-radius: 9999px; text-decoration: none; font-size: 0.875rem; font-weight: 500; border: none; cursor: pointer; }
+        .privacy-btn:hover { background: #bbf7d0; }
+        
+        /* Main content */
+        main { padding: 2rem 0; }
+        .section-title { font-size: 1.25rem; font-weight: 600; color: #111827; margin-bottom: 1rem; }
+        
+        /* Tool buttons */
+        .tool-btn { background: white; border: 2px solid #e5e7eb; border-radius: 0.5rem; padding: 1rem; text-align: center; cursor: pointer; transition: all 0.3s; color: #374151; text-decoration: none; display: block; }
+        .tool-btn:hover { background: #f9fafb; }
+        .tool-btn.active { background: #3b82f6; color: white; border-color: #3b82f6; }
+        .tool-icon { font-size: 1.5rem; margin-bottom: 0.5rem; }
+        .tool-name { font-weight: 500; }
+        
+        /* Content card */
+        .content-card { background: white; border-radius: 0.5rem; border: 1px solid #e5e7eb; padding: 1.5rem; box-shadow: 0 1px 2px rgba(0,0,0,0.05); }
+        .content-title { font-size: 1.125rem; font-weight: 600; color: #111827; margin-bottom: 1rem; }
+        .content-desc { color: #6b7280; margin-bottom: 1.5rem; }
+        
+        /* Upload area */
+        .upload-area { border: 2px dashed #d1d5db; border-radius: 0.5rem; padding: 2rem; text-align: center; cursor: pointer; transition: all 0.3s; }
+        .upload-area:hover { border-color: #3b82f6; background: #f9fafb; }
+        .upload-area.dragover { border-color: #3b82f6; background: #eff6ff; }
+        .upload-icon { font-size: 2.5rem; color: #9ca3af; margin-bottom: 1rem; }
+        .upload-text { font-size: 1.125rem; font-weight: 500; color: #374151; margin-bottom: 0.5rem; }
+        .upload-subtext { font-size: 0.875rem; color: #6b7280; }
+        .file-input { display: none; }
+        
+        /* File list */
+        .file-item { background: #f9fafb; padding: 0.75rem; border-radius: 0.5rem; display: flex; align-items: center; justify-content: space-between; }
+        .file-info { display: flex; align-items: center; gap: 0.75rem; }
+        .file-icon { color: #dc2626; }
+        .file-name { font-size: 0.875rem; font-weight: 500; }
+        .file-size { font-size: 0.75rem; color: #6b7280; }
+        .remove-btn { color: #dc2626; background: none; border: none; cursor: pointer; }
+        .remove-btn:hover { color: #b91c1c; }
+        
+        /* Form elements */
+        .form-group { margin-bottom: 1rem; }
+        .label { display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 0.5rem; }
+        .input, .password { width: 100%; padding: 0.75rem; border: 1px solid #d1d5db; border-radius: 0.5rem; font-size: 0.875rem; }
+        .input:focus, .password:focus { outline: none; border-color: #3b82f6; box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1); }
+        .help-text { font-size: 0.75rem; color: #6b7280; margin-top: 0.25rem; }
+        
+        /* Rotation buttons */
+        .rotate-btn { padding: 0.75rem; border: 2px solid #d1d5db; border-radius: 0.5rem; text-align: center; cursor: pointer; transition: all 0.3s; background: white; color: #374151; }
+        .rotate-btn:hover { background: #f9fafb; }
+        .rotate-btn.active { background: #3b82f6; color: white; border-color: #3b82f6; }
+        .rotate-icon { font-size: 1.25rem; margin-bottom: 0.25rem; }
+        .rotate-text { font-size: 0.875rem; font-weight: 500; }
+        
+        /* Process button */
+        .process-btn { width: 100%; padding: 0.75rem; background: #3b82f6; color: white; border: none; border-radius: 0.5rem; font-weight: 500; cursor: pointer; transition: all 0.3s; margin-top: 1.5rem; }
+        .process-btn:hover:not(:disabled) { background: #1e40af; }
+        .process-btn:disabled { background: #d1d5db; cursor: not-allowed; }
+        
+        /* Modal */
+        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); align-items: center; justify-content: center; z-index: 50; }
+        .modal.show { display: flex; }
+        .modal-content { background: white; border-radius: 0.5rem; padding: 1.5rem; max-width: 400px; margin: 1rem; text-align: center; }
+        .modal-title { font-size: 1.125rem; font-weight: 600; margin-bottom: 1rem; }
+        .modal-text { color: #6b7280; margin-bottom: 1rem; }
+        .modal-btn { width: 100%; padding: 0.75rem; background: #3b82f6; color: white; border: none; border-radius: 0.5rem; font-weight: 500; cursor: pointer; }
+        .modal-btn:hover { background: #1e40af; }
+        
+        /* Loading spinner */
+        .spinner { width: 3rem; height: 3rem; border: 2px solid #e5e7eb; border-top: 2px solid #3b82f6; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 1rem; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        
+        /* Message */
+        .message { position: fixed; bottom: 1rem; right: 1rem; z-index: 50; padding: 0.75rem 1rem; border-radius: 0.5rem; color: white; display: none; align-items: center; gap: 0.5rem; }
+        .message.show { display: flex; }
+        .message.success { background: #10b981; }
+        .message.error { background: #ef4444; }
+        .message-close { background: none; border: none; color: white; cursor: pointer; margin-left: 0.5rem; }
+        
+        /* Footer */
+        footer { background: white; border-top: 1px solid #e5e7eb; margin-top: 4rem; }
+        .footer-content { padding: 2rem 0; text-align: center; }
+        .footer-text { color: #6b7280; margin-bottom: 0.5rem; }
+        .footer-subtext { font-size: 0.875rem; color: #9ca3af; }
+        
+        /* Hidden */
+        .hidden { display: none; }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .grid-5 { grid-template-columns: repeat(2, 1fr); }
+            .grid-3 { grid-template-columns: 1fr; }
+            .container { padding: 0 0.5rem; }
+        }
+        
+        /* Icons (using Unicode symbols) */
+        .icon-pdf::before { content: "📄"; }
+        .icon-upload::before { content: "☁️"; }
+        .icon-merge::before { content: "🔗"; }
+        .icon-split::before { content: "✂️"; }
+        .icon-rotate::before { content: "🔄"; }
+        .icon-lock::before { content: "🔒"; }
+        .icon-unlock::before { content: "🔓"; }
+        .icon-shield::before { content: "🛡️"; }
+        .icon-check::before { content: "✅"; }
+        .icon-error::before { content: "❌"; }
+        .icon-close::before { content: "❌"; }
+        .icon-loading::before { content: "⏳"; }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <!-- Header -->
+        <header>
+            <div class="container">
+                <div class="header-content flex items-center justify-between">
+                    <div class="flex items-center space-x-3">
+                        <span class="icon-pdf" style="font-size: 2rem;"></span>
+                        <div>
+                            <h1 class="logo">PDF Tools</h1>
+                            <p class="tagline">Professional PDF Processing</p>
+                        </div>
+                    </div>
+                    <button class="privacy-btn" onclick="showPrivacy()">
+                        <span class="icon-shield"></span>
+                        Privacy First
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Privacy Modal -->
+        <div id="privacyModal" class="modal">
+            <div class="modal-content">
+                <div class="flex items-center" style="margin-bottom: 1rem;">
+                    <span class="icon-shield" style="color: #10b981; font-size: 1.25rem; margin-right: 0.5rem;"></span>
+                    <h3 class="modal-title" style="margin-bottom: 0;">Privacy & Security</h3>
+                </div>
+                <div class="space-y-4" style="text-align: left; margin-bottom: 1rem;">
+                    <p><strong>🔒 Files are processed in memory and never stored.</strong></p>
+                    <p>All uploaded files are processed entirely in memory and are automatically discarded after processing.</p>
+                    <p>No files or user data are stored on our servers.</p>
+                    <p>All processing happens server-side with secure, temporary memory allocation.</p>
+                </div>
+                <button class="modal-btn" onclick="hidePrivacy()">Got it!</button>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <main>
+            <div class="container">
+                <!-- Tool Selection -->
+                <div style="margin-bottom: 2rem;">
+                    <h2 class="section-title">Select a Tool</h2>
+                    <div class="grid grid-5">
+                        <button class="tool-btn active" onclick="setTool('merge')" id="merge-btn">
+                            <div class="tool-icon icon-merge"></div>
+                            <div class="tool-name">Merge PDFs</div>
+                        </button>
+                        <button class="tool-btn" onclick="setTool('split')" id="split-btn">
+                            <div class="tool-icon icon-split"></div>
+                            <div class="tool-name">Split PDF</div>
+                        </button>
+                        <button class="tool-btn" onclick="setTool('rotate')" id="rotate-btn">
+                            <div class="tool-icon icon-rotate"></div>
+                            <div class="tool-name">Rotate PDF</div>
+                        </button>
+                        <button class="tool-btn" onclick="setTool('encrypt')" id="encrypt-btn">
+                            <div class="tool-icon icon-lock"></div>
+                            <div class="tool-name">Encrypt PDF</div>
+                        </button>
+                        <button class="tool-btn" onclick="setTool('decrypt')" id="decrypt-btn">
+                            <div class="tool-icon icon-unlock"></div>
+                            <div class="tool-name">Decrypt PDF</div>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Tool Content -->
+                <div class="content-card">
+                    <!-- Merge Tool -->
+                    <div id="merge-tool">
+                        <h3 class="content-title">
+                            <span class="icon-merge"></span>
+                            Merge Multiple PDFs
+                        </h3>
+                        <p class="content-desc">Combine multiple PDF files into a single document. Upload at least 2 files to merge.</p>
+                        
+                        <div class="upload-area" onclick="document.getElementById('merge-files').click()" ondrop="handleDrop(event, 'merge')" ondragover="event.preventDefault()" ondragenter="dragEnter(event)" ondragleave="dragLeave(event)">
+                            <div class="upload-icon icon-upload"></div>
+                            <p class="upload-text">Drop PDF files here or click to browse</p>
+                            <p class="upload-subtext">Support for multiple files, max 20MB each</p>
+                            <input type="file" id="merge-files" class="file-input" multiple accept="application/pdf" onchange="handleFileSelect(event, 'merge')">
+                        </div>
+
+                        <div id="merge-file-list" class="hidden space-y-4" style="margin-top: 1rem;">
+                            <h4 style="font-weight: 500; color: #111827; margin-bottom: 0.5rem;">Selected Files:</h4>
+                            <div id="merge-files-container"></div>
+                        </div>
+
+                        <button class="process-btn" onclick="processFiles('merge')" id="merge-process-btn" disabled>
+                            <span class="icon-merge"></span>
+                            Merge PDFs
+                        </button>
+                    </div>
+
+                    <!-- Split Tool -->
+                    <div id="split-tool" class="hidden">
+                        <h3 class="content-title">
+                            <span class="icon-split"></span>
+                            Split PDF by Page Range
+                        </h3>
+                        <p class="content-desc">Extract specific pages from your PDF. Enter the page range you want to keep.</p>
+                        
+                        <div class="upload-area" onclick="document.getElementById('split-file').click()" ondrop="handleDrop(event, 'split')" ondragover="event.preventDefault()" ondragenter="dragEnter(event)" ondragleave="dragLeave(event)">
+                            <div class="upload-icon icon-upload"></div>
+                            <p class="upload-text">Drop a PDF file here or click to browse</p>
+                            <p class="upload-subtext">Single PDF file, max 20MB</p>
+                            <input type="file" id="split-file" class="file-input" accept="application/pdf" onchange="handleFileSelect(event, 'split')">
+                        </div>
+
+                        <div id="split-options" class="hidden" style="margin-top: 1.5rem;">
+                            <div id="split-file-info" style="margin-bottom: 1rem;"></div>
+                            <div class="grid grid-2">
+                                <div class="form-group">
+                                    <label class="label">Start Page</label>
+                                    <input type="number" id="split-start" class="input" min="1" placeholder="1">
+                                </div>
+                                <div class="form-group">
+                                    <label class="label">End Page</label>
+                                    <input type="number" id="split-end" class="input" min="1" placeholder="10">
+                                </div>
+                            </div>
+                        </div>
+
+                        <button class="process-btn" onclick="processFiles('split')" id="split-process-btn" disabled>
+                            <span class="icon-split"></span>
+                            Split PDF
+                        </button>
+                    </div>
+
+                    <!-- Similar structure for rotate, encrypt, decrypt tools -->
+                    <!-- Rotate Tool -->
+                    <div id="rotate-tool" class="hidden">
+                        <h3 class="content-title">
+                            <span class="icon-rotate"></span>
+                            Rotate PDF Pages
+                        </h3>
+                        <p class="content-desc">Rotate all pages in your PDF document by 90, 180, or 270 degrees.</p>
+                        
+                        <div class="upload-area" onclick="document.getElementById('rotate-file').click()" ondrop="handleDrop(event, 'rotate')" ondragover="event.preventDefault()" ondragenter="dragEnter(event)" ondragleave="dragLeave(event)">
+                            <div class="upload-icon icon-upload"></div>
+                            <p class="upload-text">Drop a PDF file here or click to browse</p>
+                            <p class="upload-subtext">Single PDF file, max 20MB</p>
+                            <input type="file" id="rotate-file" class="file-input" accept="application/pdf" onchange="handleFileSelect(event, 'rotate')">
+                        </div>
+
+                        <div id="rotate-options" class="hidden" style="margin-top: 1.5rem;">
+                            <div id="rotate-file-info" style="margin-bottom: 1rem;"></div>
+                            <div>
+                                <label class="label">Rotation Angle</label>
+                                <div class="grid grid-3">
+                                    <button class="rotate-btn active" onclick="setRotateAngle(90)" id="rotate-90">
+                                        <div class="rotate-icon">↻</div>
+                                        <div class="rotate-text">90°</div>
+                                    </button>
+                                    <button class="rotate-btn" onclick="setRotateAngle(180)" id="rotate-180">
+                                        <div class="rotate-icon">↺</div>
+                                        <div class="rotate-text">180°</div>
+                                    </button>
+                                    <button class="rotate-btn" onclick="setRotateAngle(270)" id="rotate-270">
+                                        <div class="rotate-icon">↻</div>
+                                        <div class="rotate-text">270°</div>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button class="process-btn" onclick="processFiles('rotate')" id="rotate-process-btn" disabled>
+                            <span class="icon-rotate"></span>
+                            Rotate PDF
+                        </button>
+                    </div>
+
+                    <!-- Encrypt Tool -->
+                    <div id="encrypt-tool" class="hidden">
+                        <h3 class="content-title">
+                            <span class="icon-lock"></span>
+                            Encrypt PDF with Password
+                        </h3>
+                        <p class="content-desc">Protect your PDF with a password. The encrypted file will require the password to open.</p>
+                        
+                        <div class="upload-area" onclick="document.getElementById('encrypt-file').click()" ondrop="handleDrop(event, 'encrypt')" ondragover="event.preventDefault()" ondragenter="dragEnter(event)" ondragleave="dragLeave(event)">
+                            <div class="upload-icon icon-upload"></div>
+                            <p class="upload-text">Drop a PDF file here or click to browse</p>
+                            <p class="upload-subtext">Single PDF file, max 20MB</p>
+                            <input type="file" id="encrypt-file" class="file-input" accept="application/pdf" onchange="handleFileSelect(event, 'encrypt')">
+                        </div>
+
+                        <div id="encrypt-options" class="hidden" style="margin-top: 1.5rem;">
+                            <div id="encrypt-file-info" style="margin-bottom: 1rem;"></div>
+                            <div class="form-group">
+                                <label class="label">Password</label>
+                                <input type="password" id="encrypt-password" class="password" placeholder="Enter a strong password (min. 4 characters)">
+                                <p class="help-text">Password must be at least 4 characters long</p>
+                            </div>
+                        </div>
+
+                        <button class="process-btn" onclick="processFiles('encrypt')" id="encrypt-process-btn" disabled>
+                            <span class="icon-lock"></span>
+                            Encrypt PDF
+                        </button>
+                    </div>
+
+                    <!-- Decrypt Tool -->
+                    <div id="decrypt-tool" class="hidden">
+                        <h3 class="content-title">
+                            <span class="icon-unlock"></span>
+                            Decrypt Password-Protected PDF
+                        </h3>
+                        <p class="content-desc">Remove password protection from your PDF. You'll need the current password.</p>
+                        
+                        <div class="upload-area" onclick="document.getElementById('decrypt-file').click()" ondrop="handleDrop(event, 'decrypt')" ondragover="event.preventDefault()" ondragenter="dragEnter(event)" ondragleave="dragLeave(event)">
+                            <div class="upload-icon icon-upload"></div>
+                            <p class="upload-text">Drop a PDF file here or click to browse</p>
+                            <p class="upload-subtext">Single encrypted PDF file, max 20MB</p>
+                            <input type="file" id="decrypt-file" class="file-input" accept="application/pdf" onchange="handleFileSelect(event, 'decrypt')">
+                        </div>
+
+                        <div id="decrypt-options" class="hidden" style="margin-top: 1.5rem;">
+                            <div id="decrypt-file-info" style="margin-bottom: 1rem;"></div>
+                            <div class="form-group">
+                                <label class="label">Password</label>
+                                <input type="password" id="decrypt-password" class="password" placeholder="Enter the PDF password">
+                            </div>
+                        </div>
+
+                        <button class="process-btn" onclick="processFiles('decrypt')" id="decrypt-process-btn" disabled>
+                            <span class="icon-unlock"></span>
+                            Decrypt PDF
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Loading Modal -->
+        <div id="loadingModal" class="modal">
+            <div class="modal-content">
+                <div class="spinner"></div>
+                <h3 class="modal-title">Processing your PDF...</h3>
+                <p class="modal-text">Please wait while we process your file in memory.</p>
+            </div>
+        </div>
+
+        <!-- Message -->
+        <div id="message" class="message">
+            <span id="message-icon"></span>
+            <span id="message-text"></span>
+            <button class="message-close" onclick="hideMessage()">
+                <span class="icon-close"></span>
+            </button>
+        </div>
+
+        <!-- Footer -->
+        <footer>
+            <div class="container">
+                <div class="footer-content">
+                    <p class="footer-text">
+                        <span class="icon-shield" style="color: #10b981;"></span>
+                        <strong>Privacy First:</strong> Files are processed in memory and never stored.
+                    </p>
+                    <p class="footer-subtext">Professional PDF Tools - Secure, Fast, and Free</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Application state
+        let currentTool = 'merge';
+        let files = {
+            merge: [],
+            split: [],
+            rotate: [],
+            encrypt: [],
+            decrypt: []
+        };
+        let rotateAngle = 90;
+        let isLoading = false;
+
+        // Tool switching
+        function setTool(tool) {
+            currentTool = tool;
+            
+            // Update button states
+            document.querySelectorAll('.tool-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(tool + '-btn').classList.add('active');
+            
+            // Show/hide tool content
+            document.querySelectorAll('[id$="-tool"]').forEach(el => el.classList.add('hidden'));
+            document.getElementById(tool + '-tool').classList.remove('hidden');
+            
+            // Clear files
+            clearFiles();
+        }
+
+        function clearFiles() {
+            files = {
+                merge: [],
+                split: [],
+                rotate: [],
+                encrypt: [],
+                decrypt: []
+            };
+            updateUI();
+        }
+
+        // File handling
+        function handleDrop(event, tool) {
+            event.preventDefault();
+            event.target.classList.remove('dragover');
+            const droppedFiles = Array.from(event.dataTransfer.files);
+            addFiles(tool, droppedFiles);
+        }
+
+        function handleFileSelect(event, tool) {
+            const selectedFiles = Array.from(event.target.files);
+            addFiles(tool, selectedFiles);
+        }
+
+        function dragEnter(event) {
+            event.preventDefault();
+            event.target.classList.add('dragover');
+        }
+
+        function dragLeave(event) {
+            event.preventDefault();
+            event.target.classList.remove('dragover');
+        }
+
+        function addFiles(tool, newFiles) {
+            const validFiles = newFiles.filter(file => {
+                if (file.type !== 'application/pdf') {
+                    showMessage('error', 'Only PDF files are allowed');
+                    return false;
+                }
+                if (file.size > 20 * 1024 * 1024) {
+                    showMessage('error', `File "${file.name}" is too large. Maximum size is 20MB`);
+                    return false;
+                }
+                return true;
+            });
+
+            if (tool === 'merge') {
+                files[tool] = [...files[tool], ...validFiles];
+            } else {
+                files[tool] = validFiles.slice(0, 1);
+            }
+            
+            updateUI();
+        }
+
+        function removeFile(tool, index) {
+            files[tool].splice(index, 1);
+            updateUI();
+        }
+
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+
+        // UI updates
+        function updateUI() {
+            updateFileList();
+            updateButtons();
+        }
+
+        function updateFileList() {
+            // Update merge file list
+            const mergeContainer = document.getElementById('merge-files-container');
+            const mergeList = document.getElementById('merge-file-list');
+            
+            if (files.merge.length > 0) {
+                mergeList.classList.remove('hidden');
+                mergeContainer.innerHTML = files.merge.map((file, index) => `
+                    <div class="file-item">
+                        <div class="file-info">
+                            <span class="file-icon icon-pdf"></span>
+                            <span class="file-name">${file.name}</span>
+                            <span class="file-size">${formatFileSize(file.size)}</span>
+                        </div>
+                        <button class="remove-btn" onclick="removeFile('merge', ${index})">
+                            <span class="icon-close"></span>
+                        </button>
+                    </div>
+                `).join('');
+            } else {
+                mergeList.classList.add('hidden');
+            }
+
+            // Update single file tools
+            ['split', 'rotate', 'encrypt', 'decrypt'].forEach(tool => {
+                const options = document.getElementById(tool + '-options');
+                const fileInfo = document.getElementById(tool + '-file-info');
+                
+                if (files[tool].length > 0) {
+                    options.classList.remove('hidden');
+                    const file = files[tool][0];
+                    fileInfo.innerHTML = `
+                        <div class="file-item">
+                            <div class="file-info">
+                                <span class="file-icon icon-pdf"></span>
+                                <span class="file-name">${file.name}</span>
+                                <span class="file-size">${formatFileSize(file.size)}</span>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    options.classList.add('hidden');
+                }
+            });
+        }
+
+        function updateButtons() {
+            // Merge button
+            const mergeBtn = document.getElementById('merge-process-btn');
+            mergeBtn.disabled = files.merge.length < 2 || isLoading;
+
+            // Split button
+            const splitBtn = document.getElementById('split-process-btn');
+            const splitStart = document.getElementById('split-start').value;
+            const splitEnd = document.getElementById('split-end').value;
+            splitBtn.disabled = files.split.length === 0 || !splitStart || !splitEnd || isLoading;
+
+            // Rotate button
+            const rotateBtn = document.getElementById('rotate-process-btn');
+            rotateBtn.disabled = files.rotate.length === 0 || isLoading;
+
+            // Encrypt button
+            const encryptBtn = document.getElementById('encrypt-process-btn');
+            const encryptPass = document.getElementById('encrypt-password').value;
+            encryptBtn.disabled = files.encrypt.length === 0 || !encryptPass || encryptPass.length < 4 || isLoading;
+
+            // Decrypt button
+            const decryptBtn = document.getElementById('decrypt-process-btn');
+            const decryptPass = document.getElementById('decrypt-password').value;
+            decryptBtn.disabled = files.decrypt.length === 0 || !decryptPass || isLoading;
+        }
+
+        // Rotate angle selection
+        function setRotateAngle(angle) {
+            rotateAngle = angle;
+            document.querySelectorAll('.rotate-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById('rotate-' + angle).classList.add('active');
+        }
+
+        // File processing
+        async function processFiles(tool) {
+            if (isLoading) return;
+            
+            isLoading = true;
+            showLoading();
+            
+            try {
+                const formData = new FormData();
+                
+                if (tool === 'merge') {
+                    files[tool].forEach(file => {
+                        formData.append('files', file);
+                    });
+                } else {
+                    formData.append('file', files[tool][0]);
+                    
+                    if (tool === 'split') {
+                        formData.append('start', document.getElementById('split-start').value);
+                        formData.append('end', document.getElementById('split-end').value);
+                    } else if (tool === 'rotate') {
+                        formData.append('angle', rotateAngle);
+                    } else if (tool === 'encrypt') {
+                        formData.append('password', document.getElementById('encrypt-password').value);
+                    } else if (tool === 'decrypt') {
+                        formData.append('password', document.getElementById('decrypt-password').value);
+                    }
+                }
+
+                const response = await fetch(`http://localhost:8000/${tool}`, {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (response.ok) {
+                    const blob = await response.blob();
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    
+                    // Get filename from response headers or use default
+                    const contentDisposition = response.headers.get('Content-Disposition');
+                    let filename = `${tool}_output.pdf`;
+                    if (contentDisposition) {
+                        const filenameMatch = contentDisposition.match(/filename=(.+)/);
+                        if (filenameMatch) {
+                            filename = filenameMatch[1].replace(/"/g, '');
+                        }
+                    }
+                    
+                    a.download = filename;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                    
+                    showMessage('success', 'PDF processed successfully!');
+                    clearFiles();
+                } else {
+                    const errorData = await response.json();
+                    throw new Error(errorData.detail || 'Processing failed');
+                }
+            } catch (error) {
+                console.error('Error processing PDF:', error);
+                showMessage('error', error.message || 'An error occurred while processing the PDF');
+            } finally {
+                isLoading = false;
+                hideLoading();
+                updateUI();
+            }
+        }
+
+        // Modals and messages
+        function showPrivacy() {
+            document.getElementById('privacyModal').classList.add('show');
+        }
+
+        function hidePrivacy() {
+            document.getElementById('privacyModal').classList.remove('show');
+        }
+
+        function showLoading() {
+            document.getElementById('loadingModal').classList.add('show');
+        }
+
+        function hideLoading() {
+            document.getElementById('loadingModal').classList.remove('show');
+        }
+
+        function showMessage(type, text) {
+            const message = document.getElementById('message');
+            const icon = document.getElementById('message-icon');
+            const textEl = document.getElementById('message-text');
+            
+            message.className = `message show ${type}`;
+            icon.className = type === 'error' ? 'icon-error' : 'icon-check';
+            textEl.textContent = text;
+            
+            setTimeout(() => {
+                hideMessage();
+            }, 5000);
+        }
+
+        function hideMessage() {
+            document.getElementById('message').classList.remove('show');
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add event listeners for form inputs
+            ['split-start', 'split-end', 'encrypt-password', 'decrypt-password'].forEach(id => {
+                const element = document.getElementById(id);
+                if (element) {
+                    element.addEventListener('input', updateUI);
+                }
+            });
+            
+            updateUI();
+        });
+    </script>
+</body>
+</html>

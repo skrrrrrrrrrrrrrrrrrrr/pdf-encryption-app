@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  pdf-tools:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - MAX_FILE_SIZE=20971520
+      - ALLOWED_ORIGINS=*
+      - ENVIRONMENT=production
+    volumes:
+      - ./frontend:/app/frontend:ro
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./frontend:/usr/share/nginx/html:ro
+    depends_on:
+      - pdf-tools
+    restart: unless-stopped

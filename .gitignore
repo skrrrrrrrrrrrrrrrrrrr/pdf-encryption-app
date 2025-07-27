@@ -1,0 +1,41 @@
+# Virtual Environment
+venv/
+env/
+.venv/
+.env
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.so
+.coverage
+.pytest_cache/
+dist/
+build/
+*.egg-info/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Temporary files
+tmp/
+*.tmp
+*.temp
+
+# Logs
+*.log
+
+# Environment variables
+.env.local
+.env.production
+.env.development
