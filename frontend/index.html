@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PDF Tools</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-4">
+    <h1 class="text-2xl font-bold mb-4">Merge PDFs</h1>
+    <form id="merge-form" class="space-y-2">
+        <input type="file" id="files" multiple class="border p-2" accept="application/pdf" />
+        <button type="submit" class="px-4 py-2 bg-blue-500 text-white">Merge</button>
+    </form>
+    <a id="download" class="hidden text-blue-600 mt-4" download="merged.pdf">Download merged PDF</a>
+
+<script>
+document.getElementById('merge-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const files = document.getElementById('files').files;
+    const formData = new FormData();
+    for (const f of files) formData.append('files', f);
+    const res = await fetch('/merge', { method: 'POST', body: formData });
+    const blob = await res.blob();
+    const url = URL.createObjectURL(blob);
+    const link = document.getElementById('download');
+    link.href = url;
+    link.classList.remove('hidden');
+});
+</script>
+</body>
+</html>
