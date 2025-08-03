@@ -542,12 +542,19 @@
                     const currentHost = window.location.hostname;
                     const currentPort = window.location.port;
                     
+                    console.log('getApiBaseUrl - Current host:', currentHost);
+                    console.log('getApiBaseUrl - Current port:', currentPort);
+                    console.log('getApiBaseUrl - Port type:', typeof currentPort);
+                    
                     // If frontend is on port 3000 (development), backend is likely on 8000
                     if (currentPort === '3000' || currentPort === '3001') {
-                        return `http://${currentHost}:8000`;
+                        const apiUrl = `http://${currentHost}:8000`;
+                        console.log('getApiBaseUrl - Development mode detected, returning:', apiUrl);
+                        return apiUrl;
                     }
                     
                     // For production/Docker, use relative URLs (nginx proxy handles routing)
+                    console.log('getApiBaseUrl - Production mode detected, returning empty string');
                     return '';
                 },
 
@@ -640,7 +647,14 @@
 
                         // Use dynamic API base URL that works in all environments
                         const apiBaseUrl = this.getApiBaseUrl();
-                        const response = await fetch(`${apiBaseUrl}/${tool}`, {
+                        const fullUrl = `${apiBaseUrl}/${tool}`;
+                        
+                        console.log('Current location:', window.location.href);
+                        console.log('API Base URL:', apiBaseUrl);
+                        console.log('Full API URL:', fullUrl);
+                        console.log('Tool:', tool);
+                        
+                        const response = await fetch(fullUrl, {
                             method: 'POST',
                             body: formData
                         });
