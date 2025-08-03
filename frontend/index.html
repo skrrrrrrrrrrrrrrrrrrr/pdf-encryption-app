@@ -632,13 +632,26 @@
                 getApiBaseUrl() {
                     const currentHost = window.location.hostname;
                     const currentPort = window.location.port;
+                    const currentProtocol = window.location.protocol;
+                    
+                    console.log('Current location:', { host: currentHost, port: currentPort, protocol: currentProtocol });
                     
                     // If frontend is on port 3000 (development), backend is likely on 8000
                     if (currentPort === '3000' || currentPort === '3001') {
-                        return `http://${currentHost}:8000`;
+                        const backendUrl = `${currentProtocol}//${currentHost}:8000`;
+                        console.log('Using backend URL:', backendUrl);
+                        return backendUrl;
+                    }
+                    
+                    // For development without explicit port (e.g., localhost:3000), default to backend on 8000
+                    if (currentHost === 'localhost' || currentHost === '127.0.0.1' || currentHost.includes('codespace') || currentHost.includes('gitpod')) {
+                        const backendUrl = `${currentProtocol}//${currentHost}:8000`;
+                        console.log('Development environment detected, using backend URL:', backendUrl);
+                        return backendUrl;
                     }
                     
                     // For production/Docker, use relative URLs (nginx proxy handles routing)
+                    console.log('Production environment detected, using relative URLs');
                     return '';
                 },
 
@@ -732,6 +745,7 @@
                         // Use dynamic API base URL that works in all environments
                         const apiBaseUrl = this.getApiBaseUrl();
                         const fullUrl = `${apiBaseUrl}/${tool}`;
+                        console.log('Making API request to:', fullUrl);
                         
                         const response = await fetch(fullUrl, {
                             method: 'POST',
@@ -763,19 +777,33 @@
                             this.showMessage('success', 'PDF processed successfully!');
                             this.clearFiles();
                         } else {
-                            const errorData = await response.json();
+                            // Handle different error responses
+                            let errorData;
+                            try {
+                                errorData = await response.json();
+                            } catch (jsonError) {
+                                // If JSON parsing fails, it might be HTML error page from frontend server
+                                console.error('Failed to parse error response as JSON:', jsonError);
+                                if (response.status === 501) {
+                                    throw new Error('Request hit frontend server instead of backend. The API calls are not properly configured to reach the backend server on port 8000.');
+                                }
+                                throw new Error(`Server error (${response.status}): Unable to process request`);
+                            }
                             throw new Error(errorData.detail || 'Processing failed');
                         }
                     } catch (error) {
                         console.error('Error processing PDF:', error);
+                        console.error('Full URL attempted:', fullUrl);
                         
                         // Provide more helpful error messages
                         let errorMessage = 'An error occurred while processing the PDF';
                         
                         if (error.name === 'TypeError' && error.message.includes('fetch')) {
                             errorMessage = 'Cannot connect to the backend server. Please make sure the backend server is running on port 8000. See the README for setup instructions.';
-                        } else if (error.message.includes('501')) {
-                            errorMessage = 'Backend server not found. Please start the backend server on port 8000 before using PDF tools.';
+                        } else if (error.message.includes('501') || error.message.includes('frontend server')) {
+                            errorMessage = 'Request hit frontend server instead of backend. Please check that the backend server is running on port 8000 and refresh the page.';
+                        } else if (error.message.includes('JSON.parse') || error.message.includes('JSON')) {
+                            errorMessage = 'Invalid response from server. This usually means the request hit the frontend server instead of the backend. Please ensure the backend server is running on port 8000.';
                         } else if (error.message) {
                             errorMessage = error.message;
                         }
