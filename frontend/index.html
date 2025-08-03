@@ -90,6 +90,10 @@
                     <div class="mt-2 mb-2">2. Start the frontend server:</div>
                     <div class="text-blue-600">cd frontend && python -m http.server 3000</div>
                 </div>
+                <div x-show="window.location.hostname.includes('.preview.app.github.dev') || window.location.hostname.includes('.app.github.dev')" class="bg-blue-50 p-3 rounded text-sm">
+                    <div class="font-semibold text-blue-800 mb-1">GitHub Codespaces:</div>
+                    <div class="text-blue-700">Make sure both ports 3000 and 8000 are forwarded and set to <strong>public visibility</strong> in the Ports tab.</div>
+                </div>
                 <p class="text-sm text-gray-600">See the README.md file for complete setup instructions.</p>
             </div>
             <div class="flex space-x-3">
@@ -602,29 +606,52 @@
                         return;
                     }
                     
+                    const healthUrl = `${apiBaseUrl}/health`;
+                    console.log('Checking backend health at:', healthUrl);
+                    
                     try {
-                        const response = await fetch(`${apiBaseUrl}/health`, {
+                        const response = await fetch(healthUrl, {
                             method: 'GET',
-                            cache: 'no-cache'
+                            cache: 'no-cache',
+                            // Add timeout to avoid hanging
+                            signal: AbortSignal.timeout(5000)
                         });
                         
                         if (response.ok) {
+                            const data = await response.json();
+                            console.log('Backend health check successful:', data);
                             this.backendStatus = { checked: true, available: true, error: null };
                         } else {
-                            throw new Error(`Backend returned status ${response.status}`);
+                            throw new Error(`Backend returned status ${response.status} (${response.statusText})`);
                         }
                     } catch (error) {
+                        console.error('Backend health check failed:', error);
+                        console.error('Health URL attempted:', healthUrl);
+                        
+                        let errorDetail = error.message;
+                        if (error.name === 'TypeError' && (error.message.includes('fetch') || error.message.includes('NetworkError'))) {
+                            errorDetail = 'Network connection failed - backend server may not be running or accessible';
+                        } else if (error.name === 'TimeoutError') {
+                            errorDetail = 'Connection timeout - backend server is not responding';
+                        }
+                        
                         this.backendStatus = { 
                             checked: true, 
                             available: false, 
-                            error: error.message 
+                            error: errorDetail 
                         };
                         
-                        // Show warning message
-                        this.showMessage('error', 
-                            'Backend server not available. Please start the backend server on port 8000. ' +
-                            'See the README for setup instructions.'
-                        );
+                        // Show warning message with environment-specific guidance
+                        let setupMessage = 'Backend server not available. Please start the backend server on port 8000.';
+                        
+                        if (window.location.hostname.includes('.preview.app.github.dev') || 
+                            window.location.hostname.includes('.app.github.dev')) {
+                            setupMessage += ' In GitHub Codespaces, ensure port 8000 is forwarded and set to public visibility.';
+                        }
+                        
+                        setupMessage += ' See the README for setup instructions.';
+                        
+                        this.showMessage('error', setupMessage);
                     }
                 },
 
@@ -633,20 +660,60 @@
                     const currentHost = window.location.hostname;
                     const currentPort = window.location.port;
                     const currentProtocol = window.location.protocol;
+                    const currentUrl = window.location.href;
                     
-                    console.log('Current location:', { host: currentHost, port: currentPort, protocol: currentProtocol });
+                    console.log('Current location:', { 
+                        host: currentHost, 
+                        port: currentPort, 
+                        protocol: currentProtocol,
+                        fullUrl: currentUrl
+                    });
                     
-                    // If frontend is on port 3000 (development), backend is likely on 8000
-                    if (currentPort === '3000' || currentPort === '3001') {
-                        const backendUrl = `${currentProtocol}//${currentHost}:8000`;
-                        console.log('Using backend URL:', backendUrl);
+                    // GitHub Codespaces detection - hostname contains specific patterns
+                    if (currentHost.includes('.preview.app.github.dev') || 
+                        currentHost.includes('.app.github.dev') ||
+                        currentHost.includes('codespace')) {
+                        
+                        // In Codespaces, ports are part of the subdomain
+                        // e.g., https://username-repo-hash-3000.preview.app.github.dev/
+                        // Backend should be: https://username-repo-hash-8000.preview.app.github.dev/
+                        
+                        let backendHost;
+                        if (currentHost.includes('-3000.')) {
+                            backendHost = currentHost.replace('-3000.', '-8000.');
+                        } else if (currentHost.includes('-3001.')) {
+                            backendHost = currentHost.replace('-3001.', '-8000.');
+                        } else {
+                            // Fallback: try to append 8000 to the base hostname
+                            const baseName = currentHost.split('.')[0];
+                            backendHost = currentHost.replace(baseName, baseName.replace(/-\d+$/, '') + '-8000');
+                        }
+                        
+                        const backendUrl = `${currentProtocol}//${backendHost}`;
+                        console.log('GitHub Codespace detected, using backend URL:', backendUrl);
                         return backendUrl;
                     }
                     
-                    // For development without explicit port (e.g., localhost:3000), default to backend on 8000
-                    if (currentHost === 'localhost' || currentHost === '127.0.0.1' || currentHost.includes('codespace') || currentHost.includes('gitpod')) {
+                    // Gitpod detection
+                    if (currentHost.includes('.gitpod.io')) {
+                        // Similar to Codespaces, Gitpod uses port-based subdomains
+                        let backendHost = currentHost.replace(/3000-/, '8000-').replace(/3001-/, '8000-');
+                        const backendUrl = `${currentProtocol}//${backendHost}`;
+                        console.log('Gitpod detected, using backend URL:', backendUrl);
+                        return backendUrl;
+                    }
+                    
+                    // Local development with explicit port
+                    if (currentPort === '3000' || currentPort === '3001') {
                         const backendUrl = `${currentProtocol}//${currentHost}:8000`;
-                        console.log('Development environment detected, using backend URL:', backendUrl);
+                        console.log('Local development with port detected, using backend URL:', backendUrl);
+                        return backendUrl;
+                    }
+                    
+                    // Local development without explicit port (e.g., localhost, 127.0.0.1)
+                    if (currentHost === 'localhost' || currentHost === '127.0.0.1') {
+                        const backendUrl = `${currentProtocol}//${currentHost}:8000`;
+                        console.log('Local development detected, using backend URL:', backendUrl);
                         return backendUrl;
                     }
                     
@@ -794,12 +861,23 @@
                     } catch (error) {
                         console.error('Error processing PDF:', error);
                         console.error('Full URL attempted:', fullUrl);
+                        console.error('Current environment details:', {
+                            host: window.location.hostname,
+                            port: window.location.port,
+                            protocol: window.location.protocol,
+                            userAgent: navigator.userAgent
+                        });
                         
                         // Provide more helpful error messages
                         let errorMessage = 'An error occurred while processing the PDF';
                         
-                        if (error.name === 'TypeError' && error.message.includes('fetch')) {
-                            errorMessage = 'Cannot connect to the backend server. Please make sure the backend server is running on port 8000. See the README for setup instructions.';
+                        if (error.name === 'TypeError' && (error.message.includes('fetch') || error.message.includes('NetworkError'))) {
+                            errorMessage = `Cannot connect to the backend server at ${fullUrl}. ` +
+                                         'Please ensure the backend server is running on port 8000. ' +
+                                         'In GitHub Codespaces, make sure both ports 3000 and 8000 are forwarded and set to public visibility.';
+                        } else if (error.message.includes('NetworkError')) {
+                            errorMessage = `Network error when trying to reach ${fullUrl}. ` +
+                                         'This is likely a connectivity issue. Check that the backend server is accessible and ports are properly configured.';
                         } else if (error.message.includes('501') || error.message.includes('frontend server')) {
                             errorMessage = 'Request hit frontend server instead of backend. Please check that the backend server is running on port 8000 and refresh the page.';
                         } else if (error.message.includes('JSON.parse') || error.message.includes('JSON')) {
