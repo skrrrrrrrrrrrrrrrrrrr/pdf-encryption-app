@@ -603,7 +603,6 @@
                     }
                     
                     try {
-                        console.log('Checking backend connection at:', `${apiBaseUrl}/health`);
                         const response = await fetch(`${apiBaseUrl}/health`, {
                             method: 'GET',
                             cache: 'no-cache'
@@ -611,12 +610,10 @@
                         
                         if (response.ok) {
                             this.backendStatus = { checked: true, available: true, error: null };
-                            console.log('Backend connection successful');
                         } else {
                             throw new Error(`Backend returned status ${response.status}`);
                         }
                     } catch (error) {
-                        console.error('Backend connection failed:', error);
                         this.backendStatus = { 
                             checked: true, 
                             available: false, 
@@ -633,23 +630,15 @@
 
                 // Determine API base URL based on environment
                 getApiBaseUrl() {
-                    // Check if we're in development mode (frontend on different port)
                     const currentHost = window.location.hostname;
                     const currentPort = window.location.port;
                     
-                    console.log('getApiBaseUrl - Current host:', currentHost);
-                    console.log('getApiBaseUrl - Current port:', currentPort);
-                    console.log('getApiBaseUrl - Port type:', typeof currentPort);
-                    
                     // If frontend is on port 3000 (development), backend is likely on 8000
                     if (currentPort === '3000' || currentPort === '3001') {
-                        const apiUrl = `http://${currentHost}:8000`;
-                        console.log('getApiBaseUrl - Development mode detected, returning:', apiUrl);
-                        return apiUrl;
+                        return `http://${currentHost}:8000`;
                     }
                     
                     // For production/Docker, use relative URLs (nginx proxy handles routing)
-                    console.log('getApiBaseUrl - Production mode detected, returning empty string');
                     return '';
                 },
 
@@ -744,11 +733,6 @@
                         const apiBaseUrl = this.getApiBaseUrl();
                         const fullUrl = `${apiBaseUrl}/${tool}`;
                         
-                        console.log('Current location:', window.location.href);
-                        console.log('API Base URL:', apiBaseUrl);
-                        console.log('Full API URL:', fullUrl);
-                        console.log('Tool:', tool);
-                        
                         const response = await fetch(fullUrl, {
                             method: 'POST',
                             body: formData
@@ -811,7 +795,6 @@
 
                 // Initialize the application
                 init() {
-                    console.log('PDF Tools application initialized');
                     // Check backend connection after a short delay to let the page load
                     setTimeout(() => {
                         this.checkBackendConnection();
