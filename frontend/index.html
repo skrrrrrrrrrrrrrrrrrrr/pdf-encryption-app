@@ -37,7 +37,7 @@
         }
     </style>
 </head>
-<body class="bg-gray-50 min-h-screen" x-data="pdfTools()">
+<body class="bg-gray-50 min-h-screen" x-data="pdfTools()" x-init="init()">
     <!-- Header -->
     <header class="bg-white shadow-sm border-b">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -49,16 +49,66 @@
                         <p class="text-sm text-gray-600">Professional PDF Processing</p>
                     </div>
                 </div>
-                <button 
-                    @click="showPrivacy = true"
-                    class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium hover:bg-green-200 transition-colors"
-                >
-                    <i class="fas fa-shield-alt mr-1"></i>
-                    Privacy First
-                </button>
+                <div class="flex items-center space-x-3">
+                    <button 
+                        @click="showPrivacy = true"
+                        class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium hover:bg-green-200 transition-colors"
+                    >
+                        <i class="fas fa-shield-alt mr-1"></i>
+                        Privacy First
+                    </button>
+                    
+                    <!-- Backend Status Indicator -->
+                    <div x-show="backendStatus.checked" class="flex items-center space-x-2">
+                        <div x-show="backendStatus.available" class="flex items-center bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs">
+                            <i class="fas fa-check-circle mr-1"></i>
+                            Backend Online
+                        </div>
+                        <div x-show="!backendStatus.available" class="flex items-center bg-red-100 text-red-800 px-2 py-1 rounded-full text-xs">
+                            <i class="fas fa-exclamation-triangle mr-1"></i>
+                            Backend Offline
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </header>
+
+    <!-- Backend Setup Modal -->
+    <div x-show="backendStatus.checked && !backendStatus.available" x-cloak class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-white rounded-lg p-6 max-w-lg mx-4">
+            <div class="flex items-center mb-4">
+                <i class="fas fa-exclamation-triangle text-red-600 text-xl mr-2"></i>
+                <h3 class="text-lg font-semibold">Backend Server Required</h3>
+            </div>
+            <div class="text-gray-700 space-y-3 mb-6">
+                <p><strong>The PDF Tools backend server is not running.</strong></p>
+                <p>To use PDF tools, you need to start both the frontend and backend servers:</p>
+                <div class="bg-gray-100 p-3 rounded text-sm font-mono">
+                    <div class="mb-2">1. Start the backend server:</div>
+                    <div class="text-blue-600">python -m uvicorn backend.main:app --reload --host 0.0.0.0 --port 8000</div>
+                    <div class="mt-2 mb-2">2. Start the frontend server:</div>
+                    <div class="text-blue-600">cd frontend && python -m http.server 3000</div>
+                </div>
+                <p class="text-sm text-gray-600">See the README.md file for complete setup instructions.</p>
+            </div>
+            <div class="flex space-x-3">
+                <button 
+                    @click="checkBackendConnection()" 
+                    class="flex-1 bg-primary text-white py-2 rounded-lg hover:bg-secondary transition-colors"
+                >
+                    <i class="fas fa-sync mr-1"></i>
+                    Retry Connection
+                </button>
+                <button 
+                    @click="backendStatus.checked = false" 
+                    class="flex-1 bg-gray-300 text-gray-700 py-2 rounded-lg hover:bg-gray-400 transition-colors"
+                >
+                    Continue Anyway
+                </button>
+            </div>
+        </div>
+    </div>
 
     <!-- Privacy Modal -->
     <div x-show="showPrivacy" x-cloak class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
@@ -535,6 +585,51 @@
                     type: 'success',
                     text: ''
                 },
+                backendStatus: {
+                    checked: false,
+                    available: false,
+                    error: null
+                },
+
+                // Check if backend is available
+                async checkBackendConnection() {
+                    if (this.backendStatus.checked) return;
+                    
+                    const apiBaseUrl = this.getApiBaseUrl();
+                    if (!apiBaseUrl) {
+                        // In production mode, assume backend is available through proxy
+                        this.backendStatus = { checked: true, available: true, error: null };
+                        return;
+                    }
+                    
+                    try {
+                        console.log('Checking backend connection at:', `${apiBaseUrl}/health`);
+                        const response = await fetch(`${apiBaseUrl}/health`, {
+                            method: 'GET',
+                            cache: 'no-cache'
+                        });
+                        
+                        if (response.ok) {
+                            this.backendStatus = { checked: true, available: true, error: null };
+                            console.log('Backend connection successful');
+                        } else {
+                            throw new Error(`Backend returned status ${response.status}`);
+                        }
+                    } catch (error) {
+                        console.error('Backend connection failed:', error);
+                        this.backendStatus = { 
+                            checked: true, 
+                            available: false, 
+                            error: error.message 
+                        };
+                        
+                        // Show warning message
+                        this.showMessage('error', 
+                            'Backend server not available. Please start the backend server on port 8000. ' +
+                            'See the README for setup instructions.'
+                        );
+                    }
+                },
 
                 // Determine API base URL based on environment
                 getApiBaseUrl() {
@@ -689,7 +784,19 @@
                         }
                     } catch (error) {
                         console.error('Error processing PDF:', error);
-                        this.showMessage('error', error.message || 'An error occurred while processing the PDF');
+                        
+                        // Provide more helpful error messages
+                        let errorMessage = 'An error occurred while processing the PDF';
+                        
+                        if (error.name === 'TypeError' && error.message.includes('fetch')) {
+                            errorMessage = 'Cannot connect to the backend server. Please make sure the backend server is running on port 8000. See the README for setup instructions.';
+                        } else if (error.message.includes('501')) {
+                            errorMessage = 'Backend server not found. Please start the backend server on port 8000 before using PDF tools.';
+                        } else if (error.message) {
+                            errorMessage = error.message;
+                        }
+                        
+                        this.showMessage('error', errorMessage);
                     } finally {
                         this.loading = false;
                     }
@@ -700,6 +807,15 @@
                     setTimeout(() => {
                         this.message.show = false;
                     }, 5000);
+                },
+
+                // Initialize the application
+                init() {
+                    console.log('PDF Tools application initialized');
+                    // Check backend connection after a short delay to let the page load
+                    setTimeout(() => {
+                        this.checkBackendConnection();
+                    }, 1000);
                 }
             }
         }
