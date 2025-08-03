@@ -536,6 +536,21 @@
                     text: ''
                 },
 
+                // Determine API base URL based on environment
+                getApiBaseUrl() {
+                    // Check if we're in development mode (frontend on different port)
+                    const currentHost = window.location.hostname;
+                    const currentPort = window.location.port;
+                    
+                    // If frontend is on port 3000 (development), backend is likely on 8000
+                    if (currentPort === '3000' || currentPort === '3001') {
+                        return `http://${currentHost}:8000`;
+                    }
+                    
+                    // For production/Docker, use relative URLs (nginx proxy handles routing)
+                    return '';
+                },
+
                 setTool(tool) {
                     this.currentTool = tool;
                     this.clearFiles();
@@ -623,7 +638,9 @@
                             }
                         }
 
-                        const response = await fetch(`http://localhost:8000/${tool}`, {
+                        // Use dynamic API base URL that works in all environments
+                        const apiBaseUrl = this.getApiBaseUrl();
+                        const response = await fetch(`${apiBaseUrl}/${tool}`, {
                             method: 'POST',
                             body: formData
                         });
