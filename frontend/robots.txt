@@ -1,0 +1,31 @@
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://pdf-tools.app/sitemap.xml
+
+# Crawl-delay for politeness
+Crawl-delay: 1
+
+# Specific directives for search engines
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Slurp
+Allow: /
+
+# Block access to backend API paths in production
+Disallow: /api/
+Disallow: /_private/
+Disallow: /temp/
+Disallow: /.env
+
+# Allow all static assets
+Allow: /assets/
+Allow: /css/
+Allow: /js/
+Allow: /images/
+Allow: /fonts/

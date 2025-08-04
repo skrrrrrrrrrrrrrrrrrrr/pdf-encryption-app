@@ -3,7 +3,95 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>PDF Tools - Professional PDF Processing</title>
+    
+    <!-- Primary Meta Tags -->
+    <title>PDF Tools - Professional PDF Processing | Merge, Split, Encrypt & More</title>
+    <meta name="title" content="PDF Tools - Professional PDF Processing | Merge, Split, Encrypt & More">
+    <meta name="description" content="Free online PDF tools for professionals. Merge, split, rotate, encrypt and decrypt PDF files securely. Privacy-first processing with no file storage. Fast, secure, and easy to use.">
+    <meta name="keywords" content="PDF tools, merge PDF, split PDF, encrypt PDF, decrypt PDF, rotate PDF, PDF processing, online PDF tools, secure PDF, privacy-first, professional PDF tools">
+    <meta name="robots" content="index, follow">
+    <meta name="language" content="English">
+    <meta name="author" content="PDF Tools">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://pdf-tools.app/">
+    <meta property="og:title" content="PDF Tools - Professional PDF Processing | Merge, Split, Encrypt & More">
+    <meta property="og:description" content="Free online PDF tools for professionals. Merge, split, rotate, encrypt and decrypt PDF files securely. Privacy-first processing with no file storage.">
+    <meta property="og:image" content="https://pdf-tools.app/assets/og-image.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:site_name" content="PDF Tools">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://pdf-tools.app/">
+    <meta property="twitter:title" content="PDF Tools - Professional PDF Processing">
+    <meta property="twitter:description" content="Free online PDF tools for professionals. Merge, split, rotate, encrypt and decrypt PDF files securely. Privacy-first processing.">
+    <meta property="twitter:image" content="https://pdf-tools.app/assets/twitter-image.jpg">
+    
+    <!-- Favicon and App Icons -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    
+    <!-- Web App Capabilities -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="PDF Tools">
+    <meta name="theme-color" content="#3B82F6">
+    
+    <!-- Preconnect for Performance -->
+    <link rel="preconnect" href="https://cdn.tailwindcss.com">
+    <link rel="preconnect" href="https://unpkg.com">
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://pdf-tools.app/">
+    
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "PDF Tools",
+      "alternateName": "Professional PDF Processing Tools",
+      "description": "Free online PDF tools for professionals. Merge, split, rotate, encrypt and decrypt PDF files securely with privacy-first processing.",
+      "url": "https://pdf-tools.app/",
+      "applicationCategory": "BusinessApplication",
+      "operatingSystem": "Web Browser",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "featureList": [
+        "Merge multiple PDF files",
+        "Split PDF by page range", 
+        "Rotate PDF pages",
+        "Password protect PDFs",
+        "Remove PDF passwords",
+        "Privacy-first processing",
+        "No file storage",
+        "In-memory processing"
+      ],
+      "screenshot": "https://pdf-tools.app/assets/screenshot.jpg",
+      "softwareVersion": "1.0.0",
+      "datePublished": "2024-01-01",
+      "author": {
+        "@type": "Organization",
+        "name": "PDF Tools"
+      },
+      "provider": {
+        "@type": "Organization", 
+        "name": "PDF Tools"
+      }
+    }
+    </script>
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
@@ -12,64 +100,213 @@
             theme: {
                 extend: {
                     colors: {
-                        primary: '#3B82F6',
+                        primary: {
+                            50: '#eff6ff',
+                            100: '#dbeafe', 
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            900: '#1e3a8a'
+                        },
                         secondary: '#1E40AF',
                         success: '#10B981',
                         danger: '#EF4444',
                         warning: '#F59E0B',
+                    },
+                    fontFamily: {
+                        'inter': ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+                    },
+                    boxShadow: {
+                        'soft': '0 2px 15px -3px rgba(0, 0, 0, 0.07), 0 10px 20px -2px rgba(0, 0, 0, 0.04)',
+                        'medium': '0 4px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
+                        'strong': '0 10px 25px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'slide-up': 'slideUp 0.4s ease-out',
+                        'fade-in': 'fadeIn 0.5s ease-out',
+                        'scale-in': 'scaleIn 0.3s ease-out',
+                        'bounce-subtle': 'bounceSubtle 2s infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        },
+                        slideUp: {
+                            'from': { transform: 'translateY(20px)', opacity: '0' },
+                            'to': { transform: 'translateY(0px)', opacity: '1' },
+                        },
+                        fadeIn: {
+                            'from': { opacity: '0' },
+                            'to': { opacity: '1' },
+                        },
+                        scaleIn: {
+                            'from': { transform: 'scale(0.95)', opacity: '0' },
+                            'to': { transform: 'scale(1)', opacity: '1' },
+                        },
+                        bounceSubtle: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-5px)' },
+                        }
                     }
                 }
             }
         }
     </script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
     <style>
-        .drag-over {
-            @apply border-primary bg-blue-50;
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
         }
+        
+        .drag-over {
+            @apply border-primary-500 bg-primary-50 shadow-medium;
+            transform: scale(1.02);
+        }
+        
         .file-input {
             @apply hidden;
         }
+        
         .upload-area {
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
+        
         .upload-area:hover {
-            @apply border-primary bg-gray-50;
+            @apply border-primary-300 bg-gradient-to-br from-gray-50 to-blue-50 shadow-soft;
+            transform: translateY(-2px);
+        }
+        
+        .tool-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .tool-card:hover {
+            transform: translateY(-4px);
+            @apply shadow-medium;
+        }
+        
+        .tool-card.active {
+            @apply shadow-strong;
+            transform: translateY(-2px);
+        }
+        
+        .glass-effect {
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.8);
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .text-gradient {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 3px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        
+        /* Focus styles for accessibility */
+        .focus-visible:focus {
+            @apply outline-none ring-2 ring-primary-500 ring-offset-2;
+        }
+        
+        /* Loading animation */
+        .loading-dots {
+            animation: loading-dots 1.4s infinite ease-in-out;
+        }
+        
+        .loading-dots:nth-child(1) { animation-delay: -0.32s; }
+        .loading-dots:nth-child(2) { animation-delay: -0.16s; }
+        
+        @keyframes loading-dots {
+            0%, 80%, 100% { 
+                transform: scale(0);
+                opacity: 0.5;
+            } 
+            40% { 
+                transform: scale(1);
+                opacity: 1;
+            }
         }
     </style>
 </head>
-<body class="bg-gray-50 min-h-screen" x-data="pdfTools()" x-init="init()">
+<body class="bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 min-h-screen font-inter" x-data="pdfTools()" x-init="init()">
+    <!-- Skip to main content for accessibility -->
+    <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-primary-600 text-white px-4 py-2 rounded-lg z-50">
+        Skip to main content
+    </a>
+    
     <!-- Header -->
-    <header class="bg-white shadow-sm border-b">
+    <header class="sticky top-0 z-40 glass-effect border-b border-white/20 shadow-soft" role="banner">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center py-4">
-                <div class="flex items-center space-x-3">
-                    <i class="fas fa-file-pdf text-3xl text-red-600"></i>
+                <div class="flex items-center space-x-4 animate-fade-in">
+                    <div class="relative">
+                        <i class="fas fa-file-pdf text-4xl text-red-500 animate-bounce-subtle"></i>
+                        <div class="absolute -top-1 -right-1 w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
+                    </div>
                     <div>
-                        <h1 class="text-2xl font-bold text-gray-900">PDF Tools</h1>
-                        <p class="text-sm text-gray-600">Professional PDF Processing</p>
+                        <h1 class="text-3xl font-bold bg-gradient-to-r from-gray-900 via-blue-900 to-purple-900 bg-clip-text text-transparent">
+                            PDF Tools
+                        </h1>
+                        <p class="text-sm text-gray-600 font-medium">Professional PDF Processing Platform</p>
                     </div>
                 </div>
-                <div class="flex items-center space-x-3">
+                
+                <nav class="flex items-center space-x-3" role="navigation" aria-label="Header navigation">
+                    <!-- Privacy Badge -->
                     <button 
                         @click="showPrivacy = true"
-                        class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium hover:bg-green-200 transition-colors"
+                        class="group bg-green-100 hover:bg-green-200 text-green-800 px-4 py-2 rounded-full text-sm font-semibold transition-all duration-300 hover:shadow-medium hover:scale-105 focus-visible"
+                        aria-label="View privacy information"
+                        type="button"
                     >
-                        <i class="fas fa-shield-alt mr-1"></i>
-                        Privacy First
+                        <i class="fas fa-shield-alt mr-2 group-hover:rotate-12 transition-transform duration-300"></i>
+                        <span class="hidden sm:inline">Privacy First</span>
+                        <span class="sm:hidden">Private</span>
                     </button>
                     
                     <!-- Backend Status Indicator -->
-                    <div x-show="backendStatus.checked" class="flex items-center space-x-2">
-                        <div x-show="backendStatus.available" class="flex items-center bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs">
-                            <i class="fas fa-check-circle mr-1"></i>
-                            Backend Online
+                    <div x-show="backendStatus.checked" class="flex items-center space-x-2 animate-slide-up">
+                        <div x-show="backendStatus.available" class="flex items-center bg-green-100 text-green-800 px-3 py-2 rounded-full text-xs font-semibold shadow-soft">
+                            <div class="w-2 h-2 bg-green-500 rounded-full mr-2 animate-pulse"></div>
+                            <span class="hidden sm:inline">Backend Online</span>
+                            <span class="sm:hidden">Online</span>
                         </div>
-                        <div x-show="!backendStatus.available" class="flex items-center bg-red-100 text-red-800 px-2 py-1 rounded-full text-xs">
-                            <i class="fas fa-exclamation-triangle mr-1"></i>
-                            Backend Offline
+                        <div x-show="!backendStatus.available" class="flex items-center bg-red-100 text-red-800 px-3 py-2 rounded-full text-xs font-semibold shadow-soft">
+                            <div class="w-2 h-2 bg-red-500 rounded-full mr-2 animate-pulse"></div>
+                            <span class="hidden sm:inline">Backend Offline</span>
+                            <span class="sm:hidden">Offline</span>
                         </div>
                     </div>
-                </div>
+                </nav>
             </div>
         </div>
     </header>
@@ -137,63 +374,121 @@
     </div>
 
     <!-- Main Content -->
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <main id="main-content" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8" role="main">
+        
+        <!-- Hero Section -->
+        <section class="text-center mb-12 animate-fade-in">
+            <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4 leading-tight">
+                Professional <span class="text-gradient">PDF Processing</span>
+            </h2>
+            <p class="text-xl text-gray-600 mb-6 max-w-3xl mx-auto leading-relaxed">
+                Merge, split, rotate, encrypt and decrypt PDF files with our secure, privacy-first platform. 
+                All processing happens in memory with zero data retention.
+            </p>
+            <div class="flex flex-wrap justify-center gap-4 text-sm text-gray-500 mb-8">
+                <div class="flex items-center space-x-2 bg-white/60 px-4 py-2 rounded-full shadow-soft">
+                    <i class="fas fa-lock text-green-500"></i>
+                    <span>Zero Storage</span>
+                </div>
+                <div class="flex items-center space-x-2 bg-white/60 px-4 py-2 rounded-full shadow-soft">
+                    <i class="fas fa-zap text-yellow-500"></i>
+                    <span>Fast Processing</span>
+                </div>
+                <div class="flex items-center space-x-2 bg-white/60 px-4 py-2 rounded-full shadow-soft">
+                    <i class="fas fa-shield-alt text-blue-500"></i>
+                    <span>Secure & Private</span>
+                </div>
+                <div class="flex items-center space-x-2 bg-white/60 px-4 py-2 rounded-full shadow-soft">
+                    <i class="fas fa-mobile-alt text-purple-500"></i>
+                    <span>Mobile Friendly</span>
+                </div>
+            </div>
+        </section>
+
         <!-- Tool Selection -->
-        <div class="mb-8">
-            <h2 class="text-xl font-semibold text-gray-900 mb-4">Select a Tool</h2>
+        <section class="mb-8" aria-labelledby="tool-selection-heading">
+            <h3 id="tool-selection-heading" class="text-2xl font-bold text-gray-900 mb-6 text-center">Choose Your PDF Tool</h3>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
                 <button 
                     @click="setTool('merge')" 
-                    :class="currentTool === 'merge' ? 'bg-primary text-white' : 'bg-white text-gray-700 hover:bg-gray-50'"
-                    class="p-4 rounded-lg border-2 border-gray-200 flex flex-col items-center space-y-2 transition-all"
+                    :class="currentTool === 'merge' ? 'bg-gradient-to-br from-primary-500 to-primary-600 text-white shadow-strong tool-card active' : 'bg-white/80 text-gray-700 hover:bg-white border border-gray-200 tool-card'"
+                    class="p-6 rounded-xl flex flex-col items-center space-y-3 transition-all duration-300 focus-visible"
+                    :aria-pressed="currentTool === 'merge'"
+                    aria-label="Select merge PDF tool"
+                    type="button"
                 >
-                    <i class="fas fa-compress-arrows-alt text-2xl"></i>
-                    <span class="font-medium">Merge PDFs</span>
+                    <i class="fas fa-compress-arrows-alt text-3xl" :class="currentTool === 'merge' ? 'text-white' : 'text-primary-500'"></i>
+                    <span class="font-semibold text-sm">Merge PDFs</span>
+                    <span class="text-xs opacity-75 text-center">Combine multiple files</span>
                 </button>
+                
                 <button 
                     @click="setTool('split')" 
-                    :class="currentTool === 'split' ? 'bg-primary text-white' : 'bg-white text-gray-700 hover:bg-gray-50'"
-                    class="p-4 rounded-lg border-2 border-gray-200 flex flex-col items-center space-y-2 transition-all"
+                    :class="currentTool === 'split' ? 'bg-gradient-to-br from-primary-500 to-primary-600 text-white shadow-strong tool-card active' : 'bg-white/80 text-gray-700 hover:bg-white border border-gray-200 tool-card'"
+                    class="p-6 rounded-xl flex flex-col items-center space-y-3 transition-all duration-300 focus-visible"
+                    :aria-pressed="currentTool === 'split'"
+                    aria-label="Select split PDF tool"
+                    type="button"
                 >
-                    <i class="fas fa-cut text-2xl"></i>
-                    <span class="font-medium">Split PDF</span>
+                    <i class="fas fa-cut text-3xl" :class="currentTool === 'split' ? 'text-white' : 'text-green-500'"></i>
+                    <span class="font-semibold text-sm">Split PDF</span>
+                    <span class="text-xs opacity-75 text-center">Extract page ranges</span>
                 </button>
+                
                 <button 
                     @click="setTool('rotate')" 
-                    :class="currentTool === 'rotate' ? 'bg-primary text-white' : 'bg-white text-gray-700 hover:bg-gray-50'"
-                    class="p-4 rounded-lg border-2 border-gray-200 flex flex-col items-center space-y-2 transition-all"
+                    :class="currentTool === 'rotate' ? 'bg-gradient-to-br from-primary-500 to-primary-600 text-white shadow-strong tool-card active' : 'bg-white/80 text-gray-700 hover:bg-white border border-gray-200 tool-card'"
+                    class="p-6 rounded-xl flex flex-col items-center space-y-3 transition-all duration-300 focus-visible"
+                    :aria-pressed="currentTool === 'rotate'"
+                    aria-label="Select rotate PDF tool"
+                    type="button"
                 >
-                    <i class="fas fa-redo text-2xl"></i>
-                    <span class="font-medium">Rotate PDF</span>
+                    <i class="fas fa-redo text-3xl" :class="currentTool === 'rotate' ? 'text-white' : 'text-orange-500'"></i>
+                    <span class="font-semibold text-sm">Rotate PDF</span>
+                    <span class="text-xs opacity-75 text-center">Rotate all pages</span>
                 </button>
+                
                 <button 
                     @click="setTool('encrypt')" 
-                    :class="currentTool === 'encrypt' ? 'bg-primary text-white' : 'bg-white text-gray-700 hover:bg-gray-50'"
-                    class="p-4 rounded-lg border-2 border-gray-200 flex flex-col items-center space-y-2 transition-all"
+                    :class="currentTool === 'encrypt' ? 'bg-gradient-to-br from-primary-500 to-primary-600 text-white shadow-strong tool-card active' : 'bg-white/80 text-gray-700 hover:bg-white border border-gray-200 tool-card'"
+                    class="p-6 rounded-xl flex flex-col items-center space-y-3 transition-all duration-300 focus-visible"
+                    :aria-pressed="currentTool === 'encrypt'"
+                    aria-label="Select encrypt PDF tool"
+                    type="button"
                 >
-                    <i class="fas fa-lock text-2xl"></i>
-                    <span class="font-medium">Encrypt PDF</span>
+                    <i class="fas fa-lock text-3xl" :class="currentTool === 'encrypt' ? 'text-white' : 'text-red-500'"></i>
+                    <span class="font-semibold text-sm">Encrypt PDF</span>
+                    <span class="text-xs opacity-75 text-center">Password protect</span>
                 </button>
+                
                 <button 
                     @click="setTool('decrypt')" 
-                    :class="currentTool === 'decrypt' ? 'bg-primary text-white' : 'bg-white text-gray-700 hover:bg-gray-50'"
-                    class="p-4 rounded-lg border-2 border-gray-200 flex flex-col items-center space-y-2 transition-all"
+                    :class="currentTool === 'decrypt' ? 'bg-gradient-to-br from-primary-500 to-primary-600 text-white shadow-strong tool-card active' : 'bg-white/80 text-gray-700 hover:bg-white border border-gray-200 tool-card'"
+                    class="p-6 rounded-xl flex flex-col items-center space-y-3 transition-all duration-300 focus-visible"
+                    :aria-pressed="currentTool === 'decrypt'"
+                    aria-label="Select decrypt PDF tool"
+                    type="button"
                 >
-                    <i class="fas fa-unlock text-2xl"></i>
-                    <span class="font-medium">Decrypt PDF</span>
+                    <i class="fas fa-unlock text-3xl" :class="currentTool === 'decrypt' ? 'text-white' : 'text-purple-500'"></i>
+                    <span class="font-semibold text-sm">Decrypt PDF</span>
+                    <span class="text-xs opacity-75 text-center">Remove passwords</span>
                 </button>
             </div>
-        </div>
+        </section>
 
         <!-- Tool Content -->
-        <div class="bg-white rounded-lg shadow-sm border p-6">
+        <section class="bg-white/80 backdrop-blur-sm rounded-2xl shadow-soft border border-white/20 p-8" aria-live="polite" aria-atomic="true">
             <!-- Merge Tool -->
-            <div x-show="currentTool === 'merge'" x-cloak>
-                <h3 class="text-lg font-semibold text-gray-900 mb-4">
-                    <i class="fas fa-compress-arrows-alt mr-2"></i>
-                    Merge Multiple PDFs
-                </h3>
-                <p class="text-gray-600 mb-6">Combine multiple PDF files into a single document. Upload at least 2 files to merge.</p>
+            <div x-show="currentTool === 'merge'" x-cloak class="animate-scale-in" x-transition>
+                <header class="mb-6">
+                    <h3 class="text-2xl font-bold text-gray-900 mb-3 flex items-center">
+                        <i class="fas fa-compress-arrows-alt mr-3 text-primary-500"></i>
+                        Merge Multiple PDFs
+                    </h3>
+                    <p class="text-gray-600 leading-relaxed">
+                        Combine multiple PDF files into a single document. Upload at least 2 files to merge them in the order you specify.
+                    </p>
+                </header>
                 
                 <div 
                     @drop.prevent="handleDrop($event, 'merge')"
@@ -201,46 +496,105 @@
                     @dragenter.prevent="dragOver = true"
                     @dragleave.prevent="dragOver = false"
                     :class="dragOver ? 'drag-over' : ''"
-                    class="upload-area border-2 border-dashed border-gray-300 rounded-lg p-8 text-center cursor-pointer"
+                    class="upload-area border-2 border-dashed border-gray-300 rounded-2xl p-12 text-center cursor-pointer group"
                     @click="$refs.mergeFiles.click()"
+                    role="button"
+                    tabindex="0"
+                    @keydown.enter="$refs.mergeFiles.click()"
+                    @keydown.space.prevent="$refs.mergeFiles.click()"
+                    aria-label="Upload PDF files for merging"
                 >
-                    <i class="fas fa-cloud-upload-alt text-4xl text-gray-400 mb-4"></i>
-                    <p class="text-lg font-medium text-gray-700 mb-2">Drop PDF files here or click to browse</p>
-                    <p class="text-sm text-gray-500">Support for multiple files, max 20MB each</p>
-                    <input type="file" x-ref="mergeFiles" multiple accept="application/pdf" @change="handleFileSelect($event, 'merge')" class="file-input">
+                    <div class="space-y-4">
+                        <i class="fas fa-cloud-upload-alt text-6xl text-gray-400 group-hover:text-primary-500 transition-colors duration-300"></i>
+                        <div>
+                            <p class="text-xl font-semibold text-gray-700 mb-2">Drop PDF files here or click to browse</p>
+                            <p class="text-sm text-gray-500">Support for multiple files, max 20MB each</p>
+                        </div>
+                        <div class="flex justify-center space-x-2 text-xs text-gray-400">
+                            <span class="flex items-center space-x-1">
+                                <i class="fas fa-file-pdf"></i>
+                                <span>PDF Only</span>
+                            </span>
+                            <span class="flex items-center space-x-1">
+                                <i class="fas fa-weight-hanging"></i>
+                                <span>20MB Max</span>
+                            </span>
+                            <span class="flex items-center space-x-1">
+                                <i class="fas fa-layer-group"></i>
+                                <span>Multiple Files</span>
+                            </span>
+                        </div>
+                    </div>
+                    <input 
+                        type="file" 
+                        x-ref="mergeFiles" 
+                        multiple 
+                        accept="application/pdf" 
+                        @change="handleFileSelect($event, 'merge')" 
+                        class="file-input"
+                        aria-label="Select PDF files to merge"
+                    >
                 </div>
 
-                <div x-show="files.merge.length > 0" class="mt-4">
-                    <h4 class="font-medium text-gray-900 mb-2">Selected Files:</h4>
-                    <div class="space-y-2">
+                <div x-show="files.merge.length > 0" class="mt-6 animate-slide-up" x-transition>
+                    <h4 class="font-semibold text-gray-900 mb-4 flex items-center">
+                        <i class="fas fa-list mr-2 text-gray-500"></i>
+                        Selected Files 
+                        <span class="ml-2 bg-primary-100 text-primary-800 px-2 py-1 rounded-full text-xs font-bold" x-text="files.merge.length"></span>
+                    </h4>
+                    <div class="space-y-3 max-h-64 overflow-y-auto pr-2">
                         <template x-for="(file, index) in files.merge" :key="index">
-                            <div class="flex items-center justify-between bg-gray-50 p-3 rounded-lg">
-                                <div class="flex items-center space-x-3">
-                                    <i class="fas fa-file-pdf text-red-600"></i>
-                                    <span x-text="file.name" class="text-sm font-medium"></span>
-                                    <span x-text="formatFileSize(file.size)" class="text-xs text-gray-500"></span>
+                            <div class="flex items-center justify-between bg-gray-50/80 hover:bg-gray-100/80 p-4 rounded-xl border border-gray-200 transition-colors group">
+                                <div class="flex items-center space-x-4 flex-1 min-w-0">
+                                    <div class="flex-shrink-0">
+                                        <i class="fas fa-file-pdf text-red-500 text-xl"></i>
+                                    </div>
+                                    <div class="min-w-0 flex-1">
+                                        <p x-text="file.name" class="text-sm font-medium text-gray-900 truncate"></p>
+                                        <p x-text="formatFileSize(file.size)" class="text-xs text-gray-500"></p>
+                                    </div>
+                                    <div class="flex-shrink-0 text-xs text-gray-400">
+                                        #<span x-text="index + 1"></span>
+                                    </div>
                                 </div>
-                                <button @click="removeFile('merge', index)" class="text-red-600 hover:text-red-800">
-                                    <i class="fas fa-times"></i>
+                                <button 
+                                    @click="removeFile('merge', index)" 
+                                    class="flex-shrink-0 ml-4 text-gray-400 hover:text-red-600 transition-colors p-2 rounded-lg hover:bg-red-50 group-hover:opacity-100 opacity-0 focus-visible"
+                                    :aria-label="'Remove file ' + file.name"
+                                    type="button"
+                                >
+                                    <i class="fas fa-times text-sm"></i>
                                 </button>
                             </div>
                         </template>
+                    </div>
+                    
+                    <div class="mt-4 p-4 bg-blue-50/50 rounded-xl border border-blue-200">
+                        <p class="text-sm text-blue-800 flex items-center">
+                            <i class="fas fa-info-circle mr-2"></i>
+                            Files will be merged in the order shown above. Drag to reorder if needed.
+                        </p>
                     </div>
                 </div>
 
                 <button 
                     @click="processFiles('merge')"
                     :disabled="files.merge.length < 2 || loading"
-                    :class="files.merge.length < 2 || loading ? 'bg-gray-300 cursor-not-allowed' : 'bg-primary hover:bg-secondary'"
-                    class="w-full mt-6 py-3 text-white font-medium rounded-lg transition-colors"
+                    :class="files.merge.length < 2 || loading ? 'bg-gray-300 cursor-not-allowed text-gray-500' : 'bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 text-white shadow-medium hover:shadow-strong'"
+                    class="w-full mt-8 py-4 font-semibold rounded-xl transition-all duration-300 transform hover:scale-[1.02] focus-visible disabled:transform-none disabled:hover:shadow-none"
+                    :aria-label="files.merge.length < 2 ? 'Upload at least 2 files to merge' : 'Merge selected PDF files'"
+                    type="button"
                 >
-                    <span x-show="!loading">
-                        <i class="fas fa-compress-arrows-alt mr-2"></i>
-                        Merge PDFs
+                    <span x-show="!loading" class="flex items-center justify-center space-x-2">
+                        <i class="fas fa-compress-arrows-alt"></i>
+                        <span>Merge <span x-text="files.merge.length"></span> PDFs</span>
                     </span>
-                    <span x-show="loading">
-                        <i class="fas fa-spinner fa-spin mr-2"></i>
-                        Processing...
+                    <span x-show="loading" class="flex items-center justify-center space-x-2">
+                        <svg class="animate-spin h-5 w-5" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        <span>Processing...</span>
                     </span>
                 </button>
             </div>
@@ -511,7 +865,65 @@
                     </span>
                 </button>
             </div>
-        </div>
+        </section>
+        
+        <!-- Features Section -->
+        <section class="mt-16 mb-12" aria-labelledby="features-heading">
+            <div class="text-center mb-12">
+                <h2 id="features-heading" class="text-3xl font-bold text-gray-900 mb-4">Why Choose Our PDF Tools?</h2>
+                <p class="text-lg text-gray-600 max-w-3xl mx-auto">Professional-grade PDF processing with security and privacy at the core of everything we do.</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <article class="bg-white/60 backdrop-blur-sm p-6 rounded-2xl shadow-soft border border-white/20 hover:shadow-medium transition-all duration-300">
+                    <div class="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center mb-4">
+                        <i class="fas fa-shield-alt text-green-600 text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Privacy First</h3>
+                    <p class="text-gray-600">All files are processed in memory and automatically deleted. No data is ever stored on our servers, ensuring complete privacy.</p>
+                </article>
+                
+                <article class="bg-white/60 backdrop-blur-sm p-6 rounded-2xl shadow-soft border border-white/20 hover:shadow-medium transition-all duration-300">
+                    <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center mb-4">
+                        <i class="fas fa-zap text-blue-600 text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Lightning Fast</h3>
+                    <p class="text-gray-600">Optimized processing algorithms ensure your PDFs are handled quickly and efficiently, even for large files.</p>
+                </article>
+                
+                <article class="bg-white/60 backdrop-blur-sm p-6 rounded-2xl shadow-soft border border-white/20 hover:shadow-medium transition-all duration-300">
+                    <div class="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center mb-4">
+                        <i class="fas fa-mobile-alt text-purple-600 text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Mobile Friendly</h3>
+                    <p class="text-gray-600">Works seamlessly on all devices - desktop, tablet, and mobile. Process PDFs anywhere, anytime.</p>
+                </article>
+                
+                <article class="bg-white/60 backdrop-blur-sm p-6 rounded-2xl shadow-soft border border-white/20 hover:shadow-medium transition-all duration-300">
+                    <div class="w-12 h-12 bg-red-100 rounded-xl flex items-center justify-center mb-4">
+                        <i class="fas fa-lock text-red-600 text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Secure Processing</h3>
+                    <p class="text-gray-600">Enterprise-grade security ensures your sensitive documents are protected throughout the entire processing workflow.</p>
+                </article>
+                
+                <article class="bg-white/60 backdrop-blur-sm p-6 rounded-2xl shadow-soft border border-white/20 hover:shadow-medium transition-all duration-300">
+                    <div class="w-12 h-12 bg-yellow-100 rounded-xl flex items-center justify-center mb-4">
+                        <i class="fas fa-tools text-yellow-600 text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Professional Tools</h3>
+                    <p class="text-gray-600">Complete suite of PDF tools including merge, split, rotate, encrypt, and decrypt for all your document needs.</p>
+                </article>
+                
+                <article class="bg-white/60 backdrop-blur-sm p-6 rounded-2xl shadow-soft border border-white/20 hover:shadow-medium transition-all duration-300">
+                    <div class="w-12 h-12 bg-indigo-100 rounded-xl flex items-center justify-center mb-4">
+                        <i class="fas fa-globe text-indigo-600 text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-2">No Installation</h3>
+                    <p class="text-gray-600">Browser-based solution means no software to download or install. Access powerful PDF tools instantly from any browser.</p>
+                </article>
+            </div>
+        </section>
     </main>
 
     <!-- Progress Modal -->
@@ -543,16 +955,77 @@
     </div>
 
     <!-- Footer -->
-    <footer class="bg-white border-t mt-16">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-            <div class="text-center">
-                <p class="text-gray-600 mb-2">
-                    <i class="fas fa-shield-alt text-green-600 mr-1"></i>
-                    <strong>Privacy First:</strong> Files are processed in memory and never stored.
-                </p>
-                <p class="text-sm text-gray-500">
-                    Professional PDF Tools - Secure, Fast, and Free
-                </p>
+    <footer class="bg-white/80 backdrop-blur-sm border-t border-gray-200/50 mt-16" role="contentinfo">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
+                <!-- Company Info -->
+                <div class="lg:col-span-2">
+                    <div class="flex items-center space-x-3 mb-4">
+                        <i class="fas fa-file-pdf text-3xl text-red-500"></i>
+                        <h3 class="text-xl font-bold text-gray-900">PDF Tools</h3>
+                    </div>
+                    <p class="text-gray-600 mb-4 leading-relaxed">
+                        Professional PDF processing platform designed for privacy, security, and efficiency. 
+                        Process your documents with confidence knowing your data never leaves the secure processing environment.
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-primary-500 transition-colors" aria-label="Follow us on Twitter">
+                            <i class="fab fa-twitter text-xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-primary-500 transition-colors" aria-label="Follow us on LinkedIn">
+                            <i class="fab fa-linkedin text-xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-primary-500 transition-colors" aria-label="Contact us via email">
+                            <i class="fas fa-envelope text-xl"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Tools -->
+                <div>
+                    <h4 class="font-semibold text-gray-900 mb-4">PDF Tools</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#" @click="setTool('merge')" class="text-gray-600 hover:text-primary-500 transition-colors">Merge PDFs</a></li>
+                        <li><a href="#" @click="setTool('split')" class="text-gray-600 hover:text-primary-500 transition-colors">Split PDF</a></li>
+                        <li><a href="#" @click="setTool('rotate')" class="text-gray-600 hover:text-primary-500 transition-colors">Rotate PDF</a></li>
+                        <li><a href="#" @click="setTool('encrypt')" class="text-gray-600 hover:text-primary-500 transition-colors">Encrypt PDF</a></li>
+                        <li><a href="#" @click="setTool('decrypt')" class="text-gray-600 hover:text-primary-500 transition-colors">Decrypt PDF</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Support -->
+                <div>
+                    <h4 class="font-semibold text-gray-900 mb-4">Support & Legal</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#" @click="showPrivacy = true" class="text-gray-600 hover:text-primary-500 transition-colors">Privacy Policy</a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-primary-500 transition-colors">Terms of Service</a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-primary-500 transition-colors">Help & FAQ</a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-primary-500 transition-colors">Contact Support</a></li>
+                        <li><a href="/sitemap.xml" class="text-gray-600 hover:text-primary-500 transition-colors">Sitemap</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Bottom bar -->
+            <div class="border-t border-gray-200 pt-8 flex flex-col md:flex-row md:items-center md:justify-between">
+                <div class="flex items-center space-x-6 mb-4 md:mb-0">
+                    <div class="flex items-center space-x-2 text-sm text-green-600 bg-green-50 px-3 py-1 rounded-full">
+                        <i class="fas fa-shield-alt"></i>
+                        <span class="font-medium">Privacy First</span>
+                    </div>
+                    <div class="flex items-center space-x-2 text-sm text-blue-600 bg-blue-50 px-3 py-1 rounded-full">
+                        <i class="fas fa-memory"></i>
+                        <span class="font-medium">Zero Storage</span>
+                    </div>
+                    <div class="flex items-center space-x-2 text-sm text-purple-600 bg-purple-50 px-3 py-1 rounded-full">
+                        <i class="fas fa-lock"></i>
+                        <span class="font-medium">Secure</span>
+                    </div>
+                </div>
+                
+                <div class="text-sm text-gray-500">
+                    <p>&copy; 2024 PDF Tools. Professional PDF Processing Platform.</p>
+                </div>
             </div>
         </div>
     </footer>

@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <!-- Primary Meta Tags -->
+    <title>PDF Tools - Professional PDF Processing | Merge, Split, Encrypt & More</title>
+    <meta name="title" content="PDF Tools - Professional PDF Processing | Merge, Split, Encrypt & More">
+    <meta name="description" content="Free online PDF tools for professionals. Merge, split, rotate, encrypt and decrypt PDF files securely. Privacy-first processing with no file storage. Fast, secure, and easy to use.">
+    <meta name="keywords" content="PDF tools, merge PDF, split PDF, encrypt PDF, decrypt PDF, rotate PDF, PDF processing, online PDF tools, secure PDF, privacy-first, professional PDF tools">
+    <meta name="robots" content="index, follow">
+    <meta name="language" content="English">
+    <meta name="author" content="PDF Tools">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://pdf-tools.app/">
+    <meta property="og:title" content="PDF Tools - Professional PDF Processing | Merge, Split, Encrypt & More">
+    <meta property="og:description" content="Free online PDF tools for professionals. Merge, split, rotate, encrypt and decrypt PDF files securely. Privacy-first processing with no file storage.">
+    <meta property="og:image" content="https://pdf-tools.app/assets/og-image.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:site_name" content="PDF Tools">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://pdf-tools.app/">
+    <meta property="twitter:title" content="PDF Tools - Professional PDF Processing">
+    <meta property="twitter:description" content="Free online PDF tools for professionals. Merge, split, rotate, encrypt and decrypt PDF files securely. Privacy-first processing.">
+    <meta property="twitter:image" content="https://pdf-tools.app/assets/twitter-image.jpg">
+    
+    <!-- Favicon and App Icons -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    
+    <!-- Web App Capabilities -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="PDF Tools">
+    <meta name="theme-color" content="#3B82F6">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://pdf-tools.app/">
+    
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "PDF Tools",
+      "alternateName": "Professional PDF Processing Tools",
+      "description": "Free online PDF tools for professionals. Merge, split, rotate, encrypt and decrypt PDF files securely with privacy-first processing.",
+      "url": "https://pdf-tools.app/",
+      "applicationCategory": "BusinessApplication",
+      "operatingSystem": "Web Browser",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "featureList": [
+        "Merge multiple PDF files",
+        "Split PDF by page range", 
+        "Rotate PDF pages",
+        "Password protect PDFs",
+        "Remove PDF passwords",
+        "Privacy-first processing",
+        "No file storage",
+        "In-memory processing"
+      ],
+      "screenshot": "https://pdf-tools.app/assets/screenshot.jpg",
+      "softwareVersion": "1.0.0",
+      "datePublished": "2024-01-01",
+      "author": {
+        "@type": "Organization",
+        "name": "PDF Tools"
+      },
+      "provider": {
+        "@type": "Organization", 
+        "name": "PDF Tools"
+      }
+    }
+    </script>
+
+    <!-- Embedded TailwindCSS and Styles -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Fallback styles for when CDN is blocked */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #f8fafc 0%, #e0f2fe 50%, #e8eaf6 100%);
+            color: #1f2937;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+        
+        .header {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(229, 231, 235, 0.5);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 40;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .logo-icon {
+            font-size: 2rem;
+            color: #ef4444;
+        }
+        
+        .logo-text h1 {
+            margin: 0;
+            font-size: 1.875rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #1f2937 0%, #1e40af 50%, #7c3aed 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .logo-text p {
+            margin: 0;
+            font-size: 0.875rem;
+            color: #6b7280;
+            font-weight: 500;
+        }
+        
+        .privacy-badge {
+            background: #dcfce7;
+            color: #166534;
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .privacy-badge:hover {
+            background: #bbf7d0;
+            transform: scale(1.05);
+        }
+        
+        .hero-section {
+            text-align: center;
+            padding: 3rem 0;
+        }
+        
+        .hero-title {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: #1f2937;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: #6b7280;
+            margin-bottom: 2rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .feature-badges {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .feature-badge {
+            background: rgba(255, 255, 255, 0.8);
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+        
+        .tool-card {
+            background: rgba(255, 255, 255, 0.9);
+            border: 2px solid #e5e7eb;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-height: 120px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .tool-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            border-color: #3b82f6;
+        }
+        
+        .tool-card.active {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: white;
+            border-color: #2563eb;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3);
+        }
+        
+        .tool-icon {
+            font-size: 2rem;
+        }
+        
+        .tool-title {
+            font-weight: 600;
+            margin: 0;
+        }
+        
+        .tool-desc {
+            font-size: 0.75rem;
+            opacity: 0.8;
+            margin: 0;
+        }
+        
+        .upload-area {
+            border: 2px dashed #d1d5db;
+            border-radius: 1rem;
+            padding: 3rem 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.5);
+        }
+        
+        .upload-area:hover {
+            border-color: #3b82f6;
+            background: rgba(239, 246, 255, 0.8);
+            transform: translateY(-2px);
+        }
+        
+        .upload-icon {
+            font-size: 3rem;
+            color: #9ca3af;
+            margin-bottom: 1rem;
+        }
+        
+        .btn {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 0.75rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-top: 1rem;
+        }
+        
+        .btn:hover:not(:disabled) {
+            transform: scale(1.02);
+            box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3);
+        }
+        
+        .btn:disabled {
+            background: #d1d5db;
+            color: #9ca3af;
+            cursor: not-allowed;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+        
+        .feature-card {
+            background: rgba(255, 255, 255, 0.8);
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+        
+        .feature-icon {
+            width: 3rem;
+            height: 3rem;
+            border-radius: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+            font-size: 1.25rem;
+        }
+        
+        .footer {
+            background: rgba(255, 255, 255, 0.9);
+            border-top: 1px solid rgba(229, 231, 235, 0.5);
+            padding: 3rem 0;
+            margin-top: 4rem;
+        }
+        
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .footer-bottom {
+            border-top: 1px solid #e5e7eb;
+            padding-top: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        .trust-badges {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .trust-badge {
+            font-size: 0.875rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        /* Utility classes */
+        .text-center { text-align: center; }
+        .text-green { color: #059669; }
+        .text-blue { color: #2563eb; }
+        .text-purple { color: #7c3aed; }
+        .text-red { color: #dc2626; }
+        .text-orange { color: #ea580c; }
+        .text-yellow { color: #d97706; }
+        .bg-green-light { background: #dcfce7; }
+        .bg-blue-light { background: #dbeafe; }
+        .bg-purple-light { background: #e9d5ff; }
+        .bg-red-light { background: #fee2e2; }
+        .bg-orange-light { background: #fed7aa; }
+        .bg-yellow-light { background: #fef3c7; }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-title { font-size: 2rem; }
+            .hero-subtitle { font-size: 1rem; }
+            .tools-grid { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
+            .feature-badges { justify-content: center; }
+            .footer-bottom { flex-direction: column; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Skip to main content for accessibility -->
+    <a href="#main-content" style="position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden;" 
+       onfocus="this.style.position='fixed'; this.style.top='1rem'; this.style.left='1rem'; this.style.background='#3b82f6'; this.style.color='white'; this.style.padding='0.5rem 1rem'; this.style.borderRadius='0.5rem'; this.style.zIndex='50'; this.style.width='auto'; this.style.height='auto'; this.style.overflow='visible';"
+       onblur="this.style.position='absolute'; this.style.left='-9999px'; this.style.width='1px'; this.style.height='1px'; this.style.overflow='hidden';">
+        Skip to main content
+    </a>
+    
+    <!-- Header -->
+    <header class="header" role="banner">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo-section">
+                    <div class="logo-icon">📄</div>
+                    <div class="logo-text">
+                        <h1>PDF Tools</h1>
+                        <p>Professional PDF Processing Platform</p>
+                    </div>
+                </div>
+                
+                <nav role="navigation" aria-label="Header navigation">
+                    <button class="privacy-badge" onclick="showPrivacyModal()" aria-label="View privacy information">
+                        🛡️ Privacy First
+                    </button>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main id="main-content" class="container" role="main">
+        
+        <!-- Hero Section -->
+        <section class="hero-section">
+            <h2 class="hero-title">
+                Professional <span style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent;">PDF Processing</span>
+            </h2>
+            <p class="hero-subtitle">
+                Merge, split, rotate, encrypt and decrypt PDF files with our secure, privacy-first platform. 
+                All processing happens in memory with zero data retention.
+            </p>
+            <div class="feature-badges">
+                <div class="feature-badge">
+                    <span style="color: #059669;">🔒</span>
+                    <span>Zero Storage</span>
+                </div>
+                <div class="feature-badge">
+                    <span style="color: #d97706;">⚡</span>
+                    <span>Fast Processing</span>
+                </div>
+                <div class="feature-badge">
+                    <span style="color: #2563eb;">🛡️</span>
+                    <span>Secure & Private</span>
+                </div>
+                <div class="feature-badge">
+                    <span style="color: #7c3aed;">📱</span>
+                    <span>Mobile Friendly</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tool Selection -->
+        <section aria-labelledby="tool-selection-heading">
+            <h3 id="tool-selection-heading" class="text-center" style="font-size: 2rem; font-weight: 700; margin: 2rem 0;">Choose Your PDF Tool</h3>
+            <div class="tools-grid">
+                <button class="tool-card active" onclick="setTool('merge')" aria-label="Select merge PDF tool">
+                    <div class="tool-icon text-blue">📄</div>
+                    <div class="tool-title">Merge PDFs</div>
+                    <div class="tool-desc">Combine multiple files</div>
+                </button>
+                
+                <button class="tool-card" onclick="setTool('split')" aria-label="Select split PDF tool">
+                    <div class="tool-icon text-green">✂️</div>
+                    <div class="tool-title">Split PDF</div>
+                    <div class="tool-desc">Extract page ranges</div>
+                </button>
+                
+                <button class="tool-card" onclick="setTool('rotate')" aria-label="Select rotate PDF tool">
+                    <div class="tool-icon text-orange">🔄</div>
+                    <div class="tool-title">Rotate PDF</div>
+                    <div class="tool-desc">Rotate all pages</div>
+                </button>
+                
+                <button class="tool-card" onclick="setTool('encrypt')" aria-label="Select encrypt PDF tool">
+                    <div class="tool-icon text-red">🔒</div>
+                    <div class="tool-title">Encrypt PDF</div>
+                    <div class="tool-desc">Password protect</div>
+                </button>
+                
+                <button class="tool-card" onclick="setTool('decrypt')" aria-label="Select decrypt PDF tool">
+                    <div class="tool-icon text-purple">🔓</div>
+                    <div class="tool-title">Decrypt PDF</div>
+                    <div class="tool-desc">Remove passwords</div>
+                </button>
+            </div>
+        </section>
+
+        <!-- Tool Content Area -->
+        <section style="background: rgba(255, 255, 255, 0.9); border-radius: 1rem; padding: 2rem; margin: 2rem 0; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);">
+            
+            <!-- Merge Tool -->
+            <div id="merge-tool">
+                <header style="margin-bottom: 2rem;">
+                    <h3 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 1rem; display: flex; align-items: center; gap: 1rem;">
+                        <span style="color: #3b82f6;">📄</span>
+                        Merge Multiple PDFs
+                    </h3>
+                    <p style="color: #6b7280; line-height: 1.6;">
+                        Combine multiple PDF files into a single document. Upload at least 2 files to merge them in the order you specify.
+                    </p>
+                </header>
+                
+                <div class="upload-area" onclick="document.getElementById('merge-files').click()">
+                    <div class="upload-icon">☁️</div>
+                    <p style="font-size: 1.125rem; font-weight: 600; margin-bottom: 0.5rem;">Drop PDF files here or click to browse</p>
+                    <p style="font-size: 0.875rem; color: #6b7280;">Support for multiple files, max 20MB each</p>
+                    <input type="file" id="merge-files" multiple accept="application/pdf" style="display: none;" onchange="handleFileSelect(event, 'merge')">
+                </div>
+
+                <button class="btn" onclick="processFiles('merge')" disabled>
+                    📄 Merge PDFs
+                </button>
+            </div>
+            
+        </section>
+        
+        <!-- Features Section -->
+        <section style="margin: 4rem 0;" aria-labelledby="features-heading">
+            <div class="text-center" style="margin-bottom: 3rem;">
+                <h2 id="features-heading" style="font-size: 2.5rem; font-weight: 700; margin-bottom: 1rem;">Why Choose Our PDF Tools?</h2>
+                <p style="font-size: 1.125rem; color: #6b7280; max-width: 800px; margin: 0 auto;">Professional-grade PDF processing with security and privacy at the core of everything we do.</p>
+            </div>
+            
+            <div class="features-grid">
+                <article class="feature-card">
+                    <div class="feature-icon bg-green-light text-green">🛡️</div>
+                    <h3 style="font-size: 1.25rem; font-weight: 600; margin-bottom: 0.5rem;">Privacy First</h3>
+                    <p style="color: #6b7280;">All files are processed in memory and automatically deleted. No data is ever stored on our servers, ensuring complete privacy.</p>
+                </article>
+                
+                <article class="feature-card">
+                    <div class="feature-icon bg-blue-light text-blue">⚡</div>
+                    <h3 style="font-size: 1.25rem; font-weight: 600; margin-bottom: 0.5rem;">Lightning Fast</h3>
+                    <p style="color: #6b7280;">Optimized processing algorithms ensure your PDFs are handled quickly and efficiently, even for large files.</p>
+                </article>
+                
+                <article class="feature-card">
+                    <div class="feature-icon bg-purple-light text-purple">📱</div>
+                    <h3 style="font-size: 1.25rem; font-weight: 600; margin-bottom: 0.5rem;">Mobile Friendly</h3>
+                    <p style="color: #6b7280;">Works seamlessly on all devices - desktop, tablet, and mobile. Process PDFs anywhere, anytime.</p>
+                </article>
+                
+                <article class="feature-card">
+                    <div class="feature-icon bg-red-light text-red">🔒</div>
+                    <h3 style="font-size: 1.25rem; font-weight: 600; margin-bottom: 0.5rem;">Secure Processing</h3>
+                    <p style="color: #6b7280;">Enterprise-grade security ensures your sensitive documents are protected throughout the entire processing workflow.</p>
+                </article>
+                
+                <article class="feature-card">
+                    <div class="feature-icon bg-yellow-light text-yellow">🛠️</div>
+                    <h3 style="font-size: 1.25rem; font-weight: 600; margin-bottom: 0.5rem;">Professional Tools</h3>
+                    <p style="color: #6b7280;">Complete suite of PDF tools including merge, split, rotate, encrypt, and decrypt for all your document needs.</p>
+                </article>
+                
+                <article class="feature-card">
+                    <div class="feature-icon bg-blue-light text-blue">🌐</div>
+                    <h3 style="font-size: 1.25rem; font-weight: 600; margin-bottom: 0.5rem;">No Installation</h3>
+                    <p style="color: #6b7280;">Browser-based solution means no software to download or install. Access powerful PDF tools instantly from any browser.</p>
+                </article>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer" role="contentinfo">
+        <div class="container">
+            <div class="footer-grid">
+                <!-- Company Info -->
+                <div>
+                    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+                        <span style="font-size: 2rem;">📄</span>
+                        <h3 style="font-size: 1.25rem; font-weight: 700; margin: 0;">PDF Tools</h3>
+                    </div>
+                    <p style="color: #6b7280; margin-bottom: 1rem; line-height: 1.6;">
+                        Professional PDF processing platform designed for privacy, security, and efficiency. 
+                        Process your documents with confidence knowing your data never leaves the secure processing environment.
+                    </p>
+                </div>
+                
+                <!-- Tools -->
+                <div>
+                    <h4 style="font-weight: 600; margin-bottom: 1rem;">PDF Tools</h4>
+                    <ul style="list-style: none; padding: 0; margin: 0; font-size: 0.875rem;">
+                        <li style="margin-bottom: 0.5rem;"><a href="#" onclick="setTool('merge')" style="color: #6b7280; text-decoration: none;">Merge PDFs</a></li>
+                        <li style="margin-bottom: 0.5rem;"><a href="#" onclick="setTool('split')" style="color: #6b7280; text-decoration: none;">Split PDF</a></li>
+                        <li style="margin-bottom: 0.5rem;"><a href="#" onclick="setTool('rotate')" style="color: #6b7280; text-decoration: none;">Rotate PDF</a></li>
+                        <li style="margin-bottom: 0.5rem;"><a href="#" onclick="setTool('encrypt')" style="color: #6b7280; text-decoration: none;">Encrypt PDF</a></li>
+                        <li style="margin-bottom: 0.5rem;"><a href="#" onclick="setTool('decrypt')" style="color: #6b7280; text-decoration: none;">Decrypt PDF</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Support -->
+                <div>
+                    <h4 style="font-weight: 600; margin-bottom: 1rem;">Support & Legal</h4>
+                    <ul style="list-style: none; padding: 0; margin: 0; font-size: 0.875rem;">
+                        <li style="margin-bottom: 0.5rem;"><a href="#" onclick="showPrivacyModal()" style="color: #6b7280; text-decoration: none;">Privacy Policy</a></li>
+                        <li style="margin-bottom: 0.5rem;"><a href="#" style="color: #6b7280; text-decoration: none;">Terms of Service</a></li>
+                        <li style="margin-bottom: 0.5rem;"><a href="#" style="color: #6b7280; text-decoration: none;">Help & FAQ</a></li>
+                        <li style="margin-bottom: 0.5rem;"><a href="#" style="color: #6b7280; text-decoration: none;">Contact Support</a></li>
+                        <li style="margin-bottom: 0.5rem;"><a href="/sitemap.xml" style="color: #6b7280; text-decoration: none;">Sitemap</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Bottom bar -->
+            <div class="footer-bottom">
+                <div class="trust-badges">
+                    <div class="trust-badge bg-green-light text-green">
+                        <span>🛡️</span>
+                        <span style="font-weight: 500;">Privacy First</span>
+                    </div>
+                    <div class="trust-badge bg-blue-light text-blue">
+                        <span>💾</span>
+                        <span style="font-weight: 500;">Zero Storage</span>
+                    </div>
+                    <div class="trust-badge bg-purple-light text-purple">
+                        <span>🔒</span>
+                        <span style="font-weight: 500;">Secure</span>
+                    </div>
+                </div>
+                
+                <div style="font-size: 0.875rem; color: #6b7280;">
+                    <p>&copy; 2024 PDF Tools. Professional PDF Processing Platform.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Privacy Modal -->
+    <div id="privacy-modal" class="hidden" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.5); z-index: 50; display: flex; align-items: center; justify-content: center;">
+        <div style="background: white; border-radius: 0.75rem; padding: 2rem; max-width: 500px; margin: 1rem;">
+            <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem;">
+                <span style="font-size: 1.25rem; color: #059669;">🛡️</span>
+                <h3 style="font-size: 1.125rem; font-weight: 600; margin: 0;">Privacy & Security</h3>
+            </div>
+            <div style="color: #6b7280; margin-bottom: 1.5rem; line-height: 1.6;">
+                <p style="margin-bottom: 1rem;"><strong>🔒 Files are processed in memory and never stored.</strong></p>
+                <p style="margin-bottom: 1rem;">All uploaded files are processed entirely in memory and are automatically discarded after processing.</p>
+                <p style="margin-bottom: 1rem;">No files or user data are stored on our servers.</p>
+                <p style="margin-bottom: 0;">All processing happens server-side with secure, temporary memory allocation.</p>
+            </div>
+            <button onclick="hidePrivacyModal()" style="width: 100%; background: #3b82f6; color: white; border: none; padding: 0.75rem; border-radius: 0.5rem; font-weight: 600; cursor: pointer;">
+                Got it!
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Simple JavaScript for functionality
+        function setTool(tool) {
+            // Remove active class from all tool cards
+            document.querySelectorAll('.tool-card').forEach(card => {
+                card.classList.remove('active');
+            });
+            
+            // Add active class to selected tool
+            event.target.closest('.tool-card').classList.add('active');
+            
+            console.log('Selected tool:', tool);
+        }
+        
+        function handleFileSelect(event, tool) {
+            const files = Array.from(event.target.files);
+            console.log('Selected files for', tool, ':', files);
+            
+            // Enable the merge button if files are selected
+            if (tool === 'merge' && files.length >= 2) {
+                document.querySelector('#merge-tool .btn').disabled = false;
+            }
+        }
+        
+        function processFiles(tool) {
+            alert('Processing functionality would connect to the backend API. This is a demo of the enhanced UI.');
+        }
+        
+        function showPrivacyModal() {
+            document.getElementById('privacy-modal').classList.remove('hidden');
+            document.getElementById('privacy-modal').style.display = 'flex';
+        }
+        
+        function hidePrivacyModal() {
+            document.getElementById('privacy-modal').classList.add('hidden');
+            document.getElementById('privacy-modal').style.display = 'none';
+        }
+        
+        // Close modal when clicking outside
+        document.getElementById('privacy-modal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                hidePrivacyModal();
+            }
+        });
+    </script>
+</body>
+</html>
