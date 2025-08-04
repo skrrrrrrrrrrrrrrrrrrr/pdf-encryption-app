@@ -786,41 +786,61 @@
 
                 async processFiles(tool) {
                     this.loading = true;
+                    const startTime = Date.now();
                     
                     try {
+                        console.log(`🚀 Starting ${tool} operation...`);
+                        
                         const formData = new FormData();
                         
                         if (tool === 'merge') {
                             this.files[tool].forEach(file => {
                                 formData.append('files', file);
                             });
+                            console.log(`📄 Merging ${this.files[tool].length} files`);
                         } else {
                             formData.append('file', this.files[tool][0]);
+                            const fileSize = this.files[tool][0].size;
+                            console.log(`📄 Processing ${this.files[tool][0].name} (${this.formatFileSize(fileSize)})`);
                             
                             if (tool === 'split') {
                                 formData.append('start', this.splitOptions.start);
                                 formData.append('end', this.splitOptions.end);
+                                console.log(`✂️ Splitting pages ${this.splitOptions.start}-${this.splitOptions.end}`);
                             } else if (tool === 'rotate') {
                                 formData.append('angle', this.rotateOptions.angle);
+                                console.log(`🔄 Rotating by ${this.rotateOptions.angle}°`);
                             } else if (tool === 'encrypt') {
                                 formData.append('password', this.encryptOptions.password);
+                                console.log(`🔒 Encrypting with password`);
                             } else if (tool === 'decrypt') {
                                 formData.append('password', this.decryptOptions.password);
+                                console.log(`🔓 Decrypting with password`);
                             }
                         }
 
                         // Use dynamic API base URL that works in all environments
                         const apiBaseUrl = this.getApiBaseUrl();
                         const fullUrl = `${apiBaseUrl}/${tool}`;
-                        console.log('Making API request to:', fullUrl);
+                        console.log('📡 Making API request to:', fullUrl);
+                        
+                        // Add timeout for better error handling
+                        const controller = new AbortController();
+                        const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 second timeout
                         
                         const response = await fetch(fullUrl, {
                             method: 'POST',
-                            body: formData
+                            body: formData,
+                            signal: controller.signal
                         });
+                        
+                        clearTimeout(timeoutId);
 
                         if (response.ok) {
                             const blob = await response.blob();
+                            const processingTime = Date.now() - startTime;
+                            console.log(`✅ ${tool} completed in ${processingTime}ms, output size: ${this.formatFileSize(blob.size)}`);
+                            
                             const url = URL.createObjectURL(blob);
                             const a = document.createElement('a');
                             a.href = url;
@@ -841,7 +861,7 @@
                             document.body.removeChild(a);
                             URL.revokeObjectURL(url);
                             
-                            this.showMessage('success', 'PDF processed successfully!');
+                            this.showMessage('success', `PDF processed successfully in ${(processingTime/1000).toFixed(1)}s!`);
                             this.clearFiles();
                         } else {
                             // Handle different error responses
