@@ -656,8 +656,8 @@
                 <button 
                     @click="processFiles('split')"
                     :disabled="files.split.length === 0 || !splitOptions.start || !splitOptions.end || loading"
-                    :class="files.split.length === 0 || !splitOptions.start || !splitOptions.end || loading ? 'bg-gray-300 cursor-not-allowed' : 'bg-primary hover:bg-secondary'"
-                    class="w-full mt-6 py-3 text-white font-medium rounded-lg transition-colors"
+                    :class="files.split.length === 0 || !splitOptions.start || !splitOptions.end || loading ? 'bg-gray-300 cursor-not-allowed text-gray-500' : 'bg-primary hover:bg-secondary text-white'"
+                    class="w-full mt-6 py-3 font-medium rounded-lg transition-colors"
                 >
                     <span x-show="!loading">
                         <i class="fas fa-cut mr-2"></i>
@@ -734,8 +734,8 @@
                 <button 
                     @click="processFiles('rotate')"
                     :disabled="files.rotate.length === 0 || !rotateOptions.angle || loading"
-                    :class="files.rotate.length === 0 || !rotateOptions.angle || loading ? 'bg-gray-300 cursor-not-allowed' : 'bg-primary hover:bg-secondary'"
-                    class="w-full mt-6 py-3 text-white font-medium rounded-lg transition-colors"
+                    :class="files.rotate.length === 0 || !rotateOptions.angle || loading ? 'bg-gray-300 cursor-not-allowed text-gray-500' : 'bg-primary hover:bg-secondary text-white'"
+                    class="w-full mt-6 py-3 font-medium rounded-lg transition-colors"
                 >
                     <span x-show="!loading">
                         <i class="fas fa-redo mr-2"></i>
@@ -794,8 +794,8 @@
                 <button 
                     @click="processFiles('encrypt')"
                     :disabled="files.encrypt.length === 0 || !encryptOptions.password || encryptOptions.password.length < 4 || loading"
-                    :class="files.encrypt.length === 0 || !encryptOptions.password || encryptOptions.password.length < 4 || loading ? 'bg-gray-300 cursor-not-allowed' : 'bg-primary hover:bg-secondary'"
-                    class="w-full mt-6 py-3 text-white font-medium rounded-lg transition-colors"
+                    :class="files.encrypt.length === 0 || !encryptOptions.password || encryptOptions.password.length < 4 || loading ? 'bg-gray-300 cursor-not-allowed text-gray-500' : 'bg-primary hover:bg-secondary text-white'"
+                    class="w-full mt-6 py-3 font-medium rounded-lg transition-colors"
                 >
                     <span x-show="!loading">
                         <i class="fas fa-lock mr-2"></i>
@@ -852,8 +852,8 @@
                 <button 
                     @click="processFiles('decrypt')"
                     :disabled="files.decrypt.length === 0 || !decryptOptions.password || loading"
-                    :class="files.decrypt.length === 0 || !decryptOptions.password || loading ? 'bg-gray-300 cursor-not-allowed' : 'bg-primary hover:bg-secondary'"
-                    class="w-full mt-6 py-3 text-white font-medium rounded-lg transition-colors"
+                    :class="files.decrypt.length === 0 || !decryptOptions.password || loading ? 'bg-gray-300 cursor-not-allowed text-gray-500' : 'bg-primary hover:bg-secondary text-white'"
+                    class="w-full mt-6 py-3 font-medium rounded-lg transition-colors"
                 >
                     <span x-show="!loading">
                         <i class="fas fa-unlock mr-2"></i>
@@ -985,11 +985,11 @@
                 <div>
                     <h4 class="font-semibold text-gray-900 mb-4">PDF Tools</h4>
                     <ul class="space-y-2 text-sm">
-                        <li><a href="#" @click="setTool('merge')" class="text-gray-600 hover:text-primary-500 transition-colors">Merge PDFs</a></li>
-                        <li><a href="#" @click="setTool('split')" class="text-gray-600 hover:text-primary-500 transition-colors">Split PDF</a></li>
-                        <li><a href="#" @click="setTool('rotate')" class="text-gray-600 hover:text-primary-500 transition-colors">Rotate PDF</a></li>
-                        <li><a href="#" @click="setTool('encrypt')" class="text-gray-600 hover:text-primary-500 transition-colors">Encrypt PDF</a></li>
-                        <li><a href="#" @click="setTool('decrypt')" class="text-gray-600 hover:text-primary-500 transition-colors">Decrypt PDF</a></li>
+                        <li><a href="#" @click.prevent="setTool('merge')" class="text-gray-600 hover:text-primary-500 transition-colors">Merge PDFs</a></li>
+                        <li><a href="#" @click.prevent="setTool('split')" class="text-gray-600 hover:text-primary-500 transition-colors">Split PDF</a></li>
+                        <li><a href="#" @click.prevent="setTool('rotate')" class="text-gray-600 hover:text-primary-500 transition-colors">Rotate PDF</a></li>
+                        <li><a href="#" @click.prevent="setTool('encrypt')" class="text-gray-600 hover:text-primary-500 transition-colors">Encrypt PDF</a></li>
+                        <li><a href="#" @click.prevent="setTool('decrypt')" class="text-gray-600 hover:text-primary-500 transition-colors">Decrypt PDF</a></li>
                     </ul>
                 </div>
                 
@@ -997,10 +997,10 @@
                 <div>
                     <h4 class="font-semibold text-gray-900 mb-4">Support & Legal</h4>
                     <ul class="space-y-2 text-sm">
-                        <li><a href="#" @click="showPrivacy = true" class="text-gray-600 hover:text-primary-500 transition-colors">Privacy Policy</a></li>
-                        <li><a href="#" class="text-gray-600 hover:text-primary-500 transition-colors">Terms of Service</a></li>
-                        <li><a href="#" class="text-gray-600 hover:text-primary-500 transition-colors">Help & FAQ</a></li>
-                        <li><a href="#" class="text-gray-600 hover:text-primary-500 transition-colors">Contact Support</a></li>
+                        <li><a href="#" @click.prevent="showPrivacy = true" class="text-gray-600 hover:text-primary-500 transition-colors">Privacy Policy</a></li>
+                        <li><a href="terms.html" class="text-gray-600 hover:text-primary-500 transition-colors">Terms of Service</a></li>
+                        <li><a href="help.html" class="text-gray-600 hover:text-primary-500 transition-colors">Help & FAQ</a></li>
+                        <li><a href="contact.html" class="text-gray-600 hover:text-primary-500 transition-colors">Contact Support</a></li>
                         <li><a href="/sitemap.xml" class="text-gray-600 hover:text-primary-500 transition-colors">Sitemap</a></li>
                     </ul>
                 </div>
