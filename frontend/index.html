@@ -37,7 +37,7 @@
         }
     </style>
 </head>
-<body class="bg-gray-50 min-h-screen" x-data="pdfTools()">
+<body class="bg-gray-50 min-h-screen" x-data="pdfTools()" x-init="init()">
     <!-- Header -->
     <header class="bg-white shadow-sm border-b">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -49,16 +49,70 @@
                         <p class="text-sm text-gray-600">Professional PDF Processing</p>
                     </div>
                 </div>
-                <button 
-                    @click="showPrivacy = true"
-                    class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium hover:bg-green-200 transition-colors"
-                >
-                    <i class="fas fa-shield-alt mr-1"></i>
-                    Privacy First
-                </button>
+                <div class="flex items-center space-x-3">
+                    <button 
+                        @click="showPrivacy = true"
+                        class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium hover:bg-green-200 transition-colors"
+                    >
+                        <i class="fas fa-shield-alt mr-1"></i>
+                        Privacy First
+                    </button>
+                    
+                    <!-- Backend Status Indicator -->
+                    <div x-show="backendStatus.checked" class="flex items-center space-x-2">
+                        <div x-show="backendStatus.available" class="flex items-center bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs">
+                            <i class="fas fa-check-circle mr-1"></i>
+                            Backend Online
+                        </div>
+                        <div x-show="!backendStatus.available" class="flex items-center bg-red-100 text-red-800 px-2 py-1 rounded-full text-xs">
+                            <i class="fas fa-exclamation-triangle mr-1"></i>
+                            Backend Offline
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </header>
+
+    <!-- Backend Setup Modal -->
+    <div x-show="backendStatus.checked && !backendStatus.available" x-cloak class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-white rounded-lg p-6 max-w-lg mx-4">
+            <div class="flex items-center mb-4">
+                <i class="fas fa-exclamation-triangle text-red-600 text-xl mr-2"></i>
+                <h3 class="text-lg font-semibold">Backend Server Required</h3>
+            </div>
+            <div class="text-gray-700 space-y-3 mb-6">
+                <p><strong>The PDF Tools backend server is not running.</strong></p>
+                <p>To use PDF tools, you need to start both the frontend and backend servers:</p>
+                <div class="bg-gray-100 p-3 rounded text-sm font-mono">
+                    <div class="mb-2">1. Start the backend server:</div>
+                    <div class="text-blue-600">python -m uvicorn backend.main:app --reload --host 0.0.0.0 --port 8000</div>
+                    <div class="mt-2 mb-2">2. Start the frontend server:</div>
+                    <div class="text-blue-600">cd frontend && python -m http.server 3000</div>
+                </div>
+                <div x-show="window.location.hostname.includes('.preview.app.github.dev') || window.location.hostname.includes('.app.github.dev')" class="bg-blue-50 p-3 rounded text-sm">
+                    <div class="font-semibold text-blue-800 mb-1">GitHub Codespaces:</div>
+                    <div class="text-blue-700">Make sure both ports 3000 and 8000 are forwarded and set to <strong>public visibility</strong> in the Ports tab.</div>
+                </div>
+                <p class="text-sm text-gray-600">See the README.md file for complete setup instructions.</p>
+            </div>
+            <div class="flex space-x-3">
+                <button 
+                    @click="checkBackendConnection()" 
+                    class="flex-1 bg-primary text-white py-2 rounded-lg hover:bg-secondary transition-colors"
+                >
+                    <i class="fas fa-sync mr-1"></i>
+                    Retry Connection
+                </button>
+                <button 
+                    @click="backendStatus.checked = false" 
+                    class="flex-1 bg-gray-300 text-gray-700 py-2 rounded-lg hover:bg-gray-400 transition-colors"
+                >
+                    Continue Anyway
+                </button>
+            </div>
+        </div>
+    </div>
 
     <!-- Privacy Modal -->
     <div x-show="showPrivacy" x-cloak class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
@@ -535,6 +589,138 @@
                     type: 'success',
                     text: ''
                 },
+                backendStatus: {
+                    checked: false,
+                    available: false,
+                    error: null
+                },
+
+                // Check if backend is available
+                async checkBackendConnection() {
+                    if (this.backendStatus.checked) return;
+                    
+                    const apiBaseUrl = this.getApiBaseUrl();
+                    if (!apiBaseUrl) {
+                        // In production mode, assume backend is available through proxy
+                        this.backendStatus = { checked: true, available: true, error: null };
+                        return;
+                    }
+                    
+                    const healthUrl = `${apiBaseUrl}/health`;
+                    console.log('Checking backend health at:', healthUrl);
+                    
+                    try {
+                        const response = await fetch(healthUrl, {
+                            method: 'GET',
+                            cache: 'no-cache',
+                            // Add timeout to avoid hanging
+                            signal: AbortSignal.timeout(5000)
+                        });
+                        
+                        if (response.ok) {
+                            const data = await response.json();
+                            console.log('Backend health check successful:', data);
+                            this.backendStatus = { checked: true, available: true, error: null };
+                        } else {
+                            throw new Error(`Backend returned status ${response.status} (${response.statusText})`);
+                        }
+                    } catch (error) {
+                        console.error('Backend health check failed:', error);
+                        console.error('Health URL attempted:', healthUrl);
+                        
+                        let errorDetail = error.message;
+                        if (error.name === 'TypeError' && (error.message.includes('fetch') || error.message.includes('NetworkError'))) {
+                            errorDetail = 'Network connection failed - backend server may not be running or accessible';
+                        } else if (error.name === 'TimeoutError') {
+                            errorDetail = 'Connection timeout - backend server is not responding';
+                        }
+                        
+                        this.backendStatus = { 
+                            checked: true, 
+                            available: false, 
+                            error: errorDetail 
+                        };
+                        
+                        // Show warning message with environment-specific guidance
+                        let setupMessage = 'Backend server not available. Please start the backend server on port 8000.';
+                        
+                        if (window.location.hostname.includes('.preview.app.github.dev') || 
+                            window.location.hostname.includes('.app.github.dev')) {
+                            setupMessage += ' In GitHub Codespaces, ensure port 8000 is forwarded and set to public visibility.';
+                        }
+                        
+                        setupMessage += ' See the README for setup instructions.';
+                        
+                        this.showMessage('error', setupMessage);
+                    }
+                },
+
+                // Determine API base URL based on environment
+                getApiBaseUrl() {
+                    const currentHost = window.location.hostname;
+                    const currentPort = window.location.port;
+                    const currentProtocol = window.location.protocol;
+                    const currentUrl = window.location.href;
+                    
+                    console.log('Current location:', { 
+                        host: currentHost, 
+                        port: currentPort, 
+                        protocol: currentProtocol,
+                        fullUrl: currentUrl
+                    });
+                    
+                    // GitHub Codespaces detection - hostname contains specific patterns
+                    if (currentHost.includes('.preview.app.github.dev') || 
+                        currentHost.includes('.app.github.dev') ||
+                        currentHost.includes('codespace')) {
+                        
+                        // In Codespaces, ports are part of the subdomain
+                        // e.g., https://username-repo-hash-3000.preview.app.github.dev/
+                        // Backend should be: https://username-repo-hash-8000.preview.app.github.dev/
+                        
+                        let backendHost;
+                        if (currentHost.includes('-3000.')) {
+                            backendHost = currentHost.replace('-3000.', '-8000.');
+                        } else if (currentHost.includes('-3001.')) {
+                            backendHost = currentHost.replace('-3001.', '-8000.');
+                        } else {
+                            // Fallback: try to append 8000 to the base hostname
+                            const baseName = currentHost.split('.')[0];
+                            backendHost = currentHost.replace(baseName, baseName.replace(/-\d+$/, '') + '-8000');
+                        }
+                        
+                        const backendUrl = `${currentProtocol}//${backendHost}`;
+                        console.log('GitHub Codespace detected, using backend URL:', backendUrl);
+                        return backendUrl;
+                    }
+                    
+                    // Gitpod detection
+                    if (currentHost.includes('.gitpod.io')) {
+                        // Similar to Codespaces, Gitpod uses port-based subdomains
+                        let backendHost = currentHost.replace(/3000-/, '8000-').replace(/3001-/, '8000-');
+                        const backendUrl = `${currentProtocol}//${backendHost}`;
+                        console.log('Gitpod detected, using backend URL:', backendUrl);
+                        return backendUrl;
+                    }
+                    
+                    // Local development with explicit port
+                    if (currentPort === '3000' || currentPort === '3001') {
+                        const backendUrl = `${currentProtocol}//${currentHost}:8000`;
+                        console.log('Local development with port detected, using backend URL:', backendUrl);
+                        return backendUrl;
+                    }
+                    
+                    // Local development without explicit port (e.g., localhost, 127.0.0.1)
+                    if (currentHost === 'localhost' || currentHost === '127.0.0.1') {
+                        const backendUrl = `${currentProtocol}//${currentHost}:8000`;
+                        console.log('Local development detected, using backend URL:', backendUrl);
+                        return backendUrl;
+                    }
+                    
+                    // For production/Docker, use relative URLs (nginx proxy handles routing)
+                    console.log('Production environment detected, using relative URLs');
+                    return '';
+                },
 
                 setTool(tool) {
                     this.currentTool = tool;
@@ -600,36 +786,61 @@
 
                 async processFiles(tool) {
                     this.loading = true;
+                    const startTime = Date.now();
                     
                     try {
+                        console.log(`🚀 Starting ${tool} operation...`);
+                        
                         const formData = new FormData();
                         
                         if (tool === 'merge') {
                             this.files[tool].forEach(file => {
                                 formData.append('files', file);
                             });
+                            console.log(`📄 Merging ${this.files[tool].length} files`);
                         } else {
                             formData.append('file', this.files[tool][0]);
+                            const fileSize = this.files[tool][0].size;
+                            console.log(`📄 Processing ${this.files[tool][0].name} (${this.formatFileSize(fileSize)})`);
                             
                             if (tool === 'split') {
                                 formData.append('start', this.splitOptions.start);
                                 formData.append('end', this.splitOptions.end);
+                                console.log(`✂️ Splitting pages ${this.splitOptions.start}-${this.splitOptions.end}`);
                             } else if (tool === 'rotate') {
                                 formData.append('angle', this.rotateOptions.angle);
+                                console.log(`🔄 Rotating by ${this.rotateOptions.angle}°`);
                             } else if (tool === 'encrypt') {
                                 formData.append('password', this.encryptOptions.password);
+                                console.log(`🔒 Encrypting with password`);
                             } else if (tool === 'decrypt') {
                                 formData.append('password', this.decryptOptions.password);
+                                console.log(`🔓 Decrypting with password`);
                             }
                         }
 
-                        const response = await fetch(`http://localhost:8000/${tool}`, {
+                        // Use dynamic API base URL that works in all environments
+                        const apiBaseUrl = this.getApiBaseUrl();
+                        const fullUrl = `${apiBaseUrl}/${tool}`;
+                        console.log('📡 Making API request to:', fullUrl);
+                        
+                        // Add timeout for better error handling
+                        const controller = new AbortController();
+                        const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 second timeout
+                        
+                        const response = await fetch(fullUrl, {
                             method: 'POST',
-                            body: formData
+                            body: formData,
+                            signal: controller.signal
                         });
+                        
+                        clearTimeout(timeoutId);
 
                         if (response.ok) {
                             const blob = await response.blob();
+                            const processingTime = Date.now() - startTime;
+                            console.log(`✅ ${tool} completed in ${processingTime}ms, output size: ${this.formatFileSize(blob.size)}`);
+                            
                             const url = URL.createObjectURL(blob);
                             const a = document.createElement('a');
                             a.href = url;
@@ -650,15 +861,52 @@
                             document.body.removeChild(a);
                             URL.revokeObjectURL(url);
                             
-                            this.showMessage('success', 'PDF processed successfully!');
+                            this.showMessage('success', `PDF processed successfully in ${(processingTime/1000).toFixed(1)}s!`);
                             this.clearFiles();
                         } else {
-                            const errorData = await response.json();
+                            // Handle different error responses
+                            let errorData;
+                            try {
+                                errorData = await response.json();
+                            } catch (jsonError) {
+                                // If JSON parsing fails, it might be HTML error page from frontend server
+                                console.error('Failed to parse error response as JSON:', jsonError);
+                                if (response.status === 501) {
+                                    throw new Error('Request hit frontend server instead of backend. The API calls are not properly configured to reach the backend server on port 8000.');
+                                }
+                                throw new Error(`Server error (${response.status}): Unable to process request`);
+                            }
                             throw new Error(errorData.detail || 'Processing failed');
                         }
                     } catch (error) {
                         console.error('Error processing PDF:', error);
-                        this.showMessage('error', error.message || 'An error occurred while processing the PDF');
+                        console.error('Full URL attempted:', fullUrl);
+                        console.error('Current environment details:', {
+                            host: window.location.hostname,
+                            port: window.location.port,
+                            protocol: window.location.protocol,
+                            userAgent: navigator.userAgent
+                        });
+                        
+                        // Provide more helpful error messages
+                        let errorMessage = 'An error occurred while processing the PDF';
+                        
+                        if (error.name === 'TypeError' && (error.message.includes('fetch') || error.message.includes('NetworkError'))) {
+                            errorMessage = `Cannot connect to the backend server at ${fullUrl}. ` +
+                                         'Please ensure the backend server is running on port 8000. ' +
+                                         'In GitHub Codespaces, make sure both ports 3000 and 8000 are forwarded and set to public visibility.';
+                        } else if (error.message.includes('NetworkError')) {
+                            errorMessage = `Network error when trying to reach ${fullUrl}. ` +
+                                         'This is likely a connectivity issue. Check that the backend server is accessible and ports are properly configured.';
+                        } else if (error.message.includes('501') || error.message.includes('frontend server')) {
+                            errorMessage = 'Request hit frontend server instead of backend. Please check that the backend server is running on port 8000 and refresh the page.';
+                        } else if (error.message.includes('JSON.parse') || error.message.includes('JSON')) {
+                            errorMessage = 'Invalid response from server. This usually means the request hit the frontend server instead of the backend. Please ensure the backend server is running on port 8000.';
+                        } else if (error.message) {
+                            errorMessage = error.message;
+                        }
+                        
+                        this.showMessage('error', errorMessage);
                     } finally {
                         this.loading = false;
                     }
@@ -669,6 +917,14 @@
                     setTimeout(() => {
                         this.message.show = false;
                     }, 5000);
+                },
+
+                // Initialize the application
+                init() {
+                    // Check backend connection after a short delay to let the page load
+                    setTimeout(() => {
+                        this.checkBackendConnection();
+                    }, 1000);
                 }
             }
         }
