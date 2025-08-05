@@ -29,6 +29,7 @@ from backend.utils.pdf_utils import (
     resize_pdf,
     add_signature_pdf,
     add_watermark_pdf,
+    extract_pages_pdf,
 )
 
 load_dotenv()
@@ -132,12 +133,18 @@ async def merge(files: List[UploadFile] = File(...)):
         )
         
     except ValueError as e:
-        # Handle specific PDF validation errors
+        # Handle specific PDF validation errors with friendly messages
         logger.error(f"PDF validation error during merge: {str(e)}")
-        raise HTTPException(status_code=400, detail=str(e))
+        error_msg = str(e)
+        if "Invalid PDF" in error_msg:
+            error_msg = "One or more uploaded files are corrupted or not valid PDF files. Please check your files and try again."
+        elif "password" in error_msg.lower():
+            error_msg = "One of the PDF files is password protected. Please decrypt it first or use a different file."
+        raise HTTPException(status_code=400, detail=error_msg)
     except Exception as e:
         logger.error(f"Unexpected error during merge: {str(e)}")
-        raise HTTPException(status_code=500, detail=f"Error merging PDFs: {str(e)}")
+        friendly_msg = "We couldn't merge your PDF files. This might be due to corrupted files or an internal error. Please try again with different files."
+        raise HTTPException(status_code=500, detail=friendly_msg)
 
 
 @app.post("/split")  
@@ -173,10 +180,16 @@ async def split(file: UploadFile = File(...), start: int = Form(...), end: int =
         
     except ValueError as e:
         logger.error(f"PDF validation error during split: {str(e)}")
-        raise HTTPException(status_code=400, detail=str(e))
+        error_msg = str(e)
+        if "exceeds total pages" in error_msg:
+            error_msg = "The page range you specified is beyond the number of pages in your PDF. Please check the page numbers and try again."
+        elif "Invalid PDF" in error_msg:
+            error_msg = "The uploaded file is corrupted or not a valid PDF. Please try with a different file."
+        raise HTTPException(status_code=400, detail=error_msg)
     except Exception as e:
         logger.error(f"Unexpected error during split: {str(e)}")
-        raise HTTPException(status_code=500, detail=f"Error splitting PDF: {str(e)}")
+        friendly_msg = "We couldn't split your PDF file. Please check that your file is not corrupted and try again."
+        raise HTTPException(status_code=500, detail=friendly_msg)
 
 
 @app.post("/rotate")
@@ -331,10 +344,14 @@ async def resize(file: UploadFile = File(...), quality: str = Form(default="medi
         
     except ValueError as e:
         logger.error(f"PDF validation error during resize: {str(e)}")
-        raise HTTPException(status_code=400, detail=str(e))
+        error_msg = str(e)
+        if "Invalid PDF" in error_msg:
+            error_msg = "The uploaded file is corrupted or not a valid PDF. Please try with a different file."
+        raise HTTPException(status_code=400, detail=error_msg)
     except Exception as e:
         logger.error(f"Unexpected error during resize: {str(e)}")
-        raise HTTPException(status_code=500, detail=f"Error resizing PDF: {str(e)}")
+        friendly_msg = "We couldn't compress your PDF file. The file might be corrupted or contain unsupported content. Please try with a different file."
+        raise HTTPException(status_code=500, detail=friendly_msg)
 
 
 @app.post("/signature")
@@ -426,6 +443,73 @@ async def watermark(file: UploadFile = File(...), watermark_text: str = Form(...
     except Exception as e:
         logger.error(f"Unexpected error during watermark: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Error adding watermark: {str(e)}")
+
+
+@app.post("/extract")
+async def extract_pages(file: UploadFile = File(...), pages: str = Form(...)):
+    """Extract specific pages from PDF"""
+    start_time = time.time()
+    _validate_file(file)
+    
+    if not pages or not pages.strip():
+        raise HTTPException(status_code=400, detail="Page numbers are required")
+    
+    try:
+        # Parse page numbers (comma-separated)
+        page_numbers = []
+        for page_str in pages.split(','):
+            page_str = page_str.strip()
+            if '-' in page_str:
+                # Range like "2-5"
+                start_page, end_page = map(int, page_str.split('-'))
+                page_numbers.extend(range(start_page, end_page + 1))
+            else:
+                # Single page
+                page_numbers.append(int(page_str))
+        
+        if not page_numbers:
+            raise HTTPException(status_code=400, detail="No valid page numbers provided")
+        
+        # Validate page numbers are positive
+        if any(p < 1 for p in page_numbers):
+            raise HTTPException(status_code=400, detail="Page numbers must be greater than 0")
+        
+        logger.info(f"Starting extract operation for {file.filename} with pages: {sorted(list(set(page_numbers)))}")
+        data = await file.read()
+        file_size = len(data)
+        
+        if file_size > MAX_FILE_SIZE:
+            raise HTTPException(
+                status_code=400, 
+                detail=f"File too large. Maximum size is {MAX_FILE_SIZE // (1024*1024)}MB"
+            )
+        
+        result = extract_pages_pdf(data, page_numbers)
+        processing_time = time.time() - start_time
+        logger.info(f"Extract completed in {processing_time:.2f} seconds, output size: {len(result)} bytes")
+        
+        # Create descriptive filename
+        unique_pages = sorted(list(set(page_numbers)))
+        if len(unique_pages) == 1:
+            pages_desc = f"page_{unique_pages[0]}"
+        elif len(unique_pages) <= 5:
+            pages_desc = f"pages_{'_'.join(map(str, unique_pages))}"
+        else:
+            pages_desc = f"pages_{unique_pages[0]}_to_{unique_pages[-1]}"
+        
+        filename = f"extracted_{pages_desc}.pdf"
+        return StreamingResponse(
+            io.BytesIO(result), 
+            media_type="application/pdf",
+            headers={"Content-Disposition": f"attachment; filename={filename}"}
+        )
+        
+    except ValueError as e:
+        logger.error(f"PDF validation error during extract: {str(e)}")
+        raise HTTPException(status_code=400, detail=str(e))
+    except Exception as e:
+        logger.error(f"Unexpected error during extract: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Error extracting pages: {str(e)}")
 
 
 if __name__ == "__main__":
