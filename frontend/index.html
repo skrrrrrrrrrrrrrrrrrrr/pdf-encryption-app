@@ -337,7 +337,7 @@
             <div class="flex space-x-3">
                 <button 
                     @click="checkBackendConnection()" 
-                    class="flex-1 bg-primary text-white py-2 rounded-lg hover:bg-secondary transition-colors"
+                    class="flex-1 bg-primary-500 text-white py-2 rounded-lg hover:bg-primary-600 transition-colors"
                 >
                     <i class="fas fa-sync mr-1"></i>
                     Retry Connection
@@ -670,7 +670,7 @@
                 <button 
                     @click="processFiles('split')"
                     :disabled="files.split.length === 0 || !splitOptions.start || !splitOptions.end || loading"
-                    :class="files.split.length === 0 || !splitOptions.start || !splitOptions.end || loading ? 'bg-gray-300 cursor-not-allowed text-gray-500' : 'bg-primary hover:bg-secondary text-white'"
+                    :class="files.split.length === 0 || !splitOptions.start || !splitOptions.end || loading ? 'bg-gray-300 cursor-not-allowed text-gray-500' : 'bg-primary-500 hover:bg-primary-600 text-white'"
                     class="w-full mt-6 py-3 font-medium rounded-lg transition-colors"
                 >
                     <span x-show="!loading">
@@ -719,7 +719,7 @@
                         <div class="grid grid-cols-3 gap-3">
                             <button 
                                 @click="rotateOptions.angle = 90"
-                                :class="rotateOptions.angle === 90 ? 'bg-primary text-white border-primary' : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'"
+                                :class="rotateOptions.angle === 90 ? 'bg-primary-500 text-white border-primary-500' : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'"
                                 class="p-3 border-2 rounded-lg text-center transition-all"
                             >
                                 <i class="fas fa-redo text-xl mb-1"></i>
@@ -727,7 +727,7 @@
                             </button>
                             <button 
                                 @click="rotateOptions.angle = 180"
-                                :class="rotateOptions.angle === 180 ? 'bg-primary text-white border-primary' : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'"
+                                :class="rotateOptions.angle === 180 ? 'bg-primary-500 text-white border-primary-500' : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'"
                                 class="p-3 border-2 rounded-lg text-center transition-all"
                             >
                                 <i class="fas fa-sync text-xl mb-1"></i>
@@ -735,7 +735,7 @@
                             </button>
                             <button 
                                 @click="rotateOptions.angle = 270"
-                                :class="rotateOptions.angle === 270 ? 'bg-primary text-white border-primary' : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'"
+                                :class="rotateOptions.angle === 270 ? 'bg-primary-500 text-white border-primary-500' : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'"
                                 class="p-3 border-2 rounded-lg text-center transition-all"
                             >
                                 <i class="fas fa-undo text-xl mb-1"></i>
@@ -748,7 +748,7 @@
                 <button 
                     @click="processFiles('rotate')"
                     :disabled="files.rotate.length === 0 || !rotateOptions.angle || loading"
-                    :class="files.rotate.length === 0 || !rotateOptions.angle || loading ? 'bg-gray-300 cursor-not-allowed text-gray-500' : 'bg-primary hover:bg-secondary text-white'"
+                    :class="files.rotate.length === 0 || !rotateOptions.angle || loading ? 'bg-gray-300 cursor-not-allowed text-gray-500' : 'bg-primary-500 hover:bg-primary-600 text-white'"
                     class="w-full mt-6 py-3 font-medium rounded-lg transition-colors"
                 >
                     <span x-show="!loading">
@@ -808,7 +808,7 @@
                 <button 
                     @click="processFiles('encrypt')"
                     :disabled="files.encrypt.length === 0 || !encryptOptions.password || encryptOptions.password.length < 4 || loading"
-                    :class="files.encrypt.length === 0 || !encryptOptions.password || encryptOptions.password.length < 4 || loading ? 'bg-gray-300 cursor-not-allowed text-gray-500' : 'bg-primary hover:bg-secondary text-white'"
+                    :class="files.encrypt.length === 0 || !encryptOptions.password || encryptOptions.password.length < 4 || loading ? 'bg-gray-300 cursor-not-allowed text-gray-500' : 'bg-primary-500 hover:bg-primary-600 text-white'"
                     class="w-full mt-6 py-3 font-medium rounded-lg transition-colors"
                 >
                     <span x-show="!loading">
@@ -866,7 +866,7 @@
                 <button 
                     @click="processFiles('decrypt')"
                     :disabled="files.decrypt.length === 0 || !decryptOptions.password || loading"
-                    :class="files.decrypt.length === 0 || !decryptOptions.password || loading ? 'bg-gray-300 cursor-not-allowed text-gray-500' : 'bg-primary hover:bg-secondary text-white'"
+                    :class="files.decrypt.length === 0 || !decryptOptions.password || loading ? 'bg-gray-300 cursor-not-allowed text-gray-500' : 'bg-primary-500 hover:bg-primary-600 text-white'"
                     class="w-full mt-6 py-3 font-medium rounded-lg transition-colors"
                 >
                     <span x-show="!loading">
@@ -1077,13 +1077,13 @@
                         Process your documents with confidence knowing your data never leaves the secure processing environment.
                     </p>
                     <div class="flex space-x-4">
-                        <a @click.prevent="window.open('https://twitter.com/pdftools', '_blank')" href="javascript:void(0)" class="text-gray-400 hover:text-primary-500 transition-colors cursor-pointer" aria-label="Follow us on Twitter">
+                        <a @click="window.open('https://twitter.com/pdftools', '_blank')" class="text-gray-400 hover:text-primary-500 transition-colors cursor-pointer" aria-label="Follow us on Twitter">
                             <i class="fab fa-twitter text-xl"></i>
                         </a>
-                        <a @click.prevent="window.open('https://linkedin.com/company/pdftools', '_blank')" href="javascript:void(0)" class="text-gray-400 hover:text-primary-500 transition-colors cursor-pointer" aria-label="Follow us on LinkedIn">
+                        <a @click="window.open('https://linkedin.com/company/pdftools', '_blank')" class="text-gray-400 hover:text-primary-500 transition-colors cursor-pointer" aria-label="Follow us on LinkedIn">
                             <i class="fab fa-linkedin text-xl"></i>
                         </a>
-                        <a @click.prevent="window.location.href='mailto:support@pdftools.app'" href="javascript:void(0)" class="text-gray-400 hover:text-primary-500 transition-colors cursor-pointer" aria-label="Contact us via email">
+                        <a @click="window.location.href='mailto:support@pdftools.app'" class="text-gray-400 hover:text-primary-500 transition-colors cursor-pointer" aria-label="Contact us via email">
                             <i class="fas fa-envelope text-xl"></i>
                         </a>
                     </div>
@@ -1311,6 +1311,8 @@
                 setTool(tool) {
                     this.currentTool = tool;
                     this.clearFiles();
+                    // Scroll to main content when tool is selected from footer
+                    document.getElementById('main-content').scrollIntoView({ behavior: 'smooth' });
                 },
 
                 clearFiles() {
