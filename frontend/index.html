@@ -7,8 +7,8 @@
     <!-- Primary Meta Tags -->
     <title>PDF Tools - Professional PDF Processing | Merge, Split, Encrypt & More</title>
     <meta name="title" content="PDF Tools - Professional PDF Processing | Merge, Split, Encrypt & More">
-    <meta name="description" content="Free online PDF tools for professionals. Merge, split, rotate, encrypt and decrypt PDF files securely. Privacy-first processing with no file storage. Fast, secure, and easy to use.">
-    <meta name="keywords" content="PDF tools, merge PDF, split PDF, encrypt PDF, decrypt PDF, rotate PDF, PDF processing, online PDF tools, secure PDF, privacy-first, professional PDF tools">
+    <meta name="description" content="Free online PDF tools for professionals. Merge, split, rotate, encrypt, decrypt and resize PDF files securely. Privacy-first processing with no file storage. Fast, secure, and easy to use.">
+    <meta name="keywords" content="PDF tools, merge PDF, split PDF, encrypt PDF, decrypt PDF, rotate PDF, resize PDF, compress PDF, PDF processing, online PDF tools, secure PDF, privacy-first, professional PDF tools">
     <meta name="robots" content="index, follow">
     <meta name="language" content="English">
     <meta name="author" content="PDF Tools">
@@ -17,7 +17,7 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://pdf-tools.app/">
     <meta property="og:title" content="PDF Tools - Professional PDF Processing | Merge, Split, Encrypt & More">
-    <meta property="og:description" content="Free online PDF tools for professionals. Merge, split, rotate, encrypt and decrypt PDF files securely. Privacy-first processing with no file storage.">
+    <meta property="og:description" content="Free online PDF tools for professionals. Merge, split, rotate, encrypt, decrypt and resize PDF files securely. Privacy-first processing with no file storage.">
     <meta property="og:image" content="https://pdf-tools.app/assets/og-image.jpg">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
@@ -27,7 +27,7 @@
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://pdf-tools.app/">
     <meta property="twitter:title" content="PDF Tools - Professional PDF Processing">
-    <meta property="twitter:description" content="Free online PDF tools for professionals. Merge, split, rotate, encrypt and decrypt PDF files securely. Privacy-first processing.">
+    <meta property="twitter:description" content="Free online PDF tools for professionals. Merge, split, rotate, encrypt, decrypt and resize PDF files securely. Privacy-first processing.">
     <meta property="twitter:image" content="https://pdf-tools.app/assets/twitter-image.jpg">
     
     <!-- Favicon and App Icons -->
@@ -59,7 +59,7 @@
       "@type": "WebApplication",
       "name": "PDF Tools",
       "alternateName": "Professional PDF Processing Tools",
-      "description": "Free online PDF tools for professionals. Merge, split, rotate, encrypt and decrypt PDF files securely with privacy-first processing.",
+      "description": "Free online PDF tools for professionals. Merge, split, rotate, encrypt, decrypt and resize PDF files securely with privacy-first processing.",
       "url": "https://pdf-tools.app/",
       "applicationCategory": "BusinessApplication",
       "operatingSystem": "Web Browser",
@@ -74,6 +74,7 @@
         "Rotate PDF pages",
         "Password protect PDFs",
         "Remove PDF passwords",
+        "Resize and compress PDF files",
         "Privacy-first processing",
         "No file storage",
         "In-memory processing"
@@ -366,7 +367,7 @@
             </div>
             <button 
                 @click="showPrivacy = false" 
-                class="w-full bg-primary text-white py-2 rounded-lg hover:bg-secondary transition-colors"
+                class="w-full bg-primary-500 text-white py-2 rounded-lg hover:bg-primary-600 transition-colors font-semibold"
             >
                 Got it!
             </button>
@@ -408,7 +409,7 @@
         <!-- Tool Selection -->
         <section class="mb-8" aria-labelledby="tool-selection-heading">
             <h3 id="tool-selection-heading" class="text-2xl font-bold text-gray-900 mb-6 text-center">Choose Your PDF Tool</h3>
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 <button 
                     @click="setTool('merge')" 
                     :class="currentTool === 'merge' ? 'bg-gradient-to-br from-primary-500 to-primary-600 text-white shadow-strong tool-card active' : 'bg-white/80 text-gray-700 hover:bg-white border border-gray-200 tool-card'"
@@ -472,6 +473,19 @@
                     <i class="fas fa-unlock text-3xl" :class="currentTool === 'decrypt' ? 'text-white' : 'text-purple-500'"></i>
                     <span class="font-semibold text-sm">Decrypt PDF</span>
                     <span class="text-xs opacity-75 text-center">Remove passwords</span>
+                </button>
+                
+                <button 
+                    @click="setTool('resize')" 
+                    :class="currentTool === 'resize' ? 'bg-gradient-to-br from-primary-500 to-primary-600 text-white shadow-strong tool-card active' : 'bg-white/80 text-gray-700 hover:bg-white border border-gray-200 tool-card'"
+                    class="p-6 rounded-xl flex flex-col items-center space-y-3 transition-all duration-300 focus-visible"
+                    :aria-pressed="currentTool === 'resize'"
+                    aria-label="Select resize PDF tool"
+                    type="button"
+                >
+                    <i class="fas fa-compress-alt text-3xl" :class="currentTool === 'resize' ? 'text-white' : 'text-teal-500'"></i>
+                    <span class="font-semibold text-sm">Resize PDF</span>
+                    <span class="text-xs opacity-75 text-center">Compress file size</span>
                 </button>
             </div>
         </section>
@@ -865,6 +879,100 @@
                     </span>
                 </button>
             </div>
+
+            <!-- Resize Tool -->
+            <div x-show="currentTool === 'resize'" x-cloak class="animate-scale-in" x-transition>
+                <header class="mb-6">
+                    <h3 class="text-2xl font-bold text-gray-900 mb-3 flex items-center">
+                        <i class="fas fa-compress-alt mr-3 text-teal-500"></i>
+                        Resize PDF - Compress File Size
+                    </h3>
+                    <p class="text-gray-600 leading-relaxed">
+                        Reduce the file size of your PDF documents while maintaining quality. Perfect for optimizing files for web sharing, email attachments, or storage.
+                    </p>
+                </header>
+                
+                <div 
+                    @drop.prevent="handleDrop($event, 'resize')"
+                    @dragover.prevent
+                    @dragenter.prevent="dragOver = true"
+                    @dragleave.prevent="dragOver = false"
+                    :class="dragOver ? 'drag-over' : ''"
+                    class="upload-area border-2 border-dashed border-gray-300 rounded-xl p-8 text-center cursor-pointer transition-all duration-300"
+                    @click="$refs.resizeFile.click()"
+                >
+                    <i class="fas fa-cloud-upload-alt text-4xl text-gray-400 mb-4"></i>
+                    <p class="text-lg font-medium text-gray-700 mb-2">Drop a PDF file here or click to browse</p>
+                    <p class="text-sm text-gray-500">Single PDF file, max 20MB</p>
+                    <input type="file" x-ref="resizeFile" accept="application/pdf" @change="handleFileSelect($event, 'resize')" class="file-input">
+                </div>
+
+                <!-- Quality Settings -->
+                <div x-show="files.resize.length > 0" class="mt-6 p-4 bg-gray-50 rounded-lg border">
+                    <h4 class="font-semibold text-gray-900 mb-3">Compression Quality</h4>
+                    <div class="space-y-3">
+                        <label class="flex items-center cursor-pointer">
+                            <input type="radio" x-model="resizeOptions.quality" value="high" class="mr-3">
+                            <div>
+                                <span class="font-medium">High Quality</span>
+                                <span class="text-sm text-gray-500 block">Minimal compression, best for important documents</span>
+                            </div>
+                        </label>
+                        <label class="flex items-center cursor-pointer">
+                            <input type="radio" x-model="resizeOptions.quality" value="medium" class="mr-3">
+                            <div>
+                                <span class="font-medium">Medium Quality</span>
+                                <span class="text-sm text-gray-500 block">Balanced compression, good for most uses</span>
+                            </div>
+                        </label>
+                        <label class="flex items-center cursor-pointer">
+                            <input type="radio" x-model="resizeOptions.quality" value="low" class="mr-3">
+                            <div>
+                                <span class="font-medium">Maximum Compression</span>
+                                <span class="text-sm text-gray-500 block">Smallest file size, suitable for web sharing</span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- File List -->
+                <div x-show="files.resize.length > 0" class="mt-6 space-y-3">
+                    <template x-for="(file, index) in files.resize" :key="index">
+                        <div class="flex items-center justify-between p-4 bg-white rounded-lg border border-gray-200 shadow-sm">
+                            <div class="flex items-center space-x-3">
+                                <i class="fas fa-file-pdf text-red-500 text-xl"></i>
+                                <div>
+                                    <span class="font-medium text-gray-900" x-text="file.name"></span>
+                                    <div class="text-sm text-gray-500" x-text="formatFileSize(file.size)"></div>
+                                </div>
+                            </div>
+                            <button 
+                                @click="removeFile('resize', index)" 
+                                class="text-red-500 hover:text-red-700 p-2 hover:bg-red-50 rounded-full transition-colors"
+                                aria-label="Remove file"
+                                type="button"
+                            >
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    </template>
+                </div>
+
+                <!-- Process Button -->
+                <button 
+                    x-show="files.resize.length > 0" 
+                    @click="processFiles('resize')"
+                    :disabled="loading || !files.resize.length"
+                    :class="loading || !files.resize.length ? 'bg-gray-300 cursor-not-allowed text-gray-500' : 'bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 text-white'"
+                    class="mt-6 w-full py-3 px-6 rounded-lg font-semibold transition-all duration-300 flex items-center justify-center space-x-2 shadow-medium hover:shadow-strong"
+                    type="button"
+                >
+                    <span x-show="loading && currentTool === 'resize'" class="loading-dots">
+                        <span></span><span></span><span></span>
+                    </span>
+                    <span x-text="loading && currentTool === 'resize' ? 'Compressing PDF...' : 'Compress PDF'"></span>
+                </button>
+            </div>
         </section>
         
         <!-- Features Section -->
@@ -969,13 +1077,13 @@
                         Process your documents with confidence knowing your data never leaves the secure processing environment.
                     </p>
                     <div class="flex space-x-4">
-                        <a href="#" class="text-gray-400 hover:text-primary-500 transition-colors" aria-label="Follow us on Twitter">
+                        <a @click.prevent="window.open('https://twitter.com/pdftools', '_blank')" href="javascript:void(0)" class="text-gray-400 hover:text-primary-500 transition-colors cursor-pointer" aria-label="Follow us on Twitter">
                             <i class="fab fa-twitter text-xl"></i>
                         </a>
-                        <a href="#" class="text-gray-400 hover:text-primary-500 transition-colors" aria-label="Follow us on LinkedIn">
+                        <a @click.prevent="window.open('https://linkedin.com/company/pdftools', '_blank')" href="javascript:void(0)" class="text-gray-400 hover:text-primary-500 transition-colors cursor-pointer" aria-label="Follow us on LinkedIn">
                             <i class="fab fa-linkedin text-xl"></i>
                         </a>
-                        <a href="#" class="text-gray-400 hover:text-primary-500 transition-colors" aria-label="Contact us via email">
+                        <a @click.prevent="window.location.href='mailto:support@pdftools.app'" href="javascript:void(0)" class="text-gray-400 hover:text-primary-500 transition-colors cursor-pointer" aria-label="Contact us via email">
                             <i class="fas fa-envelope text-xl"></i>
                         </a>
                     </div>
@@ -990,6 +1098,7 @@
                         <li><a href="#" @click.prevent="setTool('rotate')" class="text-gray-600 hover:text-primary-500 transition-colors">Rotate PDF</a></li>
                         <li><a href="#" @click.prevent="setTool('encrypt')" class="text-gray-600 hover:text-primary-500 transition-colors">Encrypt PDF</a></li>
                         <li><a href="#" @click.prevent="setTool('decrypt')" class="text-gray-600 hover:text-primary-500 transition-colors">Decrypt PDF</a></li>
+                        <li><a href="#" @click.prevent="setTool('resize')" class="text-gray-600 hover:text-primary-500 transition-colors">Resize PDF</a></li>
                     </ul>
                 </div>
                 
@@ -1042,7 +1151,8 @@
                     split: [],
                     rotate: [],
                     encrypt: [],
-                    decrypt: []
+                    decrypt: [],
+                    resize: []
                 },
                 splitOptions: {
                     start: '',
@@ -1056,6 +1166,9 @@
                 },
                 decryptOptions: {
                     password: ''
+                },
+                resizeOptions: {
+                    quality: 'medium'
                 },
                 message: {
                     show: false,
@@ -1206,12 +1319,14 @@
                         split: [],
                         rotate: [],
                         encrypt: [],
-                        decrypt: []
+                        decrypt: [],
+                        resize: []
                     };
                     this.splitOptions = { start: '', end: '' };
                     this.rotateOptions = { angle: 90 };
                     this.encryptOptions = { password: '' };
                     this.decryptOptions = { password: '' };
+                    this.resizeOptions = { quality: 'medium' };
                 },
 
                 handleDrop(event, tool) {
@@ -1289,6 +1404,9 @@
                             } else if (tool === 'decrypt') {
                                 formData.append('password', this.decryptOptions.password);
                                 console.log(`🔓 Decrypting with password`);
+                            } else if (tool === 'resize') {
+                                formData.append('quality', this.resizeOptions.quality);
+                                console.log(`🗜️ Compressing with ${this.resizeOptions.quality} quality`);
                             }
                         }
 
