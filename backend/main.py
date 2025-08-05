@@ -26,6 +26,9 @@ from backend.utils.pdf_utils import (
     rotate_pdf,
     encrypt_pdf,
     decrypt_pdf,
+    resize_pdf,
+    add_signature_pdf,
+    add_watermark_pdf,
 )
 
 load_dotenv()
@@ -289,6 +292,140 @@ async def decrypt(file: UploadFile = File(...), password: str = Form(...)):
     except Exception as e:
         logger.error(f"Unexpected error during decrypt: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Error decrypting PDF: {str(e)}")
+
+
+@app.post("/resize")
+async def resize(file: UploadFile = File(...), quality: str = Form(default="medium")):
+    """Resize/compress PDF with quality options"""
+    start_time = time.time()
+    _validate_file(file)
+    
+    if quality not in ["high", "medium", "low"]:
+        raise HTTPException(status_code=400, detail="Quality must be 'high', 'medium', or 'low'")
+    
+    try:
+        logger.info(f"Starting resize operation for {file.filename} with {quality} quality")
+        data = await file.read()
+        file_size = len(data)
+        
+        if file_size > MAX_FILE_SIZE:
+            raise HTTPException(
+                status_code=400, 
+                detail=f"File too large. Maximum size is {MAX_FILE_SIZE // (1024*1024)}MB"
+            )
+        
+        result = resize_pdf(data, quality)
+        processing_time = time.time() - start_time
+        original_size = len(data)
+        compressed_size = len(result)
+        compression_ratio = (1 - compressed_size / original_size) * 100
+        
+        logger.info(f"Resize completed in {processing_time:.2f} seconds, compressed {compression_ratio:.1f}% (from {original_size} to {compressed_size} bytes)")
+        
+        filename = f"compressed_{quality}.pdf"
+        return StreamingResponse(
+            io.BytesIO(result), 
+            media_type="application/pdf",
+            headers={"Content-Disposition": f"attachment; filename={filename}"}
+        )
+        
+    except ValueError as e:
+        logger.error(f"PDF validation error during resize: {str(e)}")
+        raise HTTPException(status_code=400, detail=str(e))
+    except Exception as e:
+        logger.error(f"Unexpected error during resize: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Error resizing PDF: {str(e)}")
+
+
+@app.post("/signature")
+async def signature(file: UploadFile = File(...), signature_text: str = Form(...), position: str = Form(default="bottom-right")):
+    """Add text signature to PDF"""
+    start_time = time.time()
+    _validate_file(file)
+    
+    if not signature_text or len(signature_text.strip()) == 0:
+        raise HTTPException(status_code=400, detail="Signature text is required")
+    
+    if len(signature_text) > 100:
+        raise HTTPException(status_code=400, detail="Signature text must be 100 characters or less")
+    
+    valid_positions = ["bottom-right", "bottom-left", "top-right", "top-left", "center"]
+    if position not in valid_positions:
+        raise HTTPException(status_code=400, detail=f"Position must be one of: {', '.join(valid_positions)}")
+    
+    try:
+        logger.info(f"Starting signature operation for {file.filename} with text: '{signature_text}' at {position}")
+        data = await file.read()
+        file_size = len(data)
+        
+        if file_size > MAX_FILE_SIZE:
+            raise HTTPException(
+                status_code=400, 
+                detail=f"File too large. Maximum size is {MAX_FILE_SIZE // (1024*1024)}MB"
+            )
+        
+        result = add_signature_pdf(data, signature_text.strip(), position)
+        processing_time = time.time() - start_time
+        logger.info(f"Signature completed in {processing_time:.2f} seconds, output size: {len(result)} bytes")
+        
+        filename = f"signed.pdf"
+        return StreamingResponse(
+            io.BytesIO(result), 
+            media_type="application/pdf",
+            headers={"Content-Disposition": f"attachment; filename={filename}"}
+        )
+        
+    except ValueError as e:
+        logger.error(f"PDF validation error during signature: {str(e)}")
+        raise HTTPException(status_code=400, detail=str(e))
+    except Exception as e:
+        logger.error(f"Unexpected error during signature: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Error adding signature: {str(e)}")
+
+
+@app.post("/watermark")
+async def watermark(file: UploadFile = File(...), watermark_text: str = Form(...), opacity: float = Form(default=0.3)):
+    """Add watermark text to PDF"""
+    start_time = time.time()
+    _validate_file(file)
+    
+    if not watermark_text or len(watermark_text.strip()) == 0:
+        raise HTTPException(status_code=400, detail="Watermark text is required")
+    
+    if len(watermark_text) > 50:
+        raise HTTPException(status_code=400, detail="Watermark text must be 50 characters or less")
+    
+    if not 0.1 <= opacity <= 1.0:
+        raise HTTPException(status_code=400, detail="Opacity must be between 0.1 and 1.0")
+    
+    try:
+        logger.info(f"Starting watermark operation for {file.filename} with text: '{watermark_text}' at {opacity} opacity")
+        data = await file.read()
+        file_size = len(data)
+        
+        if file_size > MAX_FILE_SIZE:
+            raise HTTPException(
+                status_code=400, 
+                detail=f"File too large. Maximum size is {MAX_FILE_SIZE // (1024*1024)}MB"
+            )
+        
+        result = add_watermark_pdf(data, watermark_text.strip(), opacity)
+        processing_time = time.time() - start_time
+        logger.info(f"Watermark completed in {processing_time:.2f} seconds, output size: {len(result)} bytes")
+        
+        filename = f"watermarked.pdf"
+        return StreamingResponse(
+            io.BytesIO(result), 
+            media_type="application/pdf",
+            headers={"Content-Disposition": f"attachment; filename={filename}"}
+        )
+        
+    except ValueError as e:
+        logger.error(f"PDF validation error during watermark: {str(e)}")
+        raise HTTPException(status_code=400, detail=str(e))
+    except Exception as e:
+        logger.error(f"Unexpected error during watermark: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Error adding watermark: {str(e)}")
 
 
 if __name__ == "__main__":
