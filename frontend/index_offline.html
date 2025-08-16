@@ -252,7 +252,7 @@
         
         /* Responsive */
         @media (max-width: 768px) {
-            .grid-cols-5 { grid-template-columns: repeat(2, 1fr); }
+            .grid[style*="repeat(4"] { grid-template-columns: repeat(2, 1fr) !important; }
             .container { padding: 0 0.5rem; }
             .modal-content { margin: 0.5rem; }
         }
@@ -287,7 +287,7 @@
         <!-- Tool Selection -->
         <div class="mb-6">
             <h2 class="text-xl font-semibold text-gray-900 mb-4">Select a PDF Tool</h2>
-            <div class="grid grid-cols-5 gap-4">
+            <div class="grid" style="grid-template-columns: repeat(4, 1fr); gap: 1rem;">
                 <button onclick="selectTool('merge')" class="btn-tool" id="tool-merge">
                     <div class="text-lg font-semibold text-gray-900 mb-2">📄 Merge PDFs</div>
                     <div class="text-sm text-gray-600">Combine multiple files</div>
@@ -307,6 +307,18 @@
                 <button onclick="selectTool('decrypt')" class="btn-tool" id="tool-decrypt">
                     <div class="text-lg font-semibold text-gray-900 mb-2">🔓 Decrypt PDF</div>
                     <div class="text-sm text-gray-600">Remove password</div>
+                </button>
+                <button onclick="selectTool('resize')" class="btn-tool" id="tool-resize">
+                    <div class="text-lg font-semibold text-gray-900 mb-2">📦 Resize PDF</div>
+                    <div class="text-sm text-gray-600">Compress file size</div>
+                </button>
+                <button onclick="selectTool('signature')" class="btn-tool" id="tool-signature">
+                    <div class="text-lg font-semibold text-gray-900 mb-2">✍️ Add Signature</div>
+                    <div class="text-sm text-gray-600">Sign documents</div>
+                </button>
+                <button onclick="selectTool('watermark')" class="btn-tool" id="tool-watermark">
+                    <div class="text-lg font-semibold text-gray-900 mb-2">🏷️ Add Watermark</div>
+                    <div class="text-sm text-gray-600">Brand documents</div>
                 </button>
             </div>
         </div>
@@ -438,6 +450,140 @@
                 <button id="decrypt-process-btn" onclick="processDecrypt()" class="btn btn-primary" disabled>
                     <span class="decrypt-btn-text">Decrypt PDF</span>
                     <span class="decrypt-btn-loading hidden"><span class="spinner"></span>Processing...</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Resize Tool -->
+        <div id="section-resize" class="tool-section">
+            <h3 class="text-lg font-semibold text-gray-900 mb-4">📦 Resize PDF - Compress File Size</h3>
+            <p class="text-gray-600 mb-6">Reduce the file size of your PDF documents while maintaining quality. Perfect for optimizing files for web sharing, email attachments, or storage.</p>
+            
+            <div class="upload-area" onclick="document.getElementById('resize-file').click()" ondrop="handleDrop(event, 'resize')" ondragover="allowDrop(event)" ondragenter="dragEnter(event)" ondragleave="dragLeave(event)">
+                <div class="text-4xl mb-4">📦</div>
+                <p class="text-lg font-medium text-gray-700 mb-2">Drop a PDF file here or click to browse</p>
+                <p class="text-sm text-gray-500">Single PDF file, max 20MB</p>
+                <input type="file" id="resize-file" class="file-input" accept="application/pdf" onchange="handleFileSelect(event, 'resize')">
+            </div>
+            
+            <div id="resize-options" class="mt-6 hidden">
+                <div class="mb-4">
+                    <label class="font-medium text-gray-700 mb-2" style="display: block;">Compression Quality</label>
+                    <div class="space-y-3">
+                        <label class="flex items-center">
+                            <input type="radio" name="quality" value="high" checked onchange="updateProcessButton('resize')">
+                            <div class="ml-3">
+                                <div class="font-medium">High Quality</div>
+                                <div class="text-sm text-gray-500">Minimal compression, best for important documents</div>
+                            </div>
+                        </label>
+                        <label class="flex items-center">
+                            <input type="radio" name="quality" value="medium" onchange="updateProcessButton('resize')">
+                            <div class="ml-3">
+                                <div class="font-medium">Medium Quality</div>
+                                <div class="text-sm text-gray-500">Balanced compression, good for most uses</div>
+                            </div>
+                        </label>
+                        <label class="flex items-center">
+                            <input type="radio" name="quality" value="low" onchange="updateProcessButton('resize')">
+                            <div class="ml-3">
+                                <div class="font-medium">Maximum Compression</div>
+                                <div class="text-sm text-gray-500">Smallest file size, suitable for web sharing</div>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+                <button id="resize-process-btn" onclick="processResize()" class="btn btn-primary">
+                    <span class="resize-btn-text">Resize PDF</span>
+                    <span class="resize-btn-loading hidden"><span class="spinner"></span>Processing...</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Signature Tool -->
+        <div id="section-signature" class="tool-section">
+            <h3 class="text-lg font-semibold text-gray-900 mb-4">✍️ Add Signature to PDF</h3>
+            <p class="text-gray-600 mb-6">Add your signature or text to all pages of your PDF document. Choose the position and customize your signature text.</p>
+            
+            <div class="upload-area" onclick="document.getElementById('signature-file').click()" ondrop="handleDrop(event, 'signature')" ondragover="allowDrop(event)" ondragenter="dragEnter(event)" ondragleave="dragLeave(event)">
+                <div class="text-4xl mb-4">✍️</div>
+                <p class="text-lg font-medium text-gray-700 mb-2">Drop a PDF file here or click to browse</p>
+                <p class="text-sm text-gray-500">Single PDF file, max 20MB</p>
+                <input type="file" id="signature-file" class="file-input" accept="application/pdf" onchange="handleFileSelect(event, 'signature')">
+            </div>
+            
+            <div id="signature-options" class="mt-6 hidden">
+                <div class="space-y-4">
+                    <div>
+                        <label class="font-medium text-gray-700 mb-2" style="display: block;">Signature Text</label>
+                        <input type="text" id="signature-text" class="input" placeholder="Enter your signature text" maxlength="100" oninput="updateProcessButton('signature')">
+                        <p class="text-xs text-gray-500 mt-1">Maximum 100 characters</p>
+                    </div>
+                    <div>
+                        <label class="font-medium text-gray-700 mb-2" style="display: block;">Position</label>
+                        <div class="grid" style="grid-template-columns: 1fr 1fr; gap: 0.5rem;">
+                            <label class="flex items-center">
+                                <input type="radio" name="signature-position" value="bottom-right" checked onchange="updateProcessButton('signature')">
+                                <span class="ml-2">Bottom Right</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="radio" name="signature-position" value="bottom-left" onchange="updateProcessButton('signature')">
+                                <span class="ml-2">Bottom Left</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="radio" name="signature-position" value="top-right" onchange="updateProcessButton('signature')">
+                                <span class="ml-2">Top Right</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="radio" name="signature-position" value="top-left" onchange="updateProcessButton('signature')">
+                                <span class="ml-2">Top Left</span>
+                            </label>
+                            <label class="flex items-center" style="grid-column: span 2;">
+                                <input type="radio" name="signature-position" value="center" onchange="updateProcessButton('signature')">
+                                <span class="ml-2">Center</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <button id="signature-process-btn" onclick="processSignature()" class="btn btn-primary mt-4" disabled>
+                    <span class="signature-btn-text">Add Signature</span>
+                    <span class="signature-btn-loading hidden"><span class="spinner"></span>Processing...</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Watermark Tool -->
+        <div id="section-watermark" class="tool-section">
+            <h3 class="text-lg font-semibold text-gray-900 mb-4">🏷️ Add Watermark to PDF</h3>
+            <p class="text-gray-600 mb-6">Add a watermark to all pages of your PDF document. Customize the text and opacity for perfect branding.</p>
+            
+            <div class="upload-area" onclick="document.getElementById('watermark-file').click()" ondrop="handleDrop(event, 'watermark')" ondragover="allowDrop(event)" ondragenter="dragEnter(event)" ondragleave="dragLeave(event)">
+                <div class="text-4xl mb-4">🏷️</div>
+                <p class="text-lg font-medium text-gray-700 mb-2">Drop a PDF file here or click to browse</p>
+                <p class="text-sm text-gray-500">Single PDF file, max 20MB</p>
+                <input type="file" id="watermark-file" class="file-input" accept="application/pdf" onchange="handleFileSelect(event, 'watermark')">
+            </div>
+            
+            <div id="watermark-options" class="mt-6 hidden">
+                <div class="space-y-4">
+                    <div>
+                        <label class="font-medium text-gray-700 mb-2" style="display: block;">Watermark Text</label>
+                        <input type="text" id="watermark-text" class="input" placeholder="Enter watermark text" maxlength="50" oninput="updateProcessButton('watermark')">
+                        <p class="text-xs text-gray-500 mt-1">Maximum 50 characters</p>
+                    </div>
+                    <div>
+                        <label class="font-medium text-gray-700 mb-2" style="display: block;">Opacity</label>
+                        <input type="range" id="watermark-opacity" min="0.1" max="1" step="0.1" value="0.6" class="w-full" oninput="updateOpacityDisplay(); updateProcessButton('watermark')">
+                        <div class="flex justify-between text-xs text-gray-500 mt-1">
+                            <span>10% (Light)</span>
+                            <span id="opacity-value">60%</span>
+                            <span>100% (Solid)</span>
+                        </div>
+                    </div>
+                </div>
+                <button id="watermark-process-btn" onclick="processWatermark()" class="btn btn-primary mt-4" disabled>
+                    <span class="watermark-btn-text">Add Watermark</span>
+                    <span class="watermark-btn-loading hidden"><span class="spinner"></span>Processing...</span>
                 </button>
             </div>
         </div>
@@ -667,9 +813,22 @@
                 const start = parseInt(document.getElementById('split-start').value);
                 const end = parseInt(document.getElementById('split-end').value);
                 canProcess = canProcess && start > 0 && end >= start;
+            } else if (tool === 'signature') {
+                const signatureText = document.getElementById('signature-text').value;
+                canProcess = canProcess && signatureText.trim().length > 0;
+            } else if (tool === 'watermark') {
+                const watermarkText = document.getElementById('watermark-text').value;
+                canProcess = canProcess && watermarkText.trim().length > 0;
             }
+            // resize tool doesn't need additional validation - quality is always selected
             
             processBtn.disabled = !canProcess;
+        }
+
+        function updateOpacityDisplay() {
+            const opacity = document.getElementById('watermark-opacity').value;
+            const percentage = Math.round(opacity * 100);
+            document.getElementById('opacity-value').textContent = `${percentage}%`;
         }
 
         function removeFile(tool, index) {
@@ -746,6 +905,23 @@
         async function processDecrypt() {
             const password = document.getElementById('decrypt-password').value;
             await processFiles('decrypt', '/decrypt', { password });
+        }
+
+        async function processResize() {
+            const quality = document.querySelector('input[name="quality"]:checked').value;
+            await processFiles('resize', '/resize', { quality });
+        }
+
+        async function processSignature() {
+            const signatureText = document.getElementById('signature-text').value;
+            const position = document.querySelector('input[name="signature-position"]:checked').value;
+            await processFiles('signature', '/signature', { signature_text: signatureText, position });
+        }
+
+        async function processWatermark() {
+            const watermarkText = document.getElementById('watermark-text').value;
+            const opacity = document.getElementById('watermark-opacity').value;
+            await processFiles('watermark', '/watermark', { watermark_text: watermarkText, opacity: parseFloat(opacity) });
         }
 
         async function processFiles(tool, endpoint, params = {}) {
