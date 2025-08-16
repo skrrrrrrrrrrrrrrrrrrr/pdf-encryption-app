@@ -1585,7 +1585,8 @@
 
                 // Check if backend is available
                 async checkBackendConnection() {
-                    if (this.backendStatus.checked) return;
+                    // Reset status to allow retry
+                    this.backendStatus = { checked: false, available: false, error: null };
                     
                     const apiBaseUrl = this.getApiBaseUrl();
                     if (!apiBaseUrl) {
@@ -1959,6 +1960,32 @@
             style.textContent = '[x-cloak] { display: none !important; }';
             document.head.appendChild(style);
         });
+
+        // CDN fallback detection and offline mode redirect
+        setTimeout(() => {
+            // Check if Alpine.js loaded
+            if (typeof window.Alpine === 'undefined') {
+                console.warn('Alpine.js failed to load from CDN, redirecting to offline version...');
+                // Show a brief message before redirect
+                const notification = document.createElement('div');
+                notification.style.cssText = `
+                    position: fixed; top: 20px; right: 20px; 
+                    background: #f59e0b; color: white; padding: 15px 20px; 
+                    border-radius: 8px; z-index: 9999; font-family: sans-serif;
+                    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                `;
+                notification.innerHTML = `
+                    <div style="font-weight: bold; margin-bottom: 5px;">⚠️ CDN Resources Blocked</div>
+                    <div style="font-size: 14px;">Redirecting to offline version...</div>
+                `;
+                document.body.appendChild(notification);
+                
+                // Redirect after a short delay
+                setTimeout(() => {
+                    window.location.href = 'index_offline.html';
+                }, 2000);
+            }
+        }, 3000); // Give CDN resources time to load
     </script>
 </body>
 </html>

@@ -1,0 +1,1041 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PDF Tools - Professional PDF Processing</title>
+    
+    <!-- Inline TailwindCSS styles for offline mode -->
+    <style>
+        /* Basic CSS reset and utility classes */
+        *, *::before, *::after { box-sizing: border-box; }
+        body { margin: 0; font-family: system-ui, -apple-system, sans-serif; line-height: 1.5; }
+        
+        /* Color classes */
+        .bg-gray-50 { background-color: #f9fafb; }
+        .bg-white { background-color: #ffffff; }
+        .bg-blue-600 { background-color: #2563eb; }
+        .bg-green-600 { background-color: #16a34a; }
+        .bg-red-600 { background-color: #dc2626; }
+        .text-white { color: #ffffff; }
+        .text-gray-600 { color: #4b5563; }
+        .text-gray-700 { color: #374151; }
+        .text-gray-900 { color: #111827; }
+        .text-red-600 { color: #dc2626; }
+        
+        /* Layout classes */
+        .min-h-screen { min-height: 100vh; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 1rem; }
+        .flex { display: flex; }
+        .items-center { align-items: center; }
+        .justify-between { justify-content: space-between; }
+        .space-x-3 > * + * { margin-left: 0.75rem; }
+        .space-y-4 > * + * { margin-top: 1rem; }
+        .grid { display: grid; }
+        .grid-cols-5 { grid-template-columns: repeat(5, 1fr); }
+        .gap-4 { gap: 1rem; }
+        
+        /* Typography */
+        .text-2xl { font-size: 1.5rem; }
+        .text-lg { font-size: 1.125rem; }
+        .text-sm { font-size: 0.875rem; }
+        .font-bold { font-weight: 700; }
+        .font-semibold { font-weight: 600; }
+        
+        /* Spacing */
+        .p-4 { padding: 1rem; }
+        .p-6 { padding: 1.5rem; }
+        .py-4 { padding-top: 1rem; padding-bottom: 1rem; }
+        .px-4 { padding-left: 1rem; padding-right: 1rem; }
+        .m-4 { margin: 1rem; }
+        .mb-4 { margin-bottom: 1rem; }
+        .mb-6 { margin-bottom: 1.5rem; }
+        .mt-8 { margin-top: 2rem; }
+        
+        /* Borders and shadows */
+        .border { border: 1px solid #e5e7eb; }
+        .border-2 { border: 2px solid #e5e7eb; }
+        .border-dashed { border-style: dashed; }
+        .rounded-lg { border-radius: 0.5rem; }
+        .shadow-sm { box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); }
+        
+        /* Buttons */
+        .btn { 
+            padding: 0.5rem 1rem; 
+            border-radius: 0.375rem; 
+            border: none; 
+            cursor: pointer; 
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        .btn-primary { background-color: #2563eb; color: white; }
+        .btn-primary:hover { background-color: #1d4ed8; }
+        .btn-secondary { background-color: #6b7280; color: white; }
+        .btn-secondary:hover { background-color: #4b5563; }
+        
+        /* Form elements */
+        .input { 
+            padding: 0.5rem 0.75rem; 
+            border: 1px solid #d1d5db; 
+            border-radius: 0.375rem; 
+            width: 100%;
+        }
+        .input:focus { outline: none; border-color: #2563eb; }
+        
+        /* Upload area */
+        .upload-area {
+            border: 2px dashed #d1d5db;
+            border-radius: 0.5rem;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .upload-area:hover {
+            border-color: #2563eb;
+            background-color: #f9fafb;
+        }
+        .upload-area.drag-over {
+            border-color: #2563eb;
+            background-color: #eff6ff;
+        }
+        
+        /* Hidden elements */
+        .hidden { display: none !important; }
+        .file-input { display: none; }
+        
+        /* Modal styles */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 50;
+        }
+        .modal-content {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            max-width: 500px;
+            margin: 1rem;
+        }
+        
+        /* Tool sections */
+        .tool-section { display: none; }
+        .tool-section.active { display: block; }
+        
+        /* Status indicators */
+        .status-indicator {
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        .status-online {
+            background-color: #dcfce7;
+            color: #166534;
+        }
+        .status-offline {
+            background-color: #fef2f2;
+            color: #991b1b;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Header -->
+    <header class="bg-white shadow-sm border">
+        <div class="container">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center space-x-3">
+                    <div style="width: 3rem; height: 3rem; background: #dc2626; color: white; display: flex; align-items: center; justify-content: center; border-radius: 0.5rem; font-weight: bold;">PDF</div>
+                    <div>
+                        <h1 class="text-2xl font-bold text-gray-900">PDF Tools</h1>
+                        <p class="text-sm text-gray-600">Professional PDF Processing</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-3">
+                    <button onclick="showPrivacyModal()" class="btn btn-secondary">
+                        🔒 Privacy First
+                    </button>
+                    <div id="backendStatus" class="status-indicator status-offline">
+                        ⚠️ Backend Offline
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+                </div>
+                <div class="flex items-center space-x-3">
+                    <button 
+                        @click="showPrivacy = true"
+                        class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium hover:bg-green-200 transition-colors"
+                    >
+                        <i class="fas fa-shield-alt mr-1"></i>
+                        Privacy First
+                    </button>
+                    
+                    <!-- Backend Status Indicator -->
+                    <div x-show="backendStatus.checked" class="flex items-center space-x-2">
+                        <div x-show="backendStatus.available" class="flex items-center bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs">
+                            <i class="fas fa-check-circle mr-1"></i>
+                            Backend Online
+                        </div>
+                        <div x-show="!backendStatus.available" class="flex items-center bg-red-100 text-red-800 px-2 py-1 rounded-full text-xs">
+                            <i class="fas fa-exclamation-triangle mr-1"></i>
+                            Backend Offline
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Backend Setup Modal -->
+    <div x-show="backendStatus.checked && !backendStatus.available" x-cloak class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-white rounded-lg p-6 max-w-lg mx-4">
+            <div class="flex items-center mb-4">
+                <i class="fas fa-exclamation-triangle text-red-600 text-xl mr-2"></i>
+                <h3 class="text-lg font-semibold">Backend Server Required</h3>
+            </div>
+            <div class="text-gray-700 space-y-3 mb-6">
+                <p><strong>The PDF Tools backend server is not running.</strong></p>
+                <p>To use PDF tools, you need to start both the frontend and backend servers:</p>
+                <div class="bg-gray-100 p-3 rounded text-sm font-mono">
+                    <div class="mb-2">1. Start the backend server:</div>
+                    <div class="text-blue-600">python -m uvicorn backend.main:app --reload --host 0.0.0.0 --port 8000</div>
+                    <div class="mt-2 mb-2">2. Start the frontend server:</div>
+                    <div class="text-blue-600">cd frontend && python -m http.server 3000</div>
+                </div>
+                <div x-show="window.location.hostname.includes('.preview.app.github.dev') || window.location.hostname.includes('.app.github.dev')" class="bg-blue-50 p-3 rounded text-sm">
+                    <div class="font-semibold text-blue-800 mb-1">GitHub Codespaces:</div>
+                    <div class="text-blue-700">Make sure both ports 3000 and 8000 are forwarded and set to <strong>public visibility</strong> in the Ports tab.</div>
+                </div>
+                <p class="text-sm text-gray-600">See the README.md file for complete setup instructions.</p>
+            </div>
+            <div class="flex space-x-3">
+                <button 
+                    @click="checkBackendConnection()" 
+                    class="flex-1 bg-primary text-white py-2 rounded-lg hover:bg-secondary transition-colors"
+                >
+                    <i class="fas fa-sync mr-1"></i>
+                    Retry Connection
+                </button>
+                <button 
+                    @click="backendStatus.checked = false" 
+                    class="flex-1 bg-gray-300 text-gray-700 py-2 rounded-lg hover:bg-gray-400 transition-colors"
+                >
+                    Continue Anyway
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Privacy Modal -->
+    <div x-show="showPrivacy" x-cloak class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-white rounded-lg p-6 max-w-md mx-4">
+            <div class="flex items-center mb-4">
+                <i class="fas fa-shield-alt text-green-600 text-xl mr-2"></i>
+                <h3 class="text-lg font-semibold">Privacy & Security</h3>
+            </div>
+            <div class="text-gray-700 space-y-2 mb-4">
+                <p><strong>🔒 Files are processed in memory and never stored.</strong></p>
+                <p>All uploaded files are processed entirely in memory and are automatically discarded after processing.</p>
+                <p>No files or user data are stored on our servers.</p>
+                <p>All processing happens server-side with secure, temporary memory allocation.</p>
+            </div>
+            <button 
+                @click="showPrivacy = false" 
+                class="w-full bg-primary text-white py-2 rounded-lg hover:bg-secondary transition-colors"
+            >
+                Got it!
+            </button>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Tool Selection -->
+        <div class="mb-8">
+            <h2 class="text-xl font-semibold text-gray-900 mb-4">Select a Tool</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+                <button 
+                    @click="setTool('merge')" 
+                    :class="currentTool === 'merge' ? 'bg-primary text-white' : 'bg-white text-gray-700 hover:bg-gray-50'"
+                    class="p-4 rounded-lg border-2 border-gray-200 flex flex-col items-center space-y-2 transition-all"
+                >
+                    <i class="fas fa-compress-arrows-alt text-2xl"></i>
+                    <span class="font-medium">Merge PDFs</span>
+                </button>
+                <button 
+                    @click="setTool('split')" 
+                    :class="currentTool === 'split' ? 'bg-primary text-white' : 'bg-white text-gray-700 hover:bg-gray-50'"
+                    class="p-4 rounded-lg border-2 border-gray-200 flex flex-col items-center space-y-2 transition-all"
+                >
+                    <i class="fas fa-cut text-2xl"></i>
+                    <span class="font-medium">Split PDF</span>
+                </button>
+                <button 
+                    @click="setTool('rotate')" 
+                    :class="currentTool === 'rotate' ? 'bg-primary text-white' : 'bg-white text-gray-700 hover:bg-gray-50'"
+                    class="p-4 rounded-lg border-2 border-gray-200 flex flex-col items-center space-y-2 transition-all"
+                >
+                    <i class="fas fa-redo text-2xl"></i>
+                    <span class="font-medium">Rotate PDF</span>
+                </button>
+                <button 
+                    @click="setTool('encrypt')" 
+                    :class="currentTool === 'encrypt' ? 'bg-primary text-white' : 'bg-white text-gray-700 hover:bg-gray-50'"
+                    class="p-4 rounded-lg border-2 border-gray-200 flex flex-col items-center space-y-2 transition-all"
+                >
+                    <i class="fas fa-lock text-2xl"></i>
+                    <span class="font-medium">Encrypt PDF</span>
+                </button>
+                <button 
+                    @click="setTool('decrypt')" 
+                    :class="currentTool === 'decrypt' ? 'bg-primary text-white' : 'bg-white text-gray-700 hover:bg-gray-50'"
+                    class="p-4 rounded-lg border-2 border-gray-200 flex flex-col items-center space-y-2 transition-all"
+                >
+                    <i class="fas fa-unlock text-2xl"></i>
+                    <span class="font-medium">Decrypt PDF</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Tool Content -->
+        <div class="bg-white rounded-lg shadow-sm border p-6">
+            <!-- Merge Tool -->
+            <div x-show="currentTool === 'merge'" x-cloak>
+                <h3 class="text-lg font-semibold text-gray-900 mb-4">
+                    <i class="fas fa-compress-arrows-alt mr-2"></i>
+                    Merge Multiple PDFs
+                </h3>
+                <p class="text-gray-600 mb-6">Combine multiple PDF files into a single document. Upload at least 2 files to merge.</p>
+                
+                <div 
+                    @drop.prevent="handleDrop($event, 'merge')"
+                    @dragover.prevent
+                    @dragenter.prevent="dragOver = true"
+                    @dragleave.prevent="dragOver = false"
+                    :class="dragOver ? 'drag-over' : ''"
+                    class="upload-area border-2 border-dashed border-gray-300 rounded-lg p-8 text-center cursor-pointer"
+                    @click="$refs.mergeFiles.click()"
+                >
+                    <i class="fas fa-cloud-upload-alt text-4xl text-gray-400 mb-4"></i>
+                    <p class="text-lg font-medium text-gray-700 mb-2">Drop PDF files here or click to browse</p>
+                    <p class="text-sm text-gray-500">Support for multiple files, max 20MB each</p>
+                    <input type="file" x-ref="mergeFiles" multiple accept="application/pdf" @change="handleFileSelect($event, 'merge')" class="file-input">
+                </div>
+
+                <div x-show="files.merge.length > 0" class="mt-4">
+                    <h4 class="font-medium text-gray-900 mb-2">Selected Files:</h4>
+                    <div class="space-y-2">
+                        <template x-for="(file, index) in files.merge" :key="index">
+                            <div class="flex items-center justify-between bg-gray-50 p-3 rounded-lg">
+                                <div class="flex items-center space-x-3">
+                                    <i class="fas fa-file-pdf text-red-600"></i>
+                                    <span x-text="file.name" class="text-sm font-medium"></span>
+                                    <span x-text="formatFileSize(file.size)" class="text-xs text-gray-500"></span>
+                                </div>
+                                <button @click="removeFile('merge', index)" class="text-red-600 hover:text-red-800">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+
+                <button 
+                    @click="processFiles('merge')"
+                    :disabled="files.merge.length < 2 || loading"
+                    :class="files.merge.length < 2 || loading ? 'bg-gray-300 cursor-not-allowed' : 'bg-primary hover:bg-secondary'"
+                    class="w-full mt-6 py-3 text-white font-medium rounded-lg transition-colors"
+                >
+                    <span x-show="!loading">
+                        <i class="fas fa-compress-arrows-alt mr-2"></i>
+                        Merge PDFs
+                    </span>
+                    <span x-show="loading">
+                        <i class="fas fa-spinner fa-spin mr-2"></i>
+                        Processing...
+                    </span>
+                </button>
+            </div>
+
+            <!-- Split Tool -->
+            <div x-show="currentTool === 'split'" x-cloak>
+                <h3 class="text-lg font-semibold text-gray-900 mb-4">
+                    <i class="fas fa-cut mr-2"></i>
+                    Split PDF by Page Range
+                </h3>
+                <p class="text-gray-600 mb-6">Extract specific pages from your PDF. Enter the page range you want to keep.</p>
+                
+                <div 
+                    @drop.prevent="handleDrop($event, 'split')"
+                    @dragover.prevent
+                    @dragenter.prevent="dragOver = true"
+                    @dragleave.prevent="dragOver = false"
+                    :class="dragOver ? 'drag-over' : ''"
+                    class="upload-area border-2 border-dashed border-gray-300 rounded-lg p-8 text-center cursor-pointer"
+                    @click="$refs.splitFile.click()"
+                >
+                    <i class="fas fa-cloud-upload-alt text-4xl text-gray-400 mb-4"></i>
+                    <p class="text-lg font-medium text-gray-700 mb-2">Drop a PDF file here or click to browse</p>
+                    <p class="text-sm text-gray-500">Single PDF file, max 20MB</p>
+                    <input type="file" x-ref="splitFile" accept="application/pdf" @change="handleFileSelect($event, 'split')" class="file-input">
+                </div>
+
+                <div x-show="files.split.length > 0" class="mt-6 space-y-4">
+                    <div class="flex items-center space-x-3 bg-gray-50 p-3 rounded-lg">
+                        <i class="fas fa-file-pdf text-red-600"></i>
+                        <span x-text="files.split[0]?.name" class="text-sm font-medium"></span>
+                        <span x-text="formatFileSize(files.split[0]?.size)" class="text-xs text-gray-500"></span>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Start Page</label>
+                            <input 
+                                type="number" 
+                                x-model="splitOptions.start" 
+                                min="1" 
+                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                                placeholder="1"
+                            >
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">End Page</label>
+                            <input 
+                                type="number" 
+                                x-model="splitOptions.end" 
+                                min="1" 
+                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                                placeholder="10"
+                            >
+                        </div>
+                    </div>
+                </div>
+
+                <button 
+                    @click="processFiles('split')"
+                    :disabled="files.split.length === 0 || !splitOptions.start || !splitOptions.end || loading"
+                    :class="files.split.length === 0 || !splitOptions.start || !splitOptions.end || loading ? 'bg-gray-300 cursor-not-allowed' : 'bg-primary hover:bg-secondary'"
+                    class="w-full mt-6 py-3 text-white font-medium rounded-lg transition-colors"
+                >
+                    <span x-show="!loading">
+                        <i class="fas fa-cut mr-2"></i>
+                        Split PDF
+                    </span>
+                    <span x-show="loading">
+                        <i class="fas fa-spinner fa-spin mr-2"></i>
+                        Processing...
+                    </span>
+                </button>
+            </div>
+
+            <!-- Rotate Tool -->
+            <div x-show="currentTool === 'rotate'" x-cloak>
+                <h3 class="text-lg font-semibold text-gray-900 mb-4">
+                    <i class="fas fa-redo mr-2"></i>
+                    Rotate PDF Pages
+                </h3>
+                <p class="text-gray-600 mb-6">Rotate all pages in your PDF document by 90, 180, or 270 degrees.</p>
+                
+                <div 
+                    @drop.prevent="handleDrop($event, 'rotate')"
+                    @dragover.prevent
+                    @dragenter.prevent="dragOver = true"
+                    @dragleave.prevent="dragOver = false"
+                    :class="dragOver ? 'drag-over' : ''"
+                    class="upload-area border-2 border-dashed border-gray-300 rounded-lg p-8 text-center cursor-pointer"
+                    @click="$refs.rotateFile.click()"
+                >
+                    <i class="fas fa-cloud-upload-alt text-4xl text-gray-400 mb-4"></i>
+                    <p class="text-lg font-medium text-gray-700 mb-2">Drop a PDF file here or click to browse</p>
+                    <p class="text-sm text-gray-500">Single PDF file, max 20MB</p>
+                    <input type="file" x-ref="rotateFile" accept="application/pdf" @change="handleFileSelect($event, 'rotate')" class="file-input">
+                </div>
+
+                <div x-show="files.rotate.length > 0" class="mt-6 space-y-4">
+                    <div class="flex items-center space-x-3 bg-gray-50 p-3 rounded-lg">
+                        <i class="fas fa-file-pdf text-red-600"></i>
+                        <span x-text="files.rotate[0]?.name" class="text-sm font-medium"></span>
+                        <span x-text="formatFileSize(files.rotate[0]?.size)" class="text-xs text-gray-500"></span>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-3">Rotation Angle</label>
+                        <div class="grid grid-cols-3 gap-3">
+                            <button 
+                                @click="rotateOptions.angle = 90"
+                                :class="rotateOptions.angle === 90 ? 'bg-primary text-white border-primary' : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'"
+                                class="p-3 border-2 rounded-lg text-center transition-all"
+                            >
+                                <i class="fas fa-redo text-xl mb-1"></i>
+                                <div class="text-sm font-medium">90°</div>
+                            </button>
+                            <button 
+                                @click="rotateOptions.angle = 180"
+                                :class="rotateOptions.angle === 180 ? 'bg-primary text-white border-primary' : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'"
+                                class="p-3 border-2 rounded-lg text-center transition-all"
+                            >
+                                <i class="fas fa-sync text-xl mb-1"></i>
+                                <div class="text-sm font-medium">180°</div>
+                            </button>
+                            <button 
+                                @click="rotateOptions.angle = 270"
+                                :class="rotateOptions.angle === 270 ? 'bg-primary text-white border-primary' : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'"
+                                class="p-3 border-2 rounded-lg text-center transition-all"
+                            >
+                                <i class="fas fa-undo text-xl mb-1"></i>
+                                <div class="text-sm font-medium">270°</div>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <button 
+                    @click="processFiles('rotate')"
+                    :disabled="files.rotate.length === 0 || !rotateOptions.angle || loading"
+                    :class="files.rotate.length === 0 || !rotateOptions.angle || loading ? 'bg-gray-300 cursor-not-allowed' : 'bg-primary hover:bg-secondary'"
+                    class="w-full mt-6 py-3 text-white font-medium rounded-lg transition-colors"
+                >
+                    <span x-show="!loading">
+                        <i class="fas fa-redo mr-2"></i>
+                        Rotate PDF
+                    </span>
+                    <span x-show="loading">
+                        <i class="fas fa-spinner fa-spin mr-2"></i>
+                        Processing...
+                    </span>
+                </button>
+            </div>
+
+            <!-- Encrypt Tool -->
+            <div x-show="currentTool === 'encrypt'" x-cloak>
+                <h3 class="text-lg font-semibold text-gray-900 mb-4">
+                    <i class="fas fa-lock mr-2"></i>
+                    Encrypt PDF with Password
+                </h3>
+                <p class="text-gray-600 mb-6">Protect your PDF with a password. The encrypted file will require the password to open.</p>
+                
+                <div 
+                    @drop.prevent="handleDrop($event, 'encrypt')"
+                    @dragover.prevent
+                    @dragenter.prevent="dragOver = true"
+                    @dragleave.prevent="dragOver = false"
+                    :class="dragOver ? 'drag-over' : ''"
+                    class="upload-area border-2 border-dashed border-gray-300 rounded-lg p-8 text-center cursor-pointer"
+                    @click="$refs.encryptFile.click()"
+                >
+                    <i class="fas fa-cloud-upload-alt text-4xl text-gray-400 mb-4"></i>
+                    <p class="text-lg font-medium text-gray-700 mb-2">Drop a PDF file here or click to browse</p>
+                    <p class="text-sm text-gray-500">Single PDF file, max 20MB</p>
+                    <input type="file" x-ref="encryptFile" accept="application/pdf" @change="handleFileSelect($event, 'encrypt')" class="file-input">
+                </div>
+
+                <div x-show="files.encrypt.length > 0" class="mt-6 space-y-4">
+                    <div class="flex items-center space-x-3 bg-gray-50 p-3 rounded-lg">
+                        <i class="fas fa-file-pdf text-red-600"></i>
+                        <span x-text="files.encrypt[0]?.name" class="text-sm font-medium"></span>
+                        <span x-text="formatFileSize(files.encrypt[0]?.size)" class="text-xs text-gray-500"></span>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Password</label>
+                        <input 
+                            type="password" 
+                            x-model="encryptOptions.password" 
+                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                            placeholder="Enter a strong password (min. 4 characters)"
+                            minlength="4"
+                        >
+                        <p class="text-xs text-gray-500 mt-1">Password must be at least 4 characters long</p>
+                    </div>
+                </div>
+
+                <button 
+                    @click="processFiles('encrypt')"
+                    :disabled="files.encrypt.length === 0 || !encryptOptions.password || encryptOptions.password.length < 4 || loading"
+                    :class="files.encrypt.length === 0 || !encryptOptions.password || encryptOptions.password.length < 4 || loading ? 'bg-gray-300 cursor-not-allowed' : 'bg-primary hover:bg-secondary'"
+                    class="w-full mt-6 py-3 text-white font-medium rounded-lg transition-colors"
+                >
+                    <span x-show="!loading">
+                        <i class="fas fa-lock mr-2"></i>
+                        Encrypt PDF
+                    </span>
+                    <span x-show="loading">
+                        <i class="fas fa-spinner fa-spin mr-2"></i>
+                        Processing...
+                    </span>
+                </button>
+            </div>
+
+            <!-- Decrypt Tool -->
+            <div x-show="currentTool === 'decrypt'" x-cloak>
+                <h3 class="text-lg font-semibold text-gray-900 mb-4">
+                    <i class="fas fa-unlock mr-2"></i>
+                    Decrypt Password-Protected PDF
+                </h3>
+                <p class="text-gray-600 mb-6">Remove password protection from your PDF. You'll need the current password.</p>
+                
+                <div 
+                    @drop.prevent="handleDrop($event, 'decrypt')"
+                    @dragover.prevent
+                    @dragenter.prevent="dragOver = true"
+                    @dragleave.prevent="dragOver = false"
+                    :class="dragOver ? 'drag-over' : ''"
+                    class="upload-area border-2 border-dashed border-gray-300 rounded-lg p-8 text-center cursor-pointer"
+                    @click="$refs.decryptFile.click()"
+                >
+                    <i class="fas fa-cloud-upload-alt text-4xl text-gray-400 mb-4"></i>
+                    <p class="text-lg font-medium text-gray-700 mb-2">Drop a PDF file here or click to browse</p>
+                    <p class="text-sm text-gray-500">Single encrypted PDF file, max 20MB</p>
+                    <input type="file" x-ref="decryptFile" accept="application/pdf" @change="handleFileSelect($event, 'decrypt')" class="file-input">
+                </div>
+
+                <div x-show="files.decrypt.length > 0" class="mt-6 space-y-4">
+                    <div class="flex items-center space-x-3 bg-gray-50 p-3 rounded-lg">
+                        <i class="fas fa-file-pdf text-red-600"></i>
+                        <span x-text="files.decrypt[0]?.name" class="text-sm font-medium"></span>
+                        <span x-text="formatFileSize(files.decrypt[0]?.size)" class="text-xs text-gray-500"></span>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Password</label>
+                        <input 
+                            type="password" 
+                            x-model="decryptOptions.password" 
+                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                            placeholder="Enter the PDF password"
+                        >
+                    </div>
+                </div>
+
+                <button 
+                    @click="processFiles('decrypt')"
+                    :disabled="files.decrypt.length === 0 || !decryptOptions.password || loading"
+                    :class="files.decrypt.length === 0 || !decryptOptions.password || loading ? 'bg-gray-300 cursor-not-allowed' : 'bg-primary hover:bg-secondary'"
+                    class="w-full mt-6 py-3 text-white font-medium rounded-lg transition-colors"
+                >
+                    <span x-show="!loading">
+                        <i class="fas fa-unlock mr-2"></i>
+                        Decrypt PDF
+                    </span>
+                    <span x-show="loading">
+                        <i class="fas fa-spinner fa-spin mr-2"></i>
+                        Processing...
+                    </span>
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Progress Modal -->
+    <div x-show="loading" x-cloak class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-white rounded-lg p-6 max-w-sm mx-4 text-center">
+            <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+            <h3 class="text-lg font-semibold mb-2">Processing your PDF...</h3>
+            <p class="text-gray-600 text-sm">Please wait while we process your file in memory.</p>
+        </div>
+    </div>
+
+    <!-- Success/Error Messages -->
+    <div x-show="message.show" x-cloak 
+         x-transition:enter="transition ease-out duration-300"
+         x-transition:enter-start="opacity-0 transform translate-y-2"
+         x-transition:enter-end="opacity-100 transform translate-y-0"
+         x-transition:leave="transition ease-in duration-200"
+         x-transition:leave-start="opacity-100 transform translate-y-0"
+         x-transition:leave-end="opacity-0 transform translate-y-2"
+         class="fixed bottom-4 right-4 z-50">
+        <div :class="message.type === 'error' ? 'bg-red-500' : 'bg-green-500'" 
+             class="text-white px-6 py-3 rounded-lg shadow-lg flex items-center space-x-2">
+            <i :class="message.type === 'error' ? 'fas fa-exclamation-circle' : 'fas fa-check-circle'"></i>
+            <span x-text="message.text"></span>
+            <button @click="message.show = false" class="ml-2 text-white hover:text-gray-200">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t mt-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div class="text-center">
+                <p class="text-gray-600 mb-2">
+                    <i class="fas fa-shield-alt text-green-600 mr-1"></i>
+                    <strong>Privacy First:</strong> Files are processed in memory and never stored.
+                </p>
+                <p class="text-sm text-gray-500">
+                    Professional PDF Tools - Secure, Fast, and Free
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function pdfTools() {
+            return {
+                currentTool: 'merge',
+                loading: false,
+                dragOver: false,
+                showPrivacy: false,
+                files: {
+                    merge: [],
+                    split: [],
+                    rotate: [],
+                    encrypt: [],
+                    decrypt: []
+                },
+                splitOptions: {
+                    start: '',
+                    end: ''
+                },
+                rotateOptions: {
+                    angle: 90
+                },
+                encryptOptions: {
+                    password: ''
+                },
+                decryptOptions: {
+                    password: ''
+                },
+                message: {
+                    show: false,
+                    type: 'success',
+                    text: ''
+                },
+                backendStatus: {
+                    checked: false,
+                    available: false,
+                    error: null
+                },
+
+                // Check if backend is available
+                async checkBackendConnection() {
+                    if (this.backendStatus.checked) return;
+                    
+                    const apiBaseUrl = this.getApiBaseUrl();
+                    if (!apiBaseUrl) {
+                        // In production mode, assume backend is available through proxy
+                        this.backendStatus = { checked: true, available: true, error: null };
+                        return;
+                    }
+                    
+                    const healthUrl = `${apiBaseUrl}/health`;
+                    console.log('Checking backend health at:', healthUrl);
+                    
+                    try {
+                        const response = await fetch(healthUrl, {
+                            method: 'GET',
+                            cache: 'no-cache',
+                            // Add timeout to avoid hanging
+                            signal: AbortSignal.timeout(5000)
+                        });
+                        
+                        if (response.ok) {
+                            const data = await response.json();
+                            console.log('Backend health check successful:', data);
+                            this.backendStatus = { checked: true, available: true, error: null };
+                        } else {
+                            throw new Error(`Backend returned status ${response.status} (${response.statusText})`);
+                        }
+                    } catch (error) {
+                        console.error('Backend health check failed:', error);
+                        console.error('Health URL attempted:', healthUrl);
+                        
+                        let errorDetail = error.message;
+                        if (error.name === 'TypeError' && (error.message.includes('fetch') || error.message.includes('NetworkError'))) {
+                            errorDetail = 'Network connection failed - backend server may not be running or accessible';
+                        } else if (error.name === 'TimeoutError') {
+                            errorDetail = 'Connection timeout - backend server is not responding';
+                        }
+                        
+                        this.backendStatus = { 
+                            checked: true, 
+                            available: false, 
+                            error: errorDetail 
+                        };
+                        
+                        // Show warning message with environment-specific guidance
+                        let setupMessage = 'Backend server not available. Please start the backend server on port 8000.';
+                        
+                        if (window.location.hostname.includes('.preview.app.github.dev') || 
+                            window.location.hostname.includes('.app.github.dev')) {
+                            setupMessage += ' In GitHub Codespaces, ensure port 8000 is forwarded and set to public visibility.';
+                        }
+                        
+                        setupMessage += ' See the README for setup instructions.';
+                        
+                        this.showMessage('error', setupMessage);
+                    }
+                },
+
+                // Determine API base URL based on environment
+                getApiBaseUrl() {
+                    const currentHost = window.location.hostname;
+                    const currentPort = window.location.port;
+                    const currentProtocol = window.location.protocol;
+                    const currentUrl = window.location.href;
+                    
+                    console.log('Current location:', { 
+                        host: currentHost, 
+                        port: currentPort, 
+                        protocol: currentProtocol,
+                        fullUrl: currentUrl
+                    });
+                    
+                    // GitHub Codespaces detection - hostname contains specific patterns
+                    if (currentHost.includes('.preview.app.github.dev') || 
+                        currentHost.includes('.app.github.dev') ||
+                        currentHost.includes('codespace')) {
+                        
+                        // In Codespaces, ports are part of the subdomain
+                        // e.g., https://username-repo-hash-3000.preview.app.github.dev/
+                        // Backend should be: https://username-repo-hash-8000.preview.app.github.dev/
+                        
+                        let backendHost;
+                        if (currentHost.includes('-3000.')) {
+                            backendHost = currentHost.replace('-3000.', '-8000.');
+                        } else if (currentHost.includes('-3001.')) {
+                            backendHost = currentHost.replace('-3001.', '-8000.');
+                        } else {
+                            // Fallback: try to append 8000 to the base hostname
+                            const baseName = currentHost.split('.')[0];
+                            backendHost = currentHost.replace(baseName, baseName.replace(/-\d+$/, '') + '-8000');
+                        }
+                        
+                        const backendUrl = `${currentProtocol}//${backendHost}`;
+                        console.log('GitHub Codespace detected, using backend URL:', backendUrl);
+                        return backendUrl;
+                    }
+                    
+                    // Gitpod detection
+                    if (currentHost.includes('.gitpod.io')) {
+                        // Similar to Codespaces, Gitpod uses port-based subdomains
+                        let backendHost = currentHost.replace(/3000-/, '8000-').replace(/3001-/, '8000-');
+                        const backendUrl = `${currentProtocol}//${backendHost}`;
+                        console.log('Gitpod detected, using backend URL:', backendUrl);
+                        return backendUrl;
+                    }
+                    
+                    // Local development with explicit port
+                    if (currentPort === '3000' || currentPort === '3001') {
+                        const backendUrl = `${currentProtocol}//${currentHost}:8000`;
+                        console.log('Local development with port detected, using backend URL:', backendUrl);
+                        return backendUrl;
+                    }
+                    
+                    // Local development without explicit port (e.g., localhost, 127.0.0.1)
+                    if (currentHost === 'localhost' || currentHost === '127.0.0.1') {
+                        const backendUrl = `${currentProtocol}//${currentHost}:8000`;
+                        console.log('Local development detected, using backend URL:', backendUrl);
+                        return backendUrl;
+                    }
+                    
+                    // For production/Docker, use relative URLs (nginx proxy handles routing)
+                    console.log('Production environment detected, using relative URLs');
+                    return '';
+                },
+
+                setTool(tool) {
+                    this.currentTool = tool;
+                    this.clearFiles();
+                },
+
+                clearFiles() {
+                    this.files = {
+                        merge: [],
+                        split: [],
+                        rotate: [],
+                        encrypt: [],
+                        decrypt: []
+                    };
+                    this.splitOptions = { start: '', end: '' };
+                    this.rotateOptions = { angle: 90 };
+                    this.encryptOptions = { password: '' };
+                    this.decryptOptions = { password: '' };
+                },
+
+                handleDrop(event, tool) {
+                    this.dragOver = false;
+                    const droppedFiles = Array.from(event.dataTransfer.files);
+                    this.addFiles(tool, droppedFiles);
+                },
+
+                handleFileSelect(event, tool) {
+                    const selectedFiles = Array.from(event.target.files);
+                    this.addFiles(tool, selectedFiles);
+                },
+
+                addFiles(tool, newFiles) {
+                    const validFiles = newFiles.filter(file => {
+                        if (file.type !== 'application/pdf') {
+                            this.showMessage('error', 'Only PDF files are allowed');
+                            return false;
+                        }
+                        if (file.size > 20 * 1024 * 1024) {
+                            this.showMessage('error', `File "${file.name}" is too large. Maximum size is 20MB`);
+                            return false;
+                        }
+                        return true;
+                    });
+
+                    if (tool === 'merge') {
+                        this.files[tool] = [...this.files[tool], ...validFiles];
+                    } else {
+                        this.files[tool] = validFiles.slice(0, 1); // Only one file for non-merge tools
+                    }
+                },
+
+                removeFile(tool, index) {
+                    this.files[tool].splice(index, 1);
+                },
+
+                formatFileSize(bytes) {
+                    if (bytes === 0) return '0 Bytes';
+                    const k = 1024;
+                    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+                    const i = Math.floor(Math.log(bytes) / Math.log(k));
+                    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+                },
+
+                async processFiles(tool) {
+                    this.loading = true;
+                    
+                    try {
+                        const formData = new FormData();
+                        
+                        if (tool === 'merge') {
+                            this.files[tool].forEach(file => {
+                                formData.append('files', file);
+                            });
+                        } else {
+                            formData.append('file', this.files[tool][0]);
+                            
+                            if (tool === 'split') {
+                                formData.append('start', this.splitOptions.start);
+                                formData.append('end', this.splitOptions.end);
+                            } else if (tool === 'rotate') {
+                                formData.append('angle', this.rotateOptions.angle);
+                            } else if (tool === 'encrypt') {
+                                formData.append('password', this.encryptOptions.password);
+                            } else if (tool === 'decrypt') {
+                                formData.append('password', this.decryptOptions.password);
+                            }
+                        }
+
+                        // Use dynamic API base URL that works in all environments
+                        const apiBaseUrl = this.getApiBaseUrl();
+                        const fullUrl = `${apiBaseUrl}/${tool}`;
+                        console.log('Making API request to:', fullUrl);
+                        
+                        const response = await fetch(fullUrl, {
+                            method: 'POST',
+                            body: formData
+                        });
+
+                        if (response.ok) {
+                            const blob = await response.blob();
+                            const url = URL.createObjectURL(blob);
+                            const a = document.createElement('a');
+                            a.href = url;
+                            
+                            // Get filename from response headers or use default
+                            const contentDisposition = response.headers.get('Content-Disposition');
+                            let filename = `${tool}_output.pdf`;
+                            if (contentDisposition) {
+                                const filenameMatch = contentDisposition.match(/filename=(.+)/);
+                                if (filenameMatch) {
+                                    filename = filenameMatch[1].replace(/"/g, '');
+                                }
+                            }
+                            
+                            a.download = filename;
+                            document.body.appendChild(a);
+                            a.click();
+                            document.body.removeChild(a);
+                            URL.revokeObjectURL(url);
+                            
+                            this.showMessage('success', 'PDF processed successfully!');
+                            this.clearFiles();
+                        } else {
+                            // Handle different error responses
+                            let errorData;
+                            try {
+                                errorData = await response.json();
+                            } catch (jsonError) {
+                                // If JSON parsing fails, it might be HTML error page from frontend server
+                                console.error('Failed to parse error response as JSON:', jsonError);
+                                if (response.status === 501) {
+                                    throw new Error('Request hit frontend server instead of backend. The API calls are not properly configured to reach the backend server on port 8000.');
+                                }
+                                throw new Error(`Server error (${response.status}): Unable to process request`);
+                            }
+                            throw new Error(errorData.detail || 'Processing failed');
+                        }
+                    } catch (error) {
+                        console.error('Error processing PDF:', error);
+                        console.error('Full URL attempted:', fullUrl);
+                        console.error('Current environment details:', {
+                            host: window.location.hostname,
+                            port: window.location.port,
+                            protocol: window.location.protocol,
+                            userAgent: navigator.userAgent
+                        });
+                        
+                        // Provide more helpful error messages
+                        let errorMessage = 'An error occurred while processing the PDF';
+                        
+                        if (error.name === 'TypeError' && (error.message.includes('fetch') || error.message.includes('NetworkError'))) {
+                            errorMessage = `Cannot connect to the backend server at ${fullUrl}. ` +
+                                         'Please ensure the backend server is running on port 8000. ' +
+                                         'In GitHub Codespaces, make sure both ports 3000 and 8000 are forwarded and set to public visibility.';
+                        } else if (error.message.includes('NetworkError')) {
+                            errorMessage = `Network error when trying to reach ${fullUrl}. ` +
+                                         'This is likely a connectivity issue. Check that the backend server is accessible and ports are properly configured.';
+                        } else if (error.message.includes('501') || error.message.includes('frontend server')) {
+                            errorMessage = 'Request hit frontend server instead of backend. Please check that the backend server is running on port 8000 and refresh the page.';
+                        } else if (error.message.includes('JSON.parse') || error.message.includes('JSON')) {
+                            errorMessage = 'Invalid response from server. This usually means the request hit the frontend server instead of the backend. Please ensure the backend server is running on port 8000.';
+                        } else if (error.message) {
+                            errorMessage = error.message;
+                        }
+                        
+                        this.showMessage('error', errorMessage);
+                    } finally {
+                        this.loading = false;
+                    }
+                },
+
+                showMessage(type, text) {
+                    this.message = { show: true, type, text };
+                    setTimeout(() => {
+                        this.message.show = false;
+                    }, 5000);
+                },
+
+                // Initialize the application
+                init() {
+                    // Check backend connection after a short delay to let the page load
+                    setTimeout(() => {
+                        this.checkBackendConnection();
+                    }, 1000);
+                }
+            }
+        }
+
+        // Handle Alpine.js cloaking
+        document.addEventListener('alpine:init', () => {
+            const style = document.createElement('style');
+            style.textContent = '[x-cloak] { display: none !important; }';
+            document.head.appendChild(style);
+        });
+    </script>
+</body>
+</html>
