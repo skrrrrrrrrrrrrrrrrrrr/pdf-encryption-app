@@ -6,7 +6,7 @@
         
     <!-- Main Application Page -->
     <url>
-        <loc>https://pdf-tools.app/</loc>
+        <loc>https://thepdfgenie.com/</loc>
         <lastmod>2024-01-01</lastmod>
         <changefreq>weekly</changefreq>
         <priority>1.0</priority>
@@ -14,35 +14,35 @@
     
     <!-- Tool-specific deep links (if implemented) -->
     <url>
-        <loc>https://pdf-tools.app/merge</loc>
+        <loc>https://thepdfgenie.com/merge</loc>
         <lastmod>2024-01-01</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     
     <url>
-        <loc>https://pdf-tools.app/split</loc>
+        <loc>https://thepdfgenie.com/split</loc>
         <lastmod>2024-01-01</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     
     <url>
-        <loc>https://pdf-tools.app/rotate</loc>
+        <loc>https://thepdfgenie.com/rotate</loc>
         <lastmod>2024-01-01</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     
     <url>
-        <loc>https://pdf-tools.app/encrypt</loc>
+        <loc>https://thepdfgenie.com/encrypt</loc>
         <lastmod>2024-01-01</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     
     <url>
-        <loc>https://pdf-tools.app/decrypt</loc>
+        <loc>https://thepdfgenie.com/decrypt</loc>
         <lastmod>2024-01-01</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>

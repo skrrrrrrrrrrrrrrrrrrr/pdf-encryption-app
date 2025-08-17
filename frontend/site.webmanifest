@@ -1,11 +1,11 @@
 {
-    "name": "PDF Tools - Professional PDF Processing",
-    "short_name": "PDF Tools",
-    "description": "Free online PDF tools for professionals. Merge, split, rotate, encrypt and decrypt PDF files securely. Privacy-first processing with no file storage.",
+    "name": "The PDF Genie - Magical PDF Processing",
+    "short_name": "The PDF Genie",
+    "description": "Your magical PDF processing assistant. Merge, split, rotate, encrypt and decrypt PDF files securely. Privacy-first processing with no file storage.",
     "start_url": "/",
     "display": "standalone",
     "background_color": "#ffffff",
-    "theme_color": "#3b82f6",
+    "theme_color": "#9333ea",
     "orientation": "portrait-primary",
     "scope": "/",
     "categories": ["productivity", "business", "utilities"],
@@ -43,14 +43,14 @@
             "sizes": "1280x720",
             "type": "image/jpeg",
             "form_factor": "wide",
-            "label": "PDF Tools Desktop Interface"
+            "label": "The PDF Genie Desktop Interface"
         },
         {
             "src": "/assets/screenshot-mobile.jpg", 
             "sizes": "360x640",
             "type": "image/jpeg",
             "form_factor": "narrow",
-            "label": "PDF Tools Mobile Interface"
+            "label": "The PDF Genie Mobile Interface"
         }
     ],
     "shortcuts": [

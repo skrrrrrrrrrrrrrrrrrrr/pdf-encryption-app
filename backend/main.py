@@ -37,8 +37,8 @@ MAX_FILE_SIZE = int(os.getenv("MAX_FILE_SIZE", 20 * 1024 * 1024))  # 20MB
 ALLOWED_ORIGINS = os.getenv("ALLOWED_ORIGINS", "*").split(",")
 
 app = FastAPI(
-    title="PDF Tools API",
-    description="Professional PDF processing service - Files are processed in memory and never stored.",
+    title="The PDF Genie API",
+    description="Your magical PDF processing service - Files are processed in memory and never stored.",
     version="1.0.0"
 )
 
@@ -70,7 +70,7 @@ def _validate_file(file: UploadFile):
 @app.get("/health")
 async def health_check():
     """Health check endpoint"""
-    return {"status": "healthy", "message": "PDF Tools API is running"}
+    return {"status": "healthy", "message": "The PDF Genie API is running"}
 
 
 @app.get("/privacy")
@@ -81,6 +81,50 @@ async def privacy_info():
         "policy": "All uploaded files are processed entirely in memory and are automatically discarded after processing. No files or user data are stored on our servers.",
         "security": "All processing happens server-side with secure, temporary memory allocation."
     }
+
+
+@app.post("/contact")
+async def contact_form(
+    name: str = Form(...),
+    email: str = Form(...),
+    subject: str = Form(...),
+    message: str = Form(...),
+    browser: Optional[str] = Form(None)
+):
+    """Handle contact form submissions"""
+    try:
+        # Log the contact form submission
+        logger.info(f"Contact form submitted by {name} ({email}), Subject: {subject}")
+        
+        # In a real implementation, you would send an email here
+        # For now, we'll just return a success response
+        # You could integrate with services like SendGrid, AWS SES, etc.
+        
+        # Format the message for logging
+        contact_info = {
+            "name": name,
+            "email": email,
+            "subject": subject,
+            "message": message,
+            "browser": browser,
+            "timestamp": time.time()
+        }
+        
+        # Log the full contact details (in production, you'd send this via email)
+        logger.info(f"Contact details: {contact_info}")
+        
+        return {
+            "status": "success",
+            "message": "Thank you for your message! We'll get back to you within 24 hours.",
+            "contact_email": "thepdfgenie@gmail.com"
+        }
+        
+    except Exception as e:
+        logger.error(f"Error processing contact form: {str(e)}")
+        raise HTTPException(
+            status_code=500, 
+            detail="Sorry, there was an error processing your message. Please try again or email us directly at thepdfgenie@gmail.com"
+        )
 
 
 @app.post("/merge")
