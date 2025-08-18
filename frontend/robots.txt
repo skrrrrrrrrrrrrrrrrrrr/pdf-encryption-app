@@ -2,7 +2,7 @@ User-agent: *
 Allow: /
 
 # Sitemap location
-Sitemap: https://pdf-tools.app/sitemap.xml
+Sitemap: https://thepdfgenie.com/sitemap.xml
 
 # Crawl-delay for politeness
 Crawl-delay: 1

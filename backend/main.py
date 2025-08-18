@@ -37,7 +37,7 @@ MAX_FILE_SIZE = int(os.getenv("MAX_FILE_SIZE", 20 * 1024 * 1024))  # 20MB
 ALLOWED_ORIGINS = os.getenv("ALLOWED_ORIGINS", "*").split(",")
 
 app = FastAPI(
-    title="PDF Tools API",
+    title="The PDF Genie API",
     description="Professional PDF processing service - Files are processed in memory and never stored.",
     version="1.0.0"
 )
@@ -70,7 +70,7 @@ def _validate_file(file: UploadFile):
 @app.get("/health")
 async def health_check():
     """Health check endpoint"""
-    return {"status": "healthy", "message": "PDF Tools API is running"}
+    return {"status": "healthy", "message": "The PDF Genie API is running"}
 
 
 @app.get("/privacy")

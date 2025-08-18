@@ -1,6 +1,6 @@
-# PDF Tools - Professional PDF Processing Platform
+# The PDF Genie - Professional PDF Processing Platform
 
-![PDF Tools Screenshot](https://github.com/user-attachments/assets/5b0ef2e0-ba3e-4b2f-8d4a-8cc0c7d8b5dc)
+![The PDF Genie Screenshot](https://github.com/user-attachments/assets/5b0ef2e0-ba3e-4b2f-8d4a-8cc0c7d8b5dc)
 
 A modern, secure, and user-friendly web application for processing PDF documents. Built with FastAPI backend and a responsive frontend, this platform offers professional-grade PDF manipulation tools with privacy-first design.
 
@@ -210,7 +210,7 @@ railway up
 
 ### Base URL
 - Development: `http://localhost:8000`
-- Production: `https://your-domain.com/api`
+- Production: `https://thepdfgenie.com/api`
 
 ### Endpoints
 

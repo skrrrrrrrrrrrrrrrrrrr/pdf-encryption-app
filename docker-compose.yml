@@ -1,7 +1,7 @@
 version: '3.8'
 
 services:
-  pdf-tools:
+  pdf-genie:
     build: .
     ports:
       - "8000:8000"
@@ -27,5 +27,5 @@ services:
       - ./nginx.conf:/etc/nginx/nginx.conf:ro
       - ./frontend:/usr/share/nginx/html:ro
     depends_on:
-      - pdf-tools
+      - pdf-genie
     restart: unless-stopped
