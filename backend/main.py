@@ -30,6 +30,9 @@ from backend.utils.pdf_utils import (
     add_signature_pdf,
     add_watermark_pdf,
     extract_pages_pdf,
+    pdf_to_images,
+    images_to_pdf,
+    extract_text_ocr,
 )
 
 load_dotenv()
@@ -510,6 +513,157 @@ async def extract_pages(file: UploadFile = File(...), pages: str = Form(...)):
     except Exception as e:
         logger.error(f"Unexpected error during extract: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Error extracting pages: {str(e)}")
+
+
+@app.post("/pdf-to-images")
+async def pdf_to_images_endpoint(
+    file: UploadFile = File(...),
+    format: str = Form("png"),
+    quality: int = Form(95)
+):
+    """Convert PDF pages to images and return as ZIP file"""
+    start_time = time.time()
+    
+    _validate_file(file)
+    
+    if format not in ["png", "jpg", "jpeg"]:
+        raise HTTPException(status_code=400, detail="Format must be 'png', 'jpg', or 'jpeg'")
+    
+    if not (1 <= quality <= 100):
+        raise HTTPException(status_code=400, detail="Quality must be between 1 and 100")
+    
+    try:
+        logger.info(f"Starting PDF to images conversion: {file.filename}")
+        data = await file.read()
+        
+        if len(data) > MAX_FILE_SIZE:
+            raise HTTPException(
+                status_code=400, 
+                detail=f"File too large. Maximum size is {MAX_FILE_SIZE // (1024*1024)}MB"
+            )
+        
+        # Convert PDF to images
+        result = pdf_to_images(data, format, quality)
+        processing_time = time.time() - start_time
+        logger.info(f"PDF to images conversion completed in {processing_time:.2f} seconds, output size: {len(result)} bytes")
+        
+        # Create filename
+        base_name = file.filename.rsplit('.', 1)[0] if file.filename else "pdf"
+        filename = f"{base_name}_images.zip"
+        
+        return StreamingResponse(
+            io.BytesIO(result), 
+            media_type="application/zip",
+            headers={"Content-Disposition": f"attachment; filename={filename}"}
+        )
+        
+    except ValueError as e:
+        logger.error(f"PDF validation error during conversion: {str(e)}")
+        raise HTTPException(status_code=400, detail=str(e))
+    except Exception as e:
+        logger.error(f"Unexpected error during PDF to images conversion: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Error converting PDF to images: {str(e)}")
+
+
+@app.post("/images-to-pdf")
+async def images_to_pdf_endpoint(files: List[UploadFile] = File(...)):
+    """Convert multiple images to a single PDF"""
+    start_time = time.time()
+    
+    if len(files) < 1:
+        raise HTTPException(status_code=400, detail="At least 1 image file is required")
+    
+    if len(files) > 50:  # Limit to prevent abuse
+        raise HTTPException(status_code=400, detail="Maximum 50 image files allowed")
+    
+    try:
+        logger.info(f"Starting images to PDF conversion for {len(files)} files")
+        image_data = []
+        filenames = []
+        total_size = 0
+        
+        for i, f in enumerate(files):
+            if not f.filename:
+                raise HTTPException(status_code=400, detail=f"File {i+1} has no name")
+            
+            # Check if it's an image file
+            if not f.content_type or not f.content_type.startswith('image/'):
+                raise HTTPException(status_code=400, detail=f"File {f.filename} is not an image")
+            
+            data = await f.read()
+            file_size = len(data)
+            total_size += file_size
+            
+            if file_size > MAX_FILE_SIZE:
+                raise HTTPException(
+                    status_code=400, 
+                    detail=f"File {f.filename} is too large. Maximum size is {MAX_FILE_SIZE // (1024*1024)}MB"
+                )
+            
+            # Check total combined size
+            if total_size > MAX_FILE_SIZE * 5:  # Allow up to 5x max size for total
+                raise HTTPException(
+                    status_code=400, 
+                    detail="Combined file size too large. Please reduce the number or size of images."
+                )
+            
+            image_data.append(data)
+            filenames.append(f.filename)
+            logger.info(f"Processed image {i+1}/{len(files)}: {f.filename} ({file_size} bytes)")
+        
+        # Convert images to PDF
+        result = images_to_pdf(image_data, filenames)
+        processing_time = time.time() - start_time
+        logger.info(f"Images to PDF conversion completed in {processing_time:.2f} seconds, output size: {len(result)} bytes")
+        
+        return StreamingResponse(
+            io.BytesIO(result), 
+            media_type="application/pdf",
+            headers={"Content-Disposition": "attachment; filename=images_to_pdf.pdf"}
+        )
+        
+    except ValueError as e:
+        logger.error(f"Image validation error during conversion: {str(e)}")
+        raise HTTPException(status_code=400, detail=str(e))
+    except Exception as e:
+        logger.error(f"Unexpected error during images to PDF conversion: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Error converting images to PDF: {str(e)}")
+
+
+@app.post("/extract-text")
+async def extract_text_endpoint(file: UploadFile = File(...)):
+    """Extract text from PDF using OCR"""
+    start_time = time.time()
+    
+    _validate_file(file)
+    
+    try:
+        logger.info(f"Starting text extraction from: {file.filename}")
+        data = await file.read()
+        
+        if len(data) > MAX_FILE_SIZE:
+            raise HTTPException(
+                status_code=400, 
+                detail=f"File too large. Maximum size is {MAX_FILE_SIZE // (1024*1024)}MB"
+            )
+        
+        # Extract text from PDF
+        extracted_text = extract_text_ocr(data)
+        processing_time = time.time() - start_time
+        logger.info(f"Text extraction completed in {processing_time:.2f} seconds")
+        
+        return JSONResponse({
+            "text": extracted_text,
+            "filename": file.filename,
+            "processing_time": round(processing_time, 2)
+        })
+        
+    except ValueError as e:
+        logger.error(f"PDF validation error during text extraction: {str(e)}")
+        raise HTTPException(status_code=400, detail=str(e))
+    except Exception as e:
+        logger.error(f"Unexpected error during text extraction: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Error extracting text: {str(e)}")
 
 
 if __name__ == "__main__":

@@ -526,6 +526,46 @@
                     <span class="font-semibold text-sm">Extract Pages</span>
                     <span class="text-xs opacity-75 text-center">Extract specific pages</span>
                 </button>
+                
+                <!-- New Features -->
+                <button 
+                    @click="setTool('pdf-to-images')" 
+                    :class="currentTool === 'pdf-to-images' ? 'bg-gradient-to-br from-primary-500 to-primary-600 text-white shadow-strong tool-card active' : 'bg-white/80 text-gray-700 hover:bg-white border border-gray-200 tool-card'"
+                    class="p-6 rounded-xl flex flex-col items-center space-y-3 transition-all duration-300 focus-visible"
+                    :aria-pressed="currentTool === 'pdf-to-images'"
+                    aria-label="Select PDF to images tool"
+                    type="button"
+                >
+                    <i class="fas fa-images text-3xl" :class="currentTool === 'pdf-to-images' ? 'text-white' : 'text-cyan-500'"></i>
+                    <span class="font-semibold text-sm">PDF to Images</span>
+                    <span class="text-xs opacity-75 text-center">Convert pages to images</span>
+                </button>
+                
+                <button 
+                    @click="setTool('images-to-pdf')" 
+                    :class="currentTool === 'images-to-pdf' ? 'bg-gradient-to-br from-primary-500 to-primary-600 text-white shadow-strong tool-card active' : 'bg-white/80 text-gray-700 hover:bg-white border border-gray-200 tool-card'"
+                    class="p-6 rounded-xl flex flex-col items-center space-y-3 transition-all duration-300 focus-visible"
+                    :aria-pressed="currentTool === 'images-to-pdf'"
+                    aria-label="Select images to PDF tool"
+                    type="button"
+                >
+                    <i class="fas fa-file-image text-3xl" :class="currentTool === 'images-to-pdf' ? 'text-white' : 'text-emerald-500'"></i>
+                    <span class="font-semibold text-sm">Images to PDF</span>
+                    <span class="text-xs opacity-75 text-center">Create PDF from images</span>
+                </button>
+                
+                <button 
+                    @click="setTool('extract-text')" 
+                    :class="currentTool === 'extract-text' ? 'bg-gradient-to-br from-primary-500 to-primary-600 text-white shadow-strong tool-card active' : 'bg-white/80 text-gray-700 hover:bg-white border border-gray-200 tool-card'"
+                    class="p-6 rounded-xl flex flex-col items-center space-y-3 transition-all duration-300 focus-visible"
+                    :aria-pressed="currentTool === 'extract-text'"
+                    aria-label="Select text extraction tool"
+                    type="button"
+                >
+                    <i class="fas fa-file-alt text-3xl" :class="currentTool === 'extract-text' ? 'text-white' : 'text-amber-500'"></i>
+                    <span class="font-semibold text-sm">Extract Text (OCR)</span>
+                    <span class="text-xs opacity-75 text-center">Extract text with OCR</span>
+                </button>
             </div>
         </section>
 
@@ -1358,6 +1398,227 @@
                     <span x-text="loading && currentTool === 'extract' ? 'Extracting Pages...' : 'Extract Pages'"></span>
                 </button>
             </div>
+
+            <!-- PDF to Images Tool -->
+            <div x-show="currentTool === 'pdf-to-images'" x-cloak class="animate-scale-in" x-transition>
+                <h3 class="text-lg font-semibold text-gray-900 mb-4">
+                    <i class="fas fa-images mr-2"></i>
+                    Convert PDF to Images
+                </h3>
+                <p class="text-gray-600 mb-6">Convert each page of your PDF into high-quality image files (PNG or JPEG). Images will be downloaded as a ZIP file.</p>
+                
+                <div 
+                    @drop.prevent="handleDrop($event, 'pdf-to-images')"
+                    @dragover.prevent
+                    @dragenter.prevent="dragOver = true"
+                    @dragleave.prevent="dragOver = false"
+                    :class="dragOver ? 'drag-over' : ''"
+                    class="upload-area border-2 border-dashed border-gray-300 rounded-lg p-8 text-center cursor-pointer mb-6"
+                    @click="$refs.pdfToImagesFile.click()"
+                >
+                    <i class="fas fa-cloud-upload-alt text-4xl text-gray-400 mb-4"></i>
+                    <p class="text-lg font-medium text-gray-700 mb-2">Drop a PDF file here or click to browse</p>
+                    <p class="text-sm text-gray-500">Single PDF file, max 20MB</p>
+                    <input 
+                        type="file" 
+                        x-ref="pdfToImagesFile" 
+                        accept="application/pdf" 
+                        @change="handleFileSelect($event, 'pdf-to-images')" 
+                        class="file-input"
+                        aria-label="Select PDF file for image conversion"
+                    >
+                </div>
+
+                <div x-show="files['pdf-to-images'].length > 0" class="mb-6">
+                    <h4 class="font-medium text-gray-900 mb-3">Selected File:</h4>
+                    <div class="bg-gray-50 p-3 rounded-lg">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-3">
+                                <i class="fas fa-file-pdf text-red-500"></i>
+                                <div>
+                                    <p x-text="files['pdf-to-images'][0]?.name" class="text-sm font-medium text-gray-900"></p>
+                                    <p x-text="formatFileSize(files['pdf-to-images'][0]?.size)" class="text-xs text-gray-500"></p>
+                                </div>
+                            </div>
+                            <button @click="removeFile('pdf-to-images', 0)" class="text-gray-400 hover:text-red-600">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4 mt-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Output Format</label>
+                            <select x-model="pdfToImagesOptions.format" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500">
+                                <option value="png">PNG (Higher quality)</option>
+                                <option value="jpg">JPEG (Smaller file size)</option>
+                            </select>
+                        </div>
+                        <div x-show="pdfToImagesOptions.format === 'jpg'">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">JPEG Quality</label>
+                            <select x-model="pdfToImagesOptions.quality" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500">
+                                <option value="95">High (95%)</option>
+                                <option value="85">Medium (85%)</option>
+                                <option value="75">Low (75%)</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <button 
+                    @click="processFiles('pdf-to-images')"
+                    :disabled="files['pdf-to-images'].length === 0 || loading"
+                    :class="files['pdf-to-images'].length === 0 || loading ? 'bg-gray-300 cursor-not-allowed' : 'bg-primary-500 hover:bg-primary-600'"
+                    class="w-full mt-6 py-3 text-white font-semibold rounded-lg transition-colors"
+                >
+                    <span x-show="loading && currentTool === 'pdf-to-images'" class="loading-dots">
+                        <span></span><span></span><span></span>
+                    </span>
+                    <span x-text="loading && currentTool === 'pdf-to-images' ? 'Converting to Images...' : 'Convert to Images'"></span>
+                </button>
+            </div>
+
+            <!-- Images to PDF Tool -->
+            <div x-show="currentTool === 'images-to-pdf'" x-cloak class="animate-scale-in" x-transition>
+                <h3 class="text-lg font-semibold text-gray-900 mb-4">
+                    <i class="fas fa-file-image mr-2"></i>
+                    Convert Images to PDF
+                </h3>
+                <p class="text-gray-600 mb-6">Convert multiple image files (JPG, PNG, etc.) into a single PDF document. Images will be arranged in the order you upload them.</p>
+                
+                <div 
+                    @drop.prevent="handleDrop($event, 'images-to-pdf')"
+                    @dragover.prevent
+                    @dragenter.prevent="dragOver = true"
+                    @dragleave.prevent="dragOver = false"
+                    :class="dragOver ? 'drag-over' : ''"
+                    class="upload-area border-2 border-dashed border-gray-300 rounded-lg p-8 text-center cursor-pointer mb-6"
+                    @click="$refs.imagesToPdfFiles.click()"
+                >
+                    <i class="fas fa-cloud-upload-alt text-4xl text-gray-400 mb-4"></i>
+                    <p class="text-lg font-medium text-gray-700 mb-2">Drop image files here or click to browse</p>
+                    <p class="text-sm text-gray-500">Multiple image files (JPG, PNG, GIF, BMP), max 20MB each</p>
+                    <input 
+                        type="file" 
+                        x-ref="imagesToPdfFiles" 
+                        accept="image/*" 
+                        multiple
+                        @change="handleFileSelect($event, 'images-to-pdf')" 
+                        class="file-input"
+                        aria-label="Select image files for PDF conversion"
+                    >
+                </div>
+
+                <div x-show="files['images-to-pdf'].length > 0" class="mb-6">
+                    <h4 class="font-medium text-gray-900 mb-3">Selected Images (<span x-text="files['images-to-pdf'].length"></span>):</h4>
+                    <div class="space-y-2 max-h-48 overflow-y-auto">
+                        <template x-for="(file, index) in files['images-to-pdf']" :key="index">
+                            <div class="bg-gray-50 p-3 rounded-lg">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center space-x-3">
+                                        <i class="fas fa-image text-green-500"></i>
+                                        <div>
+                                            <p x-text="file.name" class="text-sm font-medium text-gray-900"></p>
+                                            <p x-text="formatFileSize(file.size)" class="text-xs text-gray-500"></p>
+                                        </div>
+                                    </div>
+                                    <button @click="removeFile('images-to-pdf', index)" class="text-gray-400 hover:text-red-600">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+
+                <button 
+                    @click="processFiles('images-to-pdf')"
+                    :disabled="files['images-to-pdf'].length === 0 || loading"
+                    :class="files['images-to-pdf'].length === 0 || loading ? 'bg-gray-300 cursor-not-allowed' : 'bg-primary-500 hover:bg-primary-600'"
+                    class="w-full mt-6 py-3 text-white font-semibold rounded-lg transition-colors"
+                >
+                    <span x-show="loading && currentTool === 'images-to-pdf'" class="loading-dots">
+                        <span></span><span></span><span></span>
+                    </span>
+                    <span x-text="loading && currentTool === 'images-to-pdf' ? 'Creating PDF...' : 'Create PDF'"></span>
+                </button>
+            </div>
+
+            <!-- Extract Text Tool -->
+            <div x-show="currentTool === 'extract-text'" x-cloak class="animate-scale-in" x-transition>
+                <h3 class="text-lg font-semibold text-gray-900 mb-4">
+                    <i class="fas fa-file-alt mr-2"></i>
+                    Extract Text with OCR
+                </h3>
+                <p class="text-gray-600 mb-6">Extract text from your PDF using advanced OCR technology. Works with both text-based PDFs and scanned documents.</p>
+                
+                <div 
+                    @drop.prevent="handleDrop($event, 'extract-text')"
+                    @dragover.prevent
+                    @dragenter.prevent="dragOver = true"
+                    @dragleave.prevent="dragOver = false"
+                    :class="dragOver ? 'drag-over' : ''"
+                    class="upload-area border-2 border-dashed border-gray-300 rounded-lg p-8 text-center cursor-pointer mb-6"
+                    @click="$refs.extractTextFile.click()"
+                >
+                    <i class="fas fa-cloud-upload-alt text-4xl text-gray-400 mb-4"></i>
+                    <p class="text-lg font-medium text-gray-700 mb-2">Drop a PDF file here or click to browse</p>
+                    <p class="text-sm text-gray-500">Single PDF file, max 20MB</p>
+                    <input 
+                        type="file" 
+                        x-ref="extractTextFile" 
+                        accept="application/pdf" 
+                        @change="handleFileSelect($event, 'extract-text')" 
+                        class="file-input"
+                        aria-label="Select PDF file for text extraction"
+                    >
+                </div>
+
+                <div x-show="files['extract-text'].length > 0" class="mb-6">
+                    <h4 class="font-medium text-gray-900 mb-3">Selected File:</h4>
+                    <div class="bg-gray-50 p-3 rounded-lg">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-3">
+                                <i class="fas fa-file-pdf text-red-500"></i>
+                                <div>
+                                    <p x-text="files['extract-text'][0]?.name" class="text-sm font-medium text-gray-900"></p>
+                                    <p x-text="formatFileSize(files['extract-text'][0]?.size)" class="text-xs text-gray-500"></p>
+                                </div>
+                            </div>
+                            <button @click="removeFile('extract-text', 0)" class="text-gray-400 hover:text-red-600">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div x-show="extractedText" class="mb-6">
+                    <h4 class="font-medium text-gray-900 mb-3">Extracted Text:</h4>
+                    <div class="bg-gray-50 p-4 rounded-lg max-h-96 overflow-y-auto">
+                        <pre x-text="extractedText" class="text-sm text-gray-800 whitespace-pre-wrap font-mono"></pre>
+                    </div>
+                    <div class="mt-3 flex space-x-3">
+                        <button @click="copyTextToClipboard()" class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors">
+                            <i class="fas fa-copy mr-2"></i>Copy Text
+                        </button>
+                        <button @click="downloadTextFile()" class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors">
+                            <i class="fas fa-download mr-2"></i>Download as TXT
+                        </button>
+                    </div>
+                </div>
+
+                <button 
+                    @click="processFiles('extract-text')"
+                    :disabled="files['extract-text'].length === 0 || loading"
+                    :class="files['extract-text'].length === 0 || loading ? 'bg-gray-300 cursor-not-allowed' : 'bg-primary-500 hover:bg-primary-600'"
+                    class="w-full mt-6 py-3 text-white font-semibold rounded-lg transition-colors"
+                >
+                    <span x-show="loading && currentTool === 'extract-text'" class="loading-dots">
+                        <span></span><span></span><span></span>
+                    </span>
+                    <span x-text="loading && currentTool === 'extract-text' ? 'Extracting Text...' : 'Extract Text'"></span>
+                </button>
+            </div>
         </section>
         
         <!-- Features Section -->
@@ -1487,6 +1748,9 @@
                         <li><a href="#" @click.prevent="setTool('signature')" class="text-gray-600 hover:text-primary-500 transition-colors">Add Signature</a></li>
                         <li><a href="#" @click.prevent="setTool('watermark')" class="text-gray-600 hover:text-primary-500 transition-colors">Add Watermark</a></li>
                         <li><a href="#" @click.prevent="setTool('extract')" class="text-gray-600 hover:text-primary-500 transition-colors">Extract Pages</a></li>
+                        <li><a href="#" @click.prevent="setTool('pdf-to-images')" class="text-gray-600 hover:text-primary-500 transition-colors">PDF to Images</a></li>
+                        <li><a href="#" @click.prevent="setTool('images-to-pdf')" class="text-gray-600 hover:text-primary-500 transition-colors">Images to PDF</a></li>
+                        <li><a href="#" @click.prevent="setTool('extract-text')" class="text-gray-600 hover:text-primary-500 transition-colors">Extract Text (OCR)</a></li>
                     </ul>
                 </div>
                 
@@ -1543,7 +1807,10 @@
                     resize: [],
                     signature: [],
                     watermark: [],
-                    extract: []
+                    extract: [],
+                    'pdf-to-images': [],
+                    'images-to-pdf': [],
+                    'extract-text': []
                 },
                 splitOptions: {
                     start: '',
@@ -1572,6 +1839,11 @@
                 extractOptions: {
                     pages: ''
                 },
+                pdfToImagesOptions: {
+                    format: 'png',
+                    quality: 95
+                },
+                extractedText: '',
                 message: {
                     show: false,
                     type: 'success',
@@ -1728,7 +2000,10 @@
                         resize: [],
                         signature: [],
                         watermark: [],
-                        extract: []
+                        extract: [],
+                        'pdf-to-images': [],
+                        'images-to-pdf': [],
+                        'extract-text': []
                     };
                     this.splitOptions = { start: '', end: '' };
                     this.rotateOptions = { angle: 90 };
@@ -1736,6 +2011,11 @@
                     this.decryptOptions = { password: '' };
                     this.resizeOptions = { quality: 'medium' };
                     this.signatureOptions = { text: '', position: 'bottom-right' };
+                    this.watermarkOptions = { text: '', opacity: 0.3 };
+                    this.extractOptions = { pages: '' };
+                    this.pdfToImagesOptions = { format: 'png', quality: 95 };
+                    this.extractedText = '';
+                },
                     this.watermarkOptions = { text: '', opacity: 0.3 };
                     this.extractOptions = { pages: '' };
                 },
@@ -1783,6 +2063,33 @@
                     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
                 },
 
+                copyTextToClipboard() {
+                    if (!this.extractedText) return;
+                    
+                    navigator.clipboard.writeText(this.extractedText).then(() => {
+                        this.showMessage('success', 'Text copied to clipboard!');
+                    }).catch(err => {
+                        console.error('Failed to copy text: ', err);
+                        this.showMessage('error', 'Failed to copy text to clipboard');
+                    });
+                },
+
+                downloadTextFile() {
+                    if (!this.extractedText) return;
+                    
+                    const blob = new Blob([this.extractedText], { type: 'text/plain' });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = 'extracted_text.txt';
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                    
+                    this.showMessage('success', 'Text file downloaded!');
+                },
+
                 async processFiles(tool) {
                     this.loading = true;
                     const startTime = Date.now();
@@ -1797,6 +2104,11 @@
                                 formData.append('files', file);
                             });
                             console.log(`📄 Merging ${this.files[tool].length} files`);
+                        } else if (tool === 'images-to-pdf') {
+                            this.files[tool].forEach(file => {
+                                formData.append('files', file);
+                            });
+                            console.log(`🖼️ Converting ${this.files[tool].length} images to PDF`);
                         } else {
                             formData.append('file', this.files[tool][0]);
                             const fileSize = this.files[tool][0].size;
@@ -1829,6 +2141,10 @@
                             } else if (tool === 'extract') {
                                 formData.append('pages', this.extractOptions.pages);
                                 console.log(`📄 Extracting pages: ${this.extractOptions.pages}`);
+                            } else if (tool === 'pdf-to-images') {
+                                formData.append('format', this.pdfToImagesOptions.format);
+                                formData.append('quality', this.pdfToImagesOptions.quality);
+                                console.log(`🖼️ Converting PDF to ${this.pdfToImagesOptions.format.toUpperCase()} images`);
                             }
                         }
 
@@ -1850,32 +2166,42 @@
                         clearTimeout(timeoutId);
 
                         if (response.ok) {
-                            const blob = await response.blob();
                             const processingTime = Date.now() - startTime;
-                            console.log(`✅ ${tool} completed in ${processingTime}ms, output size: ${this.formatFileSize(blob.size)}`);
                             
-                            const url = URL.createObjectURL(blob);
-                            const a = document.createElement('a');
-                            a.href = url;
-                            
-                            // Get filename from response headers or use default
-                            const contentDisposition = response.headers.get('Content-Disposition');
-                            let filename = `${tool}_output.pdf`;
-                            if (contentDisposition) {
-                                const filenameMatch = contentDisposition.match(/filename=(.+)/);
-                                if (filenameMatch) {
-                                    filename = filenameMatch[1].replace(/"/g, '');
+                            if (tool === 'extract-text') {
+                                // Handle JSON response for text extraction
+                                const result = await response.json();
+                                this.extractedText = result.text;
+                                console.log(`✅ Text extraction completed in ${processingTime}ms`);
+                                this.showMessage('success', `Text extracted successfully in ${(processingTime/1000).toFixed(1)}s!`);
+                            } else {
+                                // Handle blob response for file downloads
+                                const blob = await response.blob();
+                                console.log(`✅ ${tool} completed in ${processingTime}ms, output size: ${this.formatFileSize(blob.size)}`);
+                                
+                                const url = URL.createObjectURL(blob);
+                                const a = document.createElement('a');
+                                a.href = url;
+                                
+                                // Get filename from response headers or use default
+                                const contentDisposition = response.headers.get('Content-Disposition');
+                                let filename = `${tool}_output.pdf`;
+                                if (contentDisposition) {
+                                    const filenameMatch = contentDisposition.match(/filename=(.+)/);
+                                    if (filenameMatch) {
+                                        filename = filenameMatch[1].replace(/"/g, '');
+                                    }
                                 }
+                                
+                                a.download = filename;
+                                document.body.appendChild(a);
+                                a.click();
+                                document.body.removeChild(a);
+                                URL.revokeObjectURL(url);
+                                
+                                this.showMessage('success', `File processed successfully in ${(processingTime/1000).toFixed(1)}s!`);
+                                this.clearFiles();
                             }
-                            
-                            a.download = filename;
-                            document.body.appendChild(a);
-                            a.click();
-                            document.body.removeChild(a);
-                            URL.revokeObjectURL(url);
-                            
-                            this.showMessage('success', `PDF processed successfully in ${(processingTime/1000).toFixed(1)}s!`);
-                            this.clearFiles();
                         } else {
                             // Handle different error responses
                             let errorData;

@@ -1,8 +1,13 @@
 import io
 import logging
-from typing import List
+from typing import List, Union
+import zipfile
+import base64
 
 import pikepdf
+import fitz  # PyMuPDF
+from PIL import Image
+import pytesseract
 
 # Set up logging
 logger = logging.getLogger(__name__)
@@ -375,4 +380,166 @@ def extract_pages_pdf(data: bytes, page_numbers: List[int]) -> bytes:
             
     except Exception as e:
         logger.error(f"Error extracting pages from PDF: {str(e)}")
+        raise
+
+
+def pdf_to_images(data: bytes, format: str = "png", quality: int = 95) -> bytes:
+    """Convert PDF pages to images and return as ZIP file"""
+    try:
+        # Create a ZIP file in memory
+        zip_buffer = io.BytesIO()
+        
+        with zipfile.ZipFile(zip_buffer, 'w', zipfile.ZIP_DEFLATED) as zip_file:
+            # Open PDF with PyMuPDF
+            pdf_document = fitz.open(stream=data, filetype="pdf")
+            
+            for page_num in range(len(pdf_document)):
+                page = pdf_document.load_page(page_num)
+                
+                # Render page to image with high quality
+                mat = fitz.Matrix(2.0, 2.0)  # 2x zoom for better quality
+                pix = page.get_pixmap(matrix=mat)
+                
+                # Convert to PIL Image
+                img_data = pix.tobytes(format.upper())
+                img = Image.open(io.BytesIO(img_data))
+                
+                # Save image to buffer
+                img_buffer = io.BytesIO()
+                if format.lower() == "jpg" or format.lower() == "jpeg":
+                    img.save(img_buffer, format="JPEG", quality=quality, optimize=True)
+                    filename = f"page_{page_num + 1:03d}.jpg"
+                else:
+                    img.save(img_buffer, format="PNG", optimize=True)
+                    filename = f"page_{page_num + 1:03d}.png"
+                
+                # Add to ZIP
+                zip_file.writestr(filename, img_buffer.getvalue())
+            
+            pdf_document.close()
+        
+        return zip_buffer.getvalue()
+        
+    except Exception as e:
+        logger.error(f"Error converting PDF to images: {str(e)}")
+        raise
+
+
+def images_to_pdf(image_files: List[bytes], filenames: List[str]) -> bytes:
+    """Convert multiple images to a single PDF"""
+    try:
+        # Create new PDF
+        pdf_document = fitz.new()
+        
+        for i, (image_data, filename) in enumerate(zip(image_files, filenames)):
+            try:
+                # Open image with PIL for better format support
+                img = Image.open(io.BytesIO(image_data))
+                
+                # Convert to RGB if necessary (for PNG with transparency, etc.)
+                if img.mode in ('RGBA', 'LA', 'P'):
+                    # Create white background
+                    background = Image.new('RGB', img.size, (255, 255, 255))
+                    if img.mode == 'P':
+                        img = img.convert('RGBA')
+                    background.paste(img, mask=img.split()[-1] if img.mode in ('RGBA', 'LA') else None)
+                    img = background
+                elif img.mode != 'RGB':
+                    img = img.convert('RGB')
+                
+                # Save as JPEG in memory for PDF insertion
+                img_buffer = io.BytesIO()
+                img.save(img_buffer, format='JPEG', quality=95)
+                img_data = img_buffer.getvalue()
+                
+                # Calculate page size based on image dimensions
+                # Use A4 size but scale to fit
+                a4_width, a4_height = 595, 842  # A4 in points
+                img_width, img_height = img.size
+                
+                # Calculate scaling to fit A4 while maintaining aspect ratio
+                scale_x = a4_width / img_width
+                scale_y = a4_height / img_height
+                scale = min(scale_x, scale_y)
+                
+                new_width = img_width * scale
+                new_height = img_height * scale
+                
+                # Center the image on the page
+                x_offset = (a4_width - new_width) / 2
+                y_offset = (a4_height - new_height) / 2
+                
+                # Create page and insert image
+                page = pdf_document.new_page(width=a4_width, height=a4_height)
+                rect = fitz.Rect(x_offset, y_offset, x_offset + new_width, y_offset + new_height)
+                page.insert_image(rect, stream=img_data)
+                
+            except Exception as e:
+                logger.warning(f"Error processing image {filename}: {str(e)}")
+                continue
+        
+        if len(pdf_document) == 0:
+            raise ValueError("No valid images could be processed")
+        
+        # Save to buffer
+        buffer = io.BytesIO()
+        pdf_document.save(buffer)
+        pdf_document.close()
+        
+        return buffer.getvalue()
+        
+    except Exception as e:
+        logger.error(f"Error converting images to PDF: {str(e)}")
+        raise
+
+
+def extract_text_ocr(data: bytes) -> str:
+    """Extract text from PDF using OCR"""
+    try:
+        extracted_texts = []
+        
+        # Open PDF with PyMuPDF
+        pdf_document = fitz.open(stream=data, filetype="pdf")
+        
+        for page_num in range(min(10, len(pdf_document))):  # Limit to first 10 pages for performance
+            page = pdf_document.load_page(page_num)
+            
+            # First try to extract text directly (for text-based PDFs)
+            text = page.get_text()
+            
+            if text.strip():
+                # If we found text, use it
+                extracted_texts.append(f"Page {page_num + 1}:\n{text}\n")
+            else:
+                # If no text found, use OCR
+                try:
+                    # Render page to image
+                    mat = fitz.Matrix(2.0, 2.0)  # Higher resolution for better OCR
+                    pix = page.get_pixmap(matrix=mat)
+                    img_data = pix.tobytes("PNG")
+                    
+                    # Convert to PIL Image
+                    img = Image.open(io.BytesIO(img_data))
+                    
+                    # Use pytesseract for OCR
+                    ocr_text = pytesseract.image_to_string(img, lang='eng')
+                    
+                    if ocr_text.strip():
+                        extracted_texts.append(f"Page {page_num + 1} (OCR):\n{ocr_text}\n")
+                    else:
+                        extracted_texts.append(f"Page {page_num + 1}: [No text detected]\n")
+                        
+                except Exception as ocr_error:
+                    logger.warning(f"OCR failed for page {page_num + 1}: {str(ocr_error)}")
+                    extracted_texts.append(f"Page {page_num + 1}: [OCR failed]\n")
+        
+        pdf_document.close()
+        
+        if not extracted_texts:
+            return "No text could be extracted from the PDF."
+        
+        return "\n".join(extracted_texts)
+        
+    except Exception as e:
+        logger.error(f"Error extracting text from PDF: {str(e)}")
         raise

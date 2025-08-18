@@ -3,3 +3,6 @@ uvicorn
 python-multipart
 python-dotenv
 pikepdf
+pymupdf
+pillow
+pytesseract
