@@ -9,6 +9,9 @@ from fastapi import FastAPI, UploadFile, File, HTTPException, Form, status
 from fastapi.responses import StreamingResponse, JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
+import aiosmtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 
 # Configure logging
 logging.basicConfig(
@@ -31,6 +34,13 @@ from backend.utils.pdf_utils import (
 load_dotenv()
 MAX_FILE_SIZE = int(os.getenv("MAX_FILE_SIZE", 20 * 1024 * 1024))  # 20MB
 ALLOWED_ORIGINS = os.getenv("ALLOWED_ORIGINS", "*").split(",")
+
+# Email configuration
+SMTP_SERVER = os.getenv("SMTP_SERVER", "smtp.gmail.com")
+SMTP_PORT = int(os.getenv("SMTP_PORT", 587))
+SMTP_USERNAME = os.getenv("SMTP_USERNAME", "")
+SMTP_PASSWORD = os.getenv("SMTP_PASSWORD", "")
+CONTACT_EMAIL = os.getenv("CONTACT_EMAIL", "thepdfgenie@gmail.com")
 
 app = FastAPI(
     title="PDF Tools API",
@@ -289,6 +299,94 @@ async def decrypt(file: UploadFile = File(...), password: str = Form(...)):
     except Exception as e:
         logger.error(f"Unexpected error during decrypt: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Error decrypting PDF: {str(e)}")
+
+
+async def send_contact_email(name: str, email: str, subject: str, message: str):
+    """Send contact form email to the specified contact email"""
+    # Create message
+    msg = MIMEMultipart()
+    msg['From'] = SMTP_USERNAME
+    msg['To'] = CONTACT_EMAIL
+    msg['Subject'] = f"Contact Form: {subject}"
+    
+    # Create email body
+    body = f"""
+New message from PDF Tools contact form:
+
+Name: {name}
+Email: {email}
+Subject: {subject}
+
+Message:
+{message}
+
+---
+This message was sent from the PDF Tools contact form.
+"""
+    
+    msg.attach(MIMEText(body, 'plain'))
+    
+    # Send email
+    await aiosmtplib.send(
+        msg,
+        hostname=SMTP_SERVER,
+        port=SMTP_PORT,
+        start_tls=True,
+        username=SMTP_USERNAME,
+        password=SMTP_PASSWORD,
+    )
+
+
+@app.post("/contact")
+async def contact(
+    name: str = Form(...),
+    email: str = Form(...),
+    subject: str = Form(...),
+    message: str = Form(...)
+):
+    """Handle contact form submission"""
+    try:
+        logger.info(f"Contact form submission from {name} ({email})")
+        
+        # Basic validation
+        if not name or len(name.strip()) < 2:
+            raise HTTPException(status_code=400, detail="Name must be at least 2 characters long")
+        
+        if not email or "@" not in email:
+            raise HTTPException(status_code=400, detail="Valid email address is required")
+        
+        if not subject or len(subject.strip()) < 3:
+            raise HTTPException(status_code=400, detail="Subject must be at least 3 characters long")
+        
+        if not message or len(message.strip()) < 10:
+            raise HTTPException(status_code=400, detail="Message must be at least 10 characters long")
+        
+        # Check if email configuration is available
+        if not SMTP_USERNAME or not SMTP_PASSWORD:
+            logger.warning("Email configuration not available")
+            raise HTTPException(
+                status_code=503, 
+                detail="Contact form is currently unavailable. Please try again later."
+            )
+        
+        # Send email
+        await send_contact_email(name.strip(), email.strip(), subject.strip(), message.strip())
+        
+        logger.info(f"Contact form email sent successfully from {name} ({email})")
+        
+        return {
+            "success": True,
+            "message": "Your message has been sent successfully! We'll get back to you soon."
+        }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error sending contact form email: {str(e)}")
+        raise HTTPException(
+            status_code=500, 
+            detail="Failed to send message. Please try again later or contact us directly."
+        )
 
 
 if __name__ == "__main__":

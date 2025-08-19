@@ -22,6 +22,10 @@ A modern, secure, and user-friendly web application for processing PDF documents
 - **🔒 Encrypt PDFs** - Password-protect documents with strong encryption
 - **🔓 Decrypt PDFs** - Remove password protection from encrypted files
 
+### Communication
+- **📧 Contact Form** - Built-in contact form that sends queries to thepdfgenie@gmail.com
+- **🔒 Secure Email** - Uses async SMTP with validation and error handling
+
 ### User Experience
 - **🎨 Modern UI** - Clean, responsive design with intuitive navigation
 - **📱 Mobile-friendly** - Optimized for all device sizes
@@ -126,6 +130,7 @@ pdf-encryption-app/
 - **pikepdf** - Advanced PDF processing with encryption support
 - **python-multipart** - File upload handling
 - **python-dotenv** - Environment variable management
+- **aiosmtplib** - Async SMTP client for email sending
 
 #### Frontend
 - **Pure HTML/CSS/JavaScript** - No build process required
@@ -151,7 +156,33 @@ PORT=8000
 
 # Environment
 ENVIRONMENT=development
+
+# Email configuration for contact form
+SMTP_SERVER=smtp.gmail.com
+SMTP_PORT=587
+SMTP_USERNAME=your-email@gmail.com
+SMTP_PASSWORD=your-app-password
+CONTACT_EMAIL=thepdfgenie@gmail.com
 ```
+
+### Email Configuration (Contact Form)
+
+To enable the contact form functionality, configure these email settings:
+
+```env
+# Gmail SMTP configuration (recommended)
+SMTP_SERVER=smtp.gmail.com
+SMTP_PORT=587
+SMTP_USERNAME=your-email@gmail.com
+SMTP_PASSWORD=your-app-password  # Use Gmail App Password, not your regular password
+CONTACT_EMAIL=thepdfgenie@gmail.com
+```
+
+**Setting up Gmail App Password:**
+1. Enable 2-factor authentication on your Gmail account
+2. Go to Google Account settings > Security > App passwords
+3. Generate a new app password for "Mail"
+4. Use this 16-character password as `SMTP_PASSWORD`
 
 ### Production Settings
 
@@ -269,6 +300,17 @@ Content-Type: multipart/form-data
 
 file: File
 password: string
+```
+
+#### Contact Form
+```http
+POST /contact
+Content-Type: multipart/form-data
+
+name: string (minimum 2 characters)
+email: string (valid email format)
+subject: string (minimum 3 characters)
+message: string (minimum 10 characters)
 ```
 
 ## 🧪 Testing
