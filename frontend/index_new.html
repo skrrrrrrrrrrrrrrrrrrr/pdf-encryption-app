@@ -1,0 +1,1074 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PDFMaster Pro - Secure PDF Processing Suite</title>
+    <meta name="description" content="Professional PDF processing made simple. Merge, split, encrypt, decrypt and more with complete privacy. No uploads to cloud - everything processed locally.">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    
+    <style>
+        /* CSS Reset and Base */
+        *, *::before, *::after { box-sizing: border-box; }
+        body { 
+            margin: 0; 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
+            line-height: 1.5; 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #1a1a1a;
+        }
+        
+        /* Layout */
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 1rem; }
+        .flex { display: flex; }
+        .items-center { align-items: center; }
+        .justify-between { justify-content: space-between; }
+        .justify-center { justify-content: center; }
+        .space-x-3 > * + * { margin-left: 0.75rem; }
+        .space-y-4 > * + * { margin-top: 1rem; }
+        .grid { display: grid; }
+        .grid-cols-2 { grid-template-columns: repeat(2, 1fr); }
+        .grid-cols-3 { grid-template-columns: repeat(3, 1fr); }
+        .gap-4 { gap: 1rem; }
+        .gap-6 { gap: 1.5rem; }
+        .hidden { display: none !important; }
+        
+        /* Colors and Backgrounds */
+        .bg-white { background-color: #ffffff; }
+        .bg-slate-50 { background-color: #f8fafc; }
+        .bg-slate-100 { background-color: #f1f5f9; }
+        .bg-blue-600 { background-color: #2563eb; }
+        .bg-blue-700 { background-color: #1d4ed8; }
+        .bg-green-600 { background-color: #16a34a; }
+        .bg-red-600 { background-color: #dc2626; }
+        .bg-purple-600 { background-color: #9333ea; }
+        .bg-purple-700 { background-color: #7c3aed; }
+        .text-white { color: #ffffff; }
+        .text-slate-600 { color: #475569; }
+        .text-slate-700 { color: #334155; }
+        .text-slate-900 { color: #0f172a; }
+        .text-blue-600 { color: #2563eb; }
+        .text-green-600 { color: #16a34a; }
+        .text-red-600 { color: #dc2626; }
+        
+        /* Typography */
+        .text-4xl { font-size: 2.25rem; font-weight: 800; }
+        .text-3xl { font-size: 1.875rem; font-weight: 700; }
+        .text-2xl { font-size: 1.5rem; font-weight: 600; }
+        .text-xl { font-size: 1.25rem; font-weight: 600; }
+        .text-lg { font-size: 1.125rem; font-weight: 500; }
+        .text-sm { font-size: 0.875rem; }
+        .text-xs { font-size: 0.75rem; }
+        .font-bold { font-weight: 700; }
+        .font-medium { font-weight: 500; }
+        .text-center { text-align: center; }
+        
+        /* Spacing */
+        .p-3 { padding: 0.75rem; }
+        .p-4 { padding: 1rem; }
+        .p-6 { padding: 1.5rem; }
+        .p-8 { padding: 2rem; }
+        .py-4 { padding-top: 1rem; padding-bottom: 1rem; }
+        .py-6 { padding-top: 1.5rem; padding-bottom: 1.5rem; }
+        .px-4 { padding-left: 1rem; padding-right: 1rem; }
+        .px-6 { padding-left: 1.5rem; padding-right: 1.5rem; }
+        .px-8 { padding-left: 2rem; padding-right: 2rem; }
+        .mb-2 { margin-bottom: 0.5rem; }
+        .mb-4 { margin-bottom: 1rem; }
+        .mb-6 { margin-bottom: 1.5rem; }
+        .mb-8 { margin-bottom: 2rem; }
+        .mt-2 { margin-top: 0.5rem; }
+        .mt-4 { margin-top: 1rem; }
+        .mt-6 { margin-top: 1.5rem; }
+        .mt-8 { margin-top: 2rem; }
+        
+        /* Borders and Radius */
+        .border { border: 1px solid #e2e8f0; }
+        .border-2 { border: 2px solid #e2e8f0; }
+        .border-dashed { border-style: dashed; }
+        .rounded-lg { border-radius: 0.5rem; }
+        .rounded-xl { border-radius: 0.75rem; }
+        .rounded-full { border-radius: 9999px; }
+        .shadow-sm { box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); }
+        .shadow-md { box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+        .shadow-lg { box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); }
+        .shadow-xl { box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); }
+        
+        /* Header */
+        .header { 
+            background: rgba(255, 255, 255, 0.95); 
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        
+        .logo { 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 2rem;
+            font-weight: 800;
+        }
+        
+        /* Main Content */
+        .main-content {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 1rem;
+            margin: 2rem auto;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Buttons and Interactive Elements */
+        .btn { 
+            padding: 0.75rem 1.5rem; 
+            border-radius: 0.5rem; 
+            border: none; 
+            cursor: pointer; 
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            font-size: 0.875rem;
+        }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2); }
+        .btn:active { transform: translateY(0); }
+        
+        .btn-primary { 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .btn-primary:hover { 
+            background: linear-gradient(135deg, #5a67d8 0%, #6b46c1 100%);
+        }
+        
+        .btn-success { 
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+        }
+        
+        .tool-card {
+            background: white;
+            border: 2px solid #e2e8f0;
+            padding: 1.5rem;
+            text-align: center;
+            cursor: pointer;
+            border-radius: 0.75rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .tool-card:hover {
+            border-color: #667eea;
+            background: linear-gradient(135deg, #f8fafc 0%, #eff6ff 100%);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.15);
+        }
+        .tool-card.active {
+            border-color: #667eea;
+            background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+            box-shadow: 0 8px 15px rgba(102, 126, 234, 0.3);
+        }
+        
+        .tool-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.75rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        /* Upload Areas */
+        .upload-area {
+            border: 2px dashed #cbd5e0;
+            border-radius: 0.75rem;
+            padding: 3rem 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: #f8fafc;
+        }
+        .upload-area:hover {
+            border-color: #667eea;
+            background: #eff6ff;
+        }
+        .upload-area.dragover {
+            border-color: #667eea;
+            background: #dbeafe;
+        }
+        
+        /* Status Indicators */
+        .status-indicator {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.375rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        .status-online {
+            background: #dcfce7;
+            color: #166534;
+        }
+        .status-offline {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+        
+        /* Form Elements */
+        .input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+            transition: all 0.2s ease;
+            background: white;
+        }
+        .input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .grid-cols-3 { grid-template-columns: repeat(2, 1fr); }
+            .grid-cols-2 { grid-template-columns: 1fr; }
+            .text-4xl { font-size: 1.875rem; }
+            .p-8 { padding: 1.5rem; }
+            .tool-card { padding: 1rem; }
+            .tool-icon { font-size: 2rem; }
+        }
+        
+        /* Alpine.js cloak */
+        [x-cloak] { display: none !important; }
+        
+        /* Loading Animation */
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+            margin-right: 0.5rem;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Message Styles */
+        .message {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            padding: 1rem 1.5rem;
+            border-radius: 0.5rem;
+            color: white;
+            font-weight: 600;
+            z-index: 1000;
+            max-width: 400px;
+            animation: slideIn 0.3s ease;
+        }
+        .message.success { background: #10b981; }
+        .message.error { background: #ef4444; }
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+    </style>
+</head>
+<body x-data="pdfMaster()" x-init="init()">
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center space-x-3">
+                    <div class="tool-icon">📄</div>
+                    <div>
+                        <h1 class="logo">PDFMaster Pro</h1>
+                        <p class="text-sm text-slate-600">Secure PDF Processing Suite</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-3">
+                    <button @click="showPrivacy = true" class="btn btn-primary">
+                        🔒 Privacy First
+                    </button>
+                    <div x-show="backendStatus.checked" class="status-indicator" :class="backendStatus.available ? 'status-online' : 'status-offline'">
+                        <span x-text="backendStatus.available ? '✅ Online' : '⚠️ Offline'"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="main-content">
+            <!-- Hero Section -->
+            <div class="text-center p-8 mb-8">
+                <h2 class="text-4xl mb-4">Professional PDF Processing</h2>
+                <p class="text-lg text-slate-600 mb-6">Secure, fast, and completely private PDF operations. No cloud uploads - everything processed locally on your device.</p>
+                
+                <div class="grid grid-cols-3 gap-6 mt-8">
+                    <div class="text-center">
+                        <div class="text-2xl mb-2">🔒</div>
+                        <div class="font-medium">Zero Storage</div>
+                        <div class="text-sm text-slate-600">Files never saved</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-2xl mb-2">⚡</div>
+                        <div class="font-medium">Lightning Fast</div>
+                        <div class="text-sm text-slate-600">Instant processing</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-2xl mb-2">🛡️</div>
+                        <div class="font-medium">Bank-Level Security</div>
+                        <div class="text-sm text-slate-600">Complete privacy</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tool Selection -->
+            <div class="p-8">
+                <h3 class="text-2xl mb-6 text-center">Choose Your PDF Tool</h3>
+                <div class="grid grid-cols-3 gap-4 mb-8">
+                    <div @click="setTool('merge')" class="tool-card" :class="currentTool === 'merge' ? 'active' : ''">
+                        <div class="tool-icon">📄</div>
+                        <div class="font-medium mb-2">Merge PDFs</div>
+                        <div class="text-sm text-slate-600">Combine multiple files</div>
+                    </div>
+                    <div @click="setTool('split')" class="tool-card" :class="currentTool === 'split' ? 'active' : ''">
+                        <div class="tool-icon">✂️</div>
+                        <div class="font-medium mb-2">Split PDF</div>
+                        <div class="text-sm text-slate-600">Extract page ranges</div>
+                    </div>
+                    <div @click="setTool('rotate')" class="tool-card" :class="currentTool === 'rotate' ? 'active' : ''">
+                        <div class="tool-icon">🔄</div>
+                        <div class="font-medium mb-2">Rotate PDF</div>
+                        <div class="text-sm text-slate-600">Rotate all pages</div>
+                    </div>
+                    <div @click="setTool('encrypt')" class="tool-card" :class="currentTool === 'encrypt' ? 'active' : ''">
+                        <div class="tool-icon">🔒</div>
+                        <div class="font-medium mb-2">Encrypt PDF</div>
+                        <div class="text-sm text-slate-600">Password protect</div>
+                    </div>
+                    <div @click="setTool('decrypt')" class="tool-card" :class="currentTool === 'decrypt' ? 'active' : ''">
+                        <div class="tool-icon">🔓</div>
+                        <div class="font-medium mb-2">Decrypt PDF</div>
+                        <div class="text-sm text-slate-600">Remove passwords</div>
+                    </div>
+                    <div @click="setTool('resize')" class="tool-card" :class="currentTool === 'resize' ? 'active' : ''">
+                        <div class="tool-icon">📦</div>
+                        <div class="font-medium mb-2">Compress PDF</div>
+                        <div class="text-sm text-slate-600">Reduce file size</div>
+                    </div>
+                </div>
+
+                <!-- Tool Content Areas -->
+                
+                <!-- Merge Tool -->
+                <div x-show="currentTool === 'merge'" x-cloak class="bg-slate-50 rounded-xl p-6">
+                    <h4 class="text-xl mb-4">📄 Merge Multiple PDFs</h4>
+                    <p class="text-slate-600 mb-6">Combine multiple PDF files into a single document. Upload at least 2 files to merge them in order.</p>
+                    
+                    <div @drop.prevent="handleDrop($event, 'merge')" @dragover.prevent @dragenter.prevent="dragOver = true" @dragleave.prevent="dragOver = false" 
+                         class="upload-area" :class="{ 'dragover': dragOver }">
+                        <div class="text-4xl mb-4">📁</div>
+                        <p class="font-medium mb-2">Drop PDF files here or click to browse</p>
+                        <p class="text-sm text-slate-600 mb-4">Support for multiple files, max 20MB each</p>
+                        <input type="file" @change="handleFileSelect($event, 'merge')" multiple accept=".pdf" class="hidden" id="merge-files">
+                        <button onclick="document.getElementById('merge-files').click()" class="btn btn-primary">
+                            Choose Files
+                        </button>
+                    </div>
+                    
+                    <div x-show="files.merge.length > 0" class="mt-6">
+                        <h5 class="font-medium mb-3">Selected Files (<span x-text="files.merge.length"></span>)</h5>
+                        <div class="space-y-2 mb-4">
+                            <template x-for="(file, index) in files.merge" :key="index">
+                                <div class="flex items-center justify-between bg-white p-3 rounded-lg border">
+                                    <span x-text="file.name" class="text-sm"></span>
+                                    <button @click="removeFile('merge', index)" class="text-red-600 hover:text-red-800">×</button>
+                                </div>
+                            </template>
+                        </div>
+                        <button @click="processFiles('merge')" :disabled="loading || files.merge.length < 2" 
+                                class="btn btn-success" :class="{ 'opacity-50': loading || files.merge.length < 2 }">
+                            <div x-show="loading && currentTool === 'merge'" class="spinner"></div>
+                            <span x-text="loading && currentTool === 'merge' ? 'Processing...' : 'Merge PDFs'"></span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Split Tool -->
+                <div x-show="currentTool === 'split'" x-cloak class="bg-slate-50 rounded-xl p-6">
+                    <h4 class="text-xl mb-4">✂️ Split PDF by Page Range</h4>
+                    <p class="text-slate-600 mb-6">Extract specific pages from your PDF. Enter the page range you want to keep.</p>
+                    
+                    <div @drop.prevent="handleDrop($event, 'split')" @dragover.prevent @dragenter.prevent="dragOver = true" @dragleave.prevent="dragOver = false" 
+                         class="upload-area" :class="{ 'dragover': dragOver }">
+                        <div class="text-4xl mb-4">📄</div>
+                        <p class="font-medium mb-2">Drop a PDF file here or click to browse</p>
+                        <p class="text-sm text-slate-600 mb-4">Single PDF file, max 20MB</p>
+                        <input type="file" @change="handleFileSelect($event, 'split')" accept=".pdf" class="hidden" id="split-file">
+                        <button onclick="document.getElementById('split-file').click()" class="btn btn-primary">
+                            Choose File
+                        </button>
+                    </div>
+                    
+                    <div x-show="files.split.length > 0" class="mt-6">
+                        <div class="grid grid-cols-2 gap-4 mb-4">
+                            <div>
+                                <label class="block text-sm font-medium mb-2">Start Page</label>
+                                <input type="number" x-model="splitOptions.start" min="1" placeholder="1" class="input">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-2">End Page</label>
+                                <input type="number" x-model="splitOptions.end" min="1" placeholder="10" class="input">
+                            </div>
+                        </div>
+                        <button @click="processFiles('split')" :disabled="loading || !splitOptions.start || !splitOptions.end" 
+                                class="btn btn-success" :class="{ 'opacity-50': loading || !splitOptions.start || !splitOptions.end }">
+                            <div x-show="loading && currentTool === 'split'" class="spinner"></div>
+                            <span x-text="loading && currentTool === 'split' ? 'Processing...' : 'Split PDF'"></span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Rotate Tool -->
+                <div x-show="currentTool === 'rotate'" x-cloak class="bg-slate-50 rounded-xl p-6">
+                    <h4 class="text-xl mb-4">🔄 Rotate PDF Pages</h4>
+                    <p class="text-slate-600 mb-6">Rotate all pages in your PDF document by 90, 180, or 270 degrees.</p>
+                    
+                    <div @drop.prevent="handleDrop($event, 'rotate')" @dragover.prevent @dragenter.prevent="dragOver = true" @dragleave.prevent="dragOver = false" 
+                         class="upload-area" :class="{ 'dragover': dragOver }">
+                        <div class="text-4xl mb-4">📄</div>
+                        <p class="font-medium mb-2">Drop a PDF file here or click to browse</p>
+                        <p class="text-sm text-slate-600 mb-4">Single PDF file, max 20MB</p>
+                        <input type="file" @change="handleFileSelect($event, 'rotate')" accept=".pdf" class="hidden" id="rotate-file">
+                        <button onclick="document.getElementById('rotate-file').click()" class="btn btn-primary">
+                            Choose File
+                        </button>
+                    </div>
+                    
+                    <div x-show="files.rotate.length > 0" class="mt-6">
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium mb-3">Rotation Angle</label>
+                            <div class="flex space-x-3">
+                                <button @click="rotateOptions.angle = 90" class="btn" :class="rotateOptions.angle === 90 ? 'btn-primary' : 'bg-white border text-slate-700'">90°</button>
+                                <button @click="rotateOptions.angle = 180" class="btn" :class="rotateOptions.angle === 180 ? 'btn-primary' : 'bg-white border text-slate-700'">180°</button>
+                                <button @click="rotateOptions.angle = 270" class="btn" :class="rotateOptions.angle === 270 ? 'btn-primary' : 'bg-white border text-slate-700'">270°</button>
+                            </div>
+                        </div>
+                        <button @click="processFiles('rotate')" :disabled="loading" 
+                                class="btn btn-success" :class="{ 'opacity-50': loading }">
+                            <div x-show="loading && currentTool === 'rotate'" class="spinner"></div>
+                            <span x-text="loading && currentTool === 'rotate' ? 'Processing...' : 'Rotate PDF'"></span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Encrypt Tool -->
+                <div x-show="currentTool === 'encrypt'" x-cloak class="bg-slate-50 rounded-xl p-6">
+                    <h4 class="text-xl mb-4">🔒 Encrypt PDF with Password</h4>
+                    <p class="text-slate-600 mb-6">Protect your PDF with a password. The encrypted file will require the password to open.</p>
+                    
+                    <div @drop.prevent="handleDrop($event, 'encrypt')" @dragover.prevent @dragenter.prevent="dragOver = true" @dragleave.prevent="dragOver = false" 
+                         class="upload-area" :class="{ 'dragover': dragOver }">
+                        <div class="text-4xl mb-4">📄</div>
+                        <p class="font-medium mb-2">Drop a PDF file here or click to browse</p>
+                        <p class="text-sm text-slate-600 mb-4">Single PDF file, max 20MB</p>
+                        <input type="file" @change="handleFileSelect($event, 'encrypt')" accept=".pdf" class="hidden" id="encrypt-file">
+                        <button onclick="document.getElementById('encrypt-file').click()" class="btn btn-primary">
+                            Choose File
+                        </button>
+                    </div>
+                    
+                    <div x-show="files.encrypt.length > 0" class="mt-6">
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium mb-2">Password</label>
+                            <input type="password" x-model="encryptOptions.password" placeholder="Enter a strong password (min. 4 characters)" class="input">
+                            <p class="text-xs text-slate-500 mt-1">Password must be at least 4 characters long</p>
+                        </div>
+                        <button @click="processFiles('encrypt')" :disabled="loading || encryptOptions.password.length < 4" 
+                                class="btn btn-success" :class="{ 'opacity-50': loading || encryptOptions.password.length < 4 }">
+                            <div x-show="loading && currentTool === 'encrypt'" class="spinner"></div>
+                            <span x-text="loading && currentTool === 'encrypt' ? 'Processing...' : 'Encrypt PDF'"></span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Decrypt Tool -->
+                <div x-show="currentTool === 'decrypt'" x-cloak class="bg-slate-50 rounded-xl p-6">
+                    <h4 class="text-xl mb-4">🔓 Decrypt Password-Protected PDF</h4>
+                    <p class="text-slate-600 mb-6">Remove password protection from your PDF. You'll need the current password.</p>
+                    
+                    <div @drop.prevent="handleDrop($event, 'decrypt')" @dragover.prevent @dragenter.prevent="dragOver = true" @dragleave.prevent="dragOver = false" 
+                         class="upload-area" :class="{ 'dragover': dragOver }">
+                        <div class="text-4xl mb-4">📄</div>
+                        <p class="font-medium mb-2">Drop an encrypted PDF file here or click to browse</p>
+                        <p class="text-sm text-slate-600 mb-4">Single encrypted PDF file, max 20MB</p>
+                        <input type="file" @change="handleFileSelect($event, 'decrypt')" accept=".pdf" class="hidden" id="decrypt-file">
+                        <button onclick="document.getElementById('decrypt-file').click()" class="btn btn-primary">
+                            Choose File
+                        </button>
+                    </div>
+                    
+                    <div x-show="files.decrypt.length > 0" class="mt-6">
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium mb-2">Password</label>
+                            <input type="password" x-model="decryptOptions.password" placeholder="Enter the PDF password" class="input">
+                        </div>
+                        <button @click="processFiles('decrypt')" :disabled="loading || !decryptOptions.password" 
+                                class="btn btn-success" :class="{ 'opacity-50': loading || !decryptOptions.password }">
+                            <div x-show="loading && currentTool === 'decrypt'" class="spinner"></div>
+                            <span x-text="loading && currentTool === 'decrypt' ? 'Processing...' : 'Decrypt PDF'"></span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Resize Tool -->
+                <div x-show="currentTool === 'resize'" x-cloak class="bg-slate-50 rounded-xl p-6">
+                    <h4 class="text-xl mb-4">📦 Compress PDF File</h4>
+                    <p class="text-slate-600 mb-6">Reduce the file size of your PDF documents while maintaining quality.</p>
+                    
+                    <div @drop.prevent="handleDrop($event, 'resize')" @dragover.prevent @dragenter.prevent="dragOver = true" @dragleave.prevent="dragOver = false" 
+                         class="upload-area" :class="{ 'dragover': dragOver }">
+                        <div class="text-4xl mb-4">📄</div>
+                        <p class="font-medium mb-2">Drop a PDF file here or click to browse</p>
+                        <p class="text-sm text-slate-600 mb-4">Single PDF file, max 20MB</p>
+                        <input type="file" @change="handleFileSelect($event, 'resize')" accept=".pdf" class="hidden" id="resize-file">
+                        <button onclick="document.getElementById('resize-file').click()" class="btn btn-primary">
+                            Choose File
+                        </button>
+                    </div>
+                    
+                    <div x-show="files.resize.length > 0" class="mt-6">
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium mb-3">Compression Quality</label>
+                            <div class="space-y-2">
+                                <label class="flex items-center space-x-3">
+                                    <input type="radio" x-model="resizeOptions.quality" value="high" name="quality" class="text-blue-600">
+                                    <div>
+                                        <div class="font-medium">High Quality</div>
+                                        <div class="text-sm text-slate-600">Minimal compression, best for important documents</div>
+                                    </div>
+                                </label>
+                                <label class="flex items-center space-x-3">
+                                    <input type="radio" x-model="resizeOptions.quality" value="medium" name="quality" class="text-blue-600">
+                                    <div>
+                                        <div class="font-medium">Medium Quality</div>
+                                        <div class="text-sm text-slate-600">Balanced compression, good for most uses</div>
+                                    </div>
+                                </label>
+                                <label class="flex items-center space-x-3">
+                                    <input type="radio" x-model="resizeOptions.quality" value="low" name="quality" class="text-blue-600">
+                                    <div>
+                                        <div class="font-medium">Maximum Compression</div>
+                                        <div class="text-sm text-slate-600">Smallest file size, suitable for web sharing</div>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+                        <button @click="processFiles('resize')" :disabled="loading" 
+                                class="btn btn-success" :class="{ 'opacity-50': loading }">
+                            <div x-show="loading && currentTool === 'resize'" class="spinner"></div>
+                            <span x-text="loading && currentTool === 'resize' ? 'Processing...' : 'Compress PDF'"></span>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Privacy Modal -->
+    <div x-show="showPrivacy" x-cloak class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center" style="z-index: 9999;">
+        <div class="bg-white rounded-xl p-6 max-w-md mx-4 shadow-xl">
+            <div class="flex items-center mb-4">
+                <div class="text-2xl mr-3">🔒</div>
+                <h3 class="text-xl font-bold">Privacy & Security</h3>
+            </div>
+            <div class="text-slate-700 space-y-3 mb-6">
+                <p><strong>🔒 Complete Privacy:</strong> Files are processed in memory and never stored on any server.</p>
+                <p><strong>⚡ Local Processing:</strong> All operations happen on your device - no cloud uploads.</p>
+                <p><strong>🛡️ Zero Data Collection:</strong> We don't track, store, or analyze your documents.</p>
+                <p><strong>🗑️ Auto-Delete:</strong> Files are automatically discarded after processing.</p>
+            </div>
+            <button @click="showPrivacy = false" class="btn btn-primary w-full">
+                Got it!
+            </button>
+        </div>
+    </div>
+
+    <!-- Backend Setup Modal -->
+    <div x-show="!backendStatus.available && backendStatus.checked" x-cloak class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center" style="z-index: 9999;">
+        <div class="bg-white rounded-xl p-6 max-w-lg mx-4 shadow-xl">
+            <h3 class="text-xl font-bold mb-4">Backend Server Required</h3>
+            <div class="space-y-4 mb-6">
+                <p><strong>The PDFMaster Pro backend server is not running.</strong></p>
+                <p>To use PDF tools, you need to start the backend server:</p>
+                <div class="bg-slate-100 p-3 rounded-lg">
+                    <code class="text-sm">cd backend && python main.py</code>
+                </div>
+                <p class="text-sm text-slate-600">See the README.md file for complete setup instructions.</p>
+            </div>
+            <div class="flex space-x-3">
+                <button @click="checkBackendConnection()" class="btn btn-primary flex-1">
+                    Retry Connection
+                </button>
+                <button @click="backendStatus.checked = false" class="btn bg-slate-300 text-slate-700 flex-1">
+                    Continue Anyway
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="text-center py-8">
+        <div class="container">
+            <div class="text-white">
+                <p class="mb-2">
+                    <strong>🔒 Privacy First:</strong> Files are processed in memory and never stored.
+                </p>
+                <p class="text-sm opacity-75">
+                    PDFMaster Pro - Professional PDF Processing Suite
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Messages -->
+    <div x-show="message.show" x-cloak class="message" :class="message.type">
+        <div class="flex items-center justify-between">
+            <span x-text="message.text"></span>
+            <button @click="message.show = false" class="ml-4 text-white hover:text-gray-200">×</button>
+        </div>
+    </div>
+
+    <!-- JavaScript Application -->
+    <script>
+        // PDFMaster Pro Application
+        class PDFMasterApp {
+            constructor() {
+                this.currentTool = 'merge';
+                this.loading = false;
+                this.dragOver = false;
+                this.showPrivacy = false;
+                this.files = {
+                    merge: [],
+                    split: [],
+                    rotate: [],
+                    encrypt: [],
+                    decrypt: [],
+                    resize: []
+                };
+                this.splitOptions = { start: '', end: '' };
+                this.rotateOptions = { angle: 90 };
+                this.encryptOptions = { password: '' };
+                this.decryptOptions = { password: '' };
+                this.resizeOptions = { quality: 'medium' };
+                this.message = { show: false, type: 'success', text: '' };
+                this.backendStatus = { checked: false, available: false, error: null };
+            }
+
+            init() {
+                this.bindEvents();
+                this.updateUI();
+                setTimeout(() => this.checkBackendConnection(), 1000);
+            }
+
+            bindEvents() {
+                // Tool selection buttons
+                document.querySelectorAll('.tool-card').forEach((card, index) => {
+                    const tools = ['merge', 'split', 'rotate', 'encrypt', 'decrypt', 'resize'];
+                    card.addEventListener('click', () => this.setTool(tools[index]));
+                });
+
+                // Privacy button
+                document.querySelector('[data-action="show-privacy"]').addEventListener('click', () => {
+                    this.showPrivacy = true;
+                    this.updateUI();
+                });
+
+                // Close privacy modal
+                document.querySelector('[data-action="hide-privacy"]').addEventListener('click', () => {
+                    this.showPrivacy = false;
+                    this.updateUI();
+                });
+
+                // File input handlers
+                Object.keys(this.files).forEach(tool => {
+                    const input = document.getElementById(`${tool}-file`);
+                    if (input) {
+                        input.addEventListener('change', (e) => this.handleFileSelect(e, tool));
+                    }
+                });
+
+                // Process buttons
+                Object.keys(this.files).forEach(tool => {
+                    const btn = document.querySelector(`[data-action="process-${tool}"]`);
+                    if (btn) {
+                        btn.addEventListener('click', () => this.processFiles(tool));
+                    }
+                });
+
+                // Drag and drop handlers
+                document.querySelectorAll('.upload-area').forEach(area => {
+                    const tool = area.dataset.tool;
+                    if (tool) {
+                        area.addEventListener('dragover', (e) => {
+                            e.preventDefault();
+                            this.dragOver = true;
+                            area.classList.add('dragover');
+                        });
+                        area.addEventListener('dragleave', (e) => {
+                            e.preventDefault();
+                            this.dragOver = false;
+                            area.classList.remove('dragover');
+                        });
+                        area.addEventListener('drop', (e) => {
+                            e.preventDefault();
+                            this.dragOver = false;
+                            area.classList.remove('dragover');
+                            this.handleDrop(e, tool);
+                        });
+                    }
+                });
+
+                // Form inputs
+                ['start', 'end'].forEach(field => {
+                    const input = document.querySelector(`[data-model="splitOptions.${field}"]`);
+                    if (input) {
+                        input.addEventListener('input', (e) => {
+                            this.splitOptions[field] = e.target.value;
+                        });
+                    }
+                });
+
+                ['password'].forEach(field => {
+                    const input = document.querySelector(`[data-model="encryptOptions.${field}"]`);
+                    if (input) {
+                        input.addEventListener('input', (e) => {
+                            this.encryptOptions[field] = e.target.value;
+                        });
+                    }
+                });
+
+                ['password'].forEach(field => {
+                    const input = document.querySelector(`[data-model="decryptOptions.${field}"]`);
+                    if (input) {
+                        input.addEventListener('input', (e) => {
+                            this.decryptOptions[field] = e.target.value;
+                        });
+                    }
+                });
+
+                // Rotation angle buttons
+                document.querySelectorAll('[data-angle]').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        this.rotateOptions.angle = parseInt(btn.dataset.angle);
+                        this.updateUI();
+                    });
+                });
+
+                // Quality radio buttons
+                document.querySelectorAll('[name="quality"]').forEach(radio => {
+                    radio.addEventListener('change', (e) => {
+                        this.resizeOptions.quality = e.target.value;
+                    });
+                });
+            }
+
+            setTool(tool) {
+                this.currentTool = tool;
+                this.clearFiles();
+                this.updateUI();
+            }
+
+            clearFiles() {
+                Object.keys(this.files).forEach(key => {
+                    this.files[key] = [];
+                });
+            }
+
+            handleFileSelect(event, tool) {
+                const selectedFiles = Array.from(event.target.files);
+                if (tool === 'merge') {
+                    this.files[tool] = [...this.files[tool], ...selectedFiles];
+                } else {
+                    this.files[tool] = selectedFiles.slice(0, 1);
+                }
+                event.target.value = '';
+                this.updateUI();
+            }
+
+            handleDrop(event, tool) {
+                const droppedFiles = Array.from(event.dataTransfer.files).filter(file => file.type === 'application/pdf');
+                
+                if (droppedFiles.length === 0) {
+                    this.showMessage('error', 'Please drop only PDF files.');
+                    return;
+                }
+
+                if (tool === 'merge') {
+                    this.files[tool] = [...this.files[tool], ...droppedFiles];
+                } else {
+                    this.files[tool] = droppedFiles.slice(0, 1);
+                }
+                this.updateUI();
+            }
+
+            removeFile(tool, index) {
+                this.files[tool].splice(index, 1);
+                this.updateUI();
+            }
+
+            async processFiles(tool) {
+                if (this.files[tool].length === 0) return;
+                
+                this.loading = true;
+                this.updateUI();
+                
+                try {
+                    const formData = new FormData();
+                    
+                    if (tool === 'merge') {
+                        if (this.files[tool].length < 2) {
+                            throw new Error('Please select at least 2 files to merge.');
+                        }
+                        this.files[tool].forEach(file => {
+                            formData.append('files', file);
+                        });
+                    } else {
+                        formData.append('file', this.files[tool][0]);
+                        
+                        if (tool === 'split') {
+                            formData.append('start', this.splitOptions.start);
+                            formData.append('end', this.splitOptions.end);
+                        } else if (tool === 'rotate') {
+                            formData.append('angle', this.rotateOptions.angle);
+                        } else if (tool === 'encrypt') {
+                            formData.append('password', this.encryptOptions.password);
+                        } else if (tool === 'decrypt') {
+                            formData.append('password', this.decryptOptions.password);
+                        } else if (tool === 'resize') {
+                            formData.append('quality', this.resizeOptions.quality);
+                        }
+                    }
+
+                    const apiBaseUrl = this.getApiBaseUrl();
+                    const response = await fetch(`${apiBaseUrl}/${tool}`, {
+                        method: 'POST',
+                        body: formData
+                    });
+
+                    if (response.ok) {
+                        const blob = await response.blob();
+                        const url = window.URL.createObjectURL(blob);
+                        const a = document.createElement('a');
+                        a.style.display = 'none';
+                        a.href = url;
+                        
+                        const filenames = {
+                            merge: 'merged.pdf',
+                            split: `split_pages_${this.splitOptions.start}-${this.splitOptions.end}.pdf`,
+                            rotate: `rotated_${this.rotateOptions.angle}deg.pdf`,
+                            encrypt: 'encrypted.pdf',
+                            decrypt: 'decrypted.pdf',
+                            resize: `compressed_${this.resizeOptions.quality}.pdf`
+                        };
+                        
+                        a.download = filenames[tool] || 'processed.pdf';
+                        document.body.appendChild(a);
+                        a.click();
+                        window.URL.revokeObjectURL(url);
+                        document.body.removeChild(a);
+                        
+                        this.showMessage('success', 'PDF processed successfully!');
+                        this.clearFiles();
+                    } else {
+                        const errorData = await response.json();
+                        throw new Error(errorData.detail || 'Processing failed');
+                    }
+                } catch (error) {
+                    console.error('Error processing PDF:', error);
+                    this.showMessage('error', error.message || 'An error occurred while processing your PDF.');
+                } finally {
+                    this.loading = false;
+                    this.updateUI();
+                }
+            }
+
+            async checkBackendConnection() {
+                if (this.backendStatus.checked) return;
+                
+                const apiBaseUrl = this.getApiBaseUrl();
+                if (!apiBaseUrl) {
+                    this.backendStatus = { checked: true, available: true, error: null };
+                    this.updateUI();
+                    return;
+                }
+                
+                const healthUrl = `${apiBaseUrl}/health`;
+                
+                try {
+                    const response = await fetch(healthUrl, {
+                        method: 'GET',
+                        cache: 'no-cache',
+                        signal: AbortSignal.timeout(5000)
+                    });
+                    
+                    if (response.ok) {
+                        const data = await response.json();
+                        console.log('Backend health check successful:', data);
+                        this.backendStatus = { checked: true, available: true, error: null };
+                    } else {
+                        throw new Error(`Backend returned status ${response.status}`);
+                    }
+                } catch (error) {
+                    console.error('Backend health check failed:', error);
+                    this.backendStatus = { 
+                        checked: true, 
+                        available: false, 
+                        error: error.message 
+                    };
+                }
+                this.updateUI();
+            }
+
+            getApiBaseUrl() {
+                if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+                    return 'http://localhost:8000';
+                }
+                return '';
+            }
+
+            showMessage(type, text) {
+                this.message = { show: true, type, text };
+                this.updateUI();
+                setTimeout(() => {
+                    this.message.show = false;
+                    this.updateUI();
+                }, 5000);
+            }
+
+            updateUI() {
+                // Update tool cards active state
+                document.querySelectorAll('.tool-card').forEach((card, index) => {
+                    const tools = ['merge', 'split', 'rotate', 'encrypt', 'decrypt', 'resize'];
+                    card.classList.toggle('active', tools[index] === this.currentTool);
+                });
+
+                // Update tool content visibility
+                Object.keys(this.files).forEach(tool => {
+                    const content = document.querySelector(`[data-tool-content="${tool}"]`);
+                    if (content) {
+                        content.style.display = this.currentTool === tool ? 'block' : 'none';
+                    }
+                });
+
+                // Update backend status
+                const statusEl = document.querySelector('[data-status]');
+                if (statusEl && this.backendStatus.checked) {
+                    statusEl.textContent = this.backendStatus.available ? '✅ Online' : '⚠️ Offline';
+                    statusEl.className = `status-indicator ${this.backendStatus.available ? 'status-online' : 'status-offline'}`;
+                    statusEl.style.display = 'inline-flex';
+                }
+
+                // Update privacy modal
+                const privacyModal = document.querySelector('[data-modal="privacy"]');
+                if (privacyModal) {
+                    privacyModal.style.display = this.showPrivacy ? 'flex' : 'none';
+                }
+
+                // Update backend modal
+                const backendModal = document.querySelector('[data-modal="backend"]');
+                if (backendModal) {
+                    backendModal.style.display = (!this.backendStatus.available && this.backendStatus.checked) ? 'flex' : 'none';
+                }
+
+                // Update messages
+                const messageEl = document.querySelector('[data-message]');
+                if (messageEl) {
+                    messageEl.style.display = this.message.show ? 'block' : 'none';
+                    messageEl.className = `message ${this.message.type}`;
+                    messageEl.querySelector('[data-message-text]').textContent = this.message.text;
+                }
+
+                // Update rotation angle buttons
+                document.querySelectorAll('[data-angle]').forEach(btn => {
+                    btn.classList.toggle('btn-primary', parseInt(btn.dataset.angle) === this.rotateOptions.angle);
+                    btn.classList.toggle('bg-white', parseInt(btn.dataset.angle) !== this.rotateOptions.angle);
+                    btn.classList.toggle('border', parseInt(btn.dataset.angle) !== this.rotateOptions.angle);
+                    btn.classList.toggle('text-slate-700', parseInt(btn.dataset.angle) !== this.rotateOptions.angle);
+                });
+
+                // Update file lists
+                Object.keys(this.files).forEach(tool => {
+                    const fileList = document.querySelector(`[data-file-list="${tool}"]`);
+                    const fileSection = document.querySelector(`[data-file-section="${tool}"]`);
+                    
+                    if (fileSection) {
+                        fileSection.style.display = this.files[tool].length > 0 ? 'block' : 'none';
+                    }
+                    
+                    if (fileList) {
+                        fileList.innerHTML = '';
+                        this.files[tool].forEach((file, index) => {
+                            const div = document.createElement('div');
+                            div.className = 'flex items-center justify-between bg-white p-3 rounded-lg border';
+                            div.innerHTML = `
+                                <span class="text-sm">${file.name}</span>
+                                <button onclick="app.removeFile('${tool}', ${index})" class="text-red-600 hover:text-red-800">×</button>
+                            `;
+                            fileList.appendChild(div);
+                        });
+                    }
+                });
+
+                // Update file counts
+                Object.keys(this.files).forEach(tool => {
+                    const countEl = document.querySelector(`[data-file-count="${tool}"]`);
+                    if (countEl) {
+                        countEl.textContent = this.files[tool].length;
+                    }
+                });
+
+                // Update loading states
+                document.querySelectorAll('[data-loading]').forEach(el => {
+                    const tool = el.dataset.loading;
+                    const spinner = el.querySelector('.spinner');
+                    const text = el.querySelector('[data-loading-text]');
+                    
+                    if (spinner) {
+                        spinner.style.display = (this.loading && this.currentTool === tool) ? 'inline-block' : 'none';
+                    }
+                    if (text) {
+                        text.textContent = (this.loading && this.currentTool === tool) ? 'Processing...' : el.dataset.defaultText || 'Process';
+                    }
+                    
+                    el.disabled = this.loading;
+                    el.classList.toggle('opacity-50', this.loading);
+                });
+            }
+        }
+
+        // Initialize app when DOM is ready
+        document.addEventListener('DOMContentLoaded', function() {
+            window.app = new PDFMasterApp();
+            window.app.init();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,1989 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PDFMaster Pro - Secure PDF Processing Suite</title>
+    <meta name="title" content="PDF Tools - Professional PDF Processing | Merge, Split, Encrypt & More">
+    <meta name="description" content="Free online PDF tools for professionals. Merge, split, rotate, encrypt, decrypt and resize PDF files securely. Privacy-first processing with no file storage. Fast, secure, and easy to use.">
+    <meta name="keywords" content="PDF tools, merge PDF, split PDF, encrypt PDF, decrypt PDF, rotate PDF, resize PDF, compress PDF, PDF processing, online PDF tools, secure PDF, privacy-first, professional PDF tools">
+    <meta name="robots" content="index, follow">
+    <meta name="language" content="English">
+    <meta name="author" content="PDF Tools">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://pdf-tools.app/">
+    <meta property="og:title" content="PDF Tools - Professional PDF Processing | Merge, Split, Encrypt & More">
+    <meta property="og:description" content="Free online PDF tools for professionals. Merge, split, rotate, encrypt, decrypt and resize PDF files securely. Privacy-first processing with no file storage.">
+    <meta property="og:image" content="https://pdf-tools.app/assets/og-image.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:site_name" content="PDF Tools">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://pdf-tools.app/">
+    <meta property="twitter:title" content="PDF Tools - Professional PDF Processing">
+    <meta property="twitter:description" content="Free online PDF tools for professionals. Merge, split, rotate, encrypt, decrypt and resize PDF files securely. Privacy-first processing.">
+    <meta property="twitter:image" content="https://pdf-tools.app/assets/twitter-image.jpg">
+    
+    <!-- Favicon and App Icons -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    
+    <!-- Web App Capabilities -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="PDF Tools">
+    <meta name="theme-color" content="#3B82F6">
+    
+    <!-- Preconnect for Performance -->
+    <link rel="preconnect" href="https://cdn.tailwindcss.com">
+    <link rel="preconnect" href="https://unpkg.com">
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://pdf-tools.app/">
+    
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "PDF Tools",
+      "alternateName": "Professional PDF Processing Tools",
+      "description": "Free online PDF tools for professionals. Merge, split, rotate, encrypt, decrypt and resize PDF files securely with privacy-first processing.",
+      "url": "https://pdf-tools.app/",
+      "applicationCategory": "BusinessApplication",
+      "operatingSystem": "Web Browser",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "featureList": [
+        "Merge multiple PDF files",
+        "Split PDF by page range", 
+        "Rotate PDF pages",
+        "Password protect PDFs",
+        "Remove PDF passwords",
+        "Resize and compress PDF files",
+        "Privacy-first processing",
+        "No file storage",
+        "In-memory processing"
+      ],
+      "screenshot": "https://pdf-tools.app/assets/screenshot.jpg",
+      "softwareVersion": "1.0.0",
+      "datePublished": "2024-01-01",
+      "author": {
+        "@type": "Organization",
+        "name": "PDF Tools"
+      },
+      "provider": {
+        "@type": "Organization", 
+        "name": "PDF Tools"
+      }
+    }
+    </script>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#eff6ff',
+                            100: '#dbeafe', 
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            900: '#1e3a8a'
+                        },
+                        secondary: '#1E40AF',
+                        success: '#10B981',
+                        danger: '#EF4444',
+                        warning: '#F59E0B',
+                    },
+                    fontFamily: {
+                        'inter': ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+                    },
+                    boxShadow: {
+                        'soft': '0 2px 15px -3px rgba(0, 0, 0, 0.07), 0 10px 20px -2px rgba(0, 0, 0, 0.04)',
+                        'medium': '0 4px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
+                        'strong': '0 10px 25px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'slide-up': 'slideUp 0.4s ease-out',
+                        'fade-in': 'fadeIn 0.5s ease-out',
+                        'scale-in': 'scaleIn 0.3s ease-out',
+                        'bounce-subtle': 'bounceSubtle 2s infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        },
+                        slideUp: {
+                            'from': { transform: 'translateY(20px)', opacity: '0' },
+                            'to': { transform: 'translateY(0px)', opacity: '1' },
+                        },
+                        fadeIn: {
+                            'from': { opacity: '0' },
+                            'to': { opacity: '1' },
+                        },
+                        scaleIn: {
+                            'from': { transform: 'scale(0.95)', opacity: '0' },
+                            'to': { transform: 'scale(1)', opacity: '1' },
+                        },
+                        bounceSubtle: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-5px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+        }
+        
+        .drag-over {
+            @apply border-primary-500 bg-primary-50 shadow-medium;
+            transform: scale(1.02);
+        }
+        
+        .file-input {
+            @apply hidden;
+        }
+        
+        .upload-area {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .upload-area:hover {
+            @apply border-primary-300 bg-gradient-to-br from-gray-50 to-blue-50 shadow-soft;
+            transform: translateY(-2px);
+        }
+        
+        .tool-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .tool-card:hover {
+            transform: translateY(-4px);
+            @apply shadow-medium;
+        }
+        
+        .tool-card.active {
+            @apply shadow-strong;
+            transform: translateY(-2px);
+        }
+        
+        .glass-effect {
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.8);
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .text-gradient {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 3px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        
+        /* Focus styles for accessibility */
+        .focus-visible:focus {
+            @apply outline-none ring-2 ring-primary-500 ring-offset-2;
+        }
+        
+        /* Loading animation */
+        .loading-dots {
+            animation: loading-dots 1.4s infinite ease-in-out;
+        }
+        
+        .loading-dots:nth-child(1) { animation-delay: -0.32s; }
+        .loading-dots:nth-child(2) { animation-delay: -0.16s; }
+        
+        @keyframes loading-dots {
+            0%, 80%, 100% { 
+                transform: scale(0);
+                opacity: 0.5;
+            } 
+            40% { 
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 min-h-screen font-inter" x-data="pdfTools()" x-init="init()">
+    <!-- Skip to main content for accessibility -->
+    <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-primary-600 text-white px-4 py-2 rounded-lg z-50">
+        Skip to main content
+    </a>
+    
+    <!-- Header -->
+    <header class="sticky top-0 z-40 glass-effect border-b border-white/20 shadow-soft" role="banner">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center space-x-4 animate-fade-in">
+                    <div class="relative">
+                        <i class="fas fa-file-pdf text-4xl text-red-500 animate-bounce-subtle"></i>
+                        <div class="absolute -top-1 -right-1 w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
+                    </div>
+                    <div>
+                        <h1 class="text-3xl font-bold bg-gradient-to-r from-gray-900 via-blue-900 to-purple-900 bg-clip-text text-transparent">
+                            PDF Tools
+                        </h1>
+                        <p class="text-sm text-gray-600 font-medium">Professional PDF Processing Platform</p>
+                    </div>
+                </div>
+                
+                <nav class="flex items-center space-x-3" role="navigation" aria-label="Header navigation">
+                    <!-- Privacy Badge -->
+                    <button 
+                        @click="showPrivacy = true"
+                        class="group bg-green-100 hover:bg-green-200 text-green-800 px-4 py-2 rounded-full text-sm font-semibold transition-all duration-300 hover:shadow-medium hover:scale-105 focus-visible"
+                        aria-label="View privacy information"
+                        type="button"
+                    >
+                        <i class="fas fa-shield-alt mr-2 group-hover:rotate-12 transition-transform duration-300"></i>
+                        <span class="hidden sm:inline">Privacy First</span>
+                        <span class="sm:hidden">Private</span>
+                    </button>
+                    
+                    <!-- Backend Status Indicator -->
+                    <div x-show="backendStatus.checked" class="flex items-center space-x-2 animate-slide-up">
+                        <div x-show="backendStatus.available" class="flex items-center bg-green-100 text-green-800 px-3 py-2 rounded-full text-xs font-semibold shadow-soft">
+                            <div class="w-2 h-2 bg-green-500 rounded-full mr-2 animate-pulse"></div>
+                            <span class="hidden sm:inline">Backend Online</span>
+                            <span class="sm:hidden">Online</span>
+                        </div>
+                        <div x-show="!backendStatus.available" class="flex items-center bg-red-100 text-red-800 px-3 py-2 rounded-full text-xs font-semibold shadow-soft">
+                            <div class="w-2 h-2 bg-red-500 rounded-full mr-2 animate-pulse"></div>
+                            <span class="hidden sm:inline">Backend Offline</span>
+                            <span class="sm:hidden">Offline</span>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Backend Setup Modal -->
+    <div x-show="backendStatus.checked && !backendStatus.available" x-cloak class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-white rounded-lg p-6 max-w-lg mx-4">
+            <div class="flex items-center mb-4">
+                <i class="fas fa-exclamation-triangle text-red-600 text-xl mr-2"></i>
+                <h3 class="text-lg font-semibold">Backend Server Required</h3>
+            </div>
+            <div class="text-gray-700 space-y-3 mb-6">
+                <p><strong>The PDF Tools backend server is not running.</strong></p>
+                <p>To use PDF tools, you need to start both the frontend and backend servers:</p>
+                <div class="bg-gray-100 p-3 rounded text-sm font-mono">
+                    <div class="mb-2">1. Start the backend server:</div>
+                    <div class="text-blue-600">python -m uvicorn backend.main:app --reload --host 0.0.0.0 --port 8000</div>
+                    <div class="mt-2 mb-2">2. Start the frontend server:</div>
+                    <div class="text-blue-600">cd frontend && python -m http.server 3000</div>
+                </div>
+                <div x-show="window.location.hostname.includes('.preview.app.github.dev') || window.location.hostname.includes('.app.github.dev')" class="bg-blue-50 p-3 rounded text-sm">
+                    <div class="font-semibold text-blue-800 mb-1">GitHub Codespaces:</div>
+                    <div class="text-blue-700">Make sure both ports 3000 and 8000 are forwarded and set to <strong>public visibility</strong> in the Ports tab.</div>
+                </div>
+                <p class="text-sm text-gray-600">See the README.md file for complete setup instructions.</p>
+            </div>
+            <div class="flex space-x-3">
+                <button 
+                    @click="checkBackendConnection()" 
+                    class="flex-1 bg-primary-500 text-white py-2 rounded-lg hover:bg-primary-600 transition-colors"
+                >
+                    <i class="fas fa-sync mr-1"></i>
+                    Retry Connection
+                </button>
+                <button 
+                    @click="backendStatus.checked = false" 
+                    class="flex-1 bg-gray-300 text-gray-700 py-2 rounded-lg hover:bg-gray-400 transition-colors"
+                >
+                    Continue Anyway
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Privacy Modal -->
+    <div x-show="showPrivacy" x-cloak class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-white rounded-lg p-6 max-w-md mx-4">
+            <div class="flex items-center mb-4">
+                <i class="fas fa-shield-alt text-green-600 text-xl mr-2"></i>
+                <h3 class="text-lg font-semibold">Privacy & Security</h3>
+            </div>
+            <div class="text-gray-700 space-y-2 mb-4">
+                <p><strong>🔒 Files are processed in memory and never stored.</strong></p>
+                <p>All uploaded files are processed entirely in memory and are automatically discarded after processing.</p>
+                <p>No files or user data are stored on our servers.</p>
+                <p>All processing happens server-side with secure, temporary memory allocation.</p>
+            </div>
+            <button 
+                @click="showPrivacy = false" 
+                class="w-full bg-primary-500 text-white py-2 rounded-lg hover:bg-primary-600 transition-colors font-semibold"
+            >
+                Got it!
+            </button>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main id="main-content" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8" role="main">
+        
+        <!-- Hero Section -->
+        <section class="text-center mb-12 animate-fade-in">
+            <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4 leading-tight">
+                Professional <span class="text-gradient">PDF Processing</span>
+            </h2>
+            <p class="text-xl text-gray-600 mb-6 max-w-3xl mx-auto leading-relaxed">
+                Merge, split, rotate, encrypt and decrypt PDF files with our secure, privacy-first platform. 
+                All processing happens in memory with zero data retention.
+            </p>
+            <div class="flex flex-wrap justify-center gap-4 text-sm text-gray-500 mb-8">
+                <div class="flex items-center space-x-2 bg-white/60 px-4 py-2 rounded-full shadow-soft">
+                    <i class="fas fa-lock text-green-500"></i>
+                    <span>Zero Storage</span>
+                </div>
+                <div class="flex items-center space-x-2 bg-white/60 px-4 py-2 rounded-full shadow-soft">
+                    <i class="fas fa-zap text-yellow-500"></i>
+                    <span>Fast Processing</span>
+                </div>
+                <div class="flex items-center space-x-2 bg-white/60 px-4 py-2 rounded-full shadow-soft">
+                    <i class="fas fa-shield-alt text-blue-500"></i>
+                    <span>Secure & Private</span>
+                </div>
+                <div class="flex items-center space-x-2 bg-white/60 px-4 py-2 rounded-full shadow-soft">
+                    <i class="fas fa-mobile-alt text-purple-500"></i>
+                    <span>Mobile Friendly</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tool Selection -->
+        <section class="mb-8" aria-labelledby="tool-selection-heading">
+            <h3 id="tool-selection-heading" class="text-2xl font-bold text-gray-900 mb-6 text-center">Choose Your PDF Tool</h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                <button 
+                    @click="setTool('merge')" 
+                    :class="currentTool === 'merge' ? 'bg-gradient-to-br from-primary-500 to-primary-600 text-white shadow-strong tool-card active' : 'bg-white/80 text-gray-700 hover:bg-white border border-gray-200 tool-card'"
+                    class="p-6 rounded-xl flex flex-col items-center space-y-3 transition-all duration-300 focus-visible"
+                    :aria-pressed="currentTool === 'merge'"
+                    aria-label="Select merge PDF tool"
+                    type="button"
+                >
+                    <i class="fas fa-compress-arrows-alt text-3xl" :class="currentTool === 'merge' ? 'text-white' : 'text-primary-500'"></i>
+                    <span class="font-semibold text-sm">Merge PDFs</span>
+                    <span class="text-xs opacity-75 text-center">Combine multiple files</span>
+                </button>
+                
+                <button 
+                    @click="setTool('split')" 
+                    :class="currentTool === 'split' ? 'bg-gradient-to-br from-primary-500 to-primary-600 text-white shadow-strong tool-card active' : 'bg-white/80 text-gray-700 hover:bg-white border border-gray-200 tool-card'"
+                    class="p-6 rounded-xl flex flex-col items-center space-y-3 transition-all duration-300 focus-visible"
+                    :aria-pressed="currentTool === 'split'"
+                    aria-label="Select split PDF tool"
+                    type="button"
+                >
+                    <i class="fas fa-cut text-3xl" :class="currentTool === 'split' ? 'text-white' : 'text-green-500'"></i>
+                    <span class="font-semibold text-sm">Split PDF</span>
+                    <span class="text-xs opacity-75 text-center">Extract page ranges</span>
+                </button>
+                
+                <button 
+                    @click="setTool('rotate')" 
+                    :class="currentTool === 'rotate' ? 'bg-gradient-to-br from-primary-500 to-primary-600 text-white shadow-strong tool-card active' : 'bg-white/80 text-gray-700 hover:bg-white border border-gray-200 tool-card'"
+                    class="p-6 rounded-xl flex flex-col items-center space-y-3 transition-all duration-300 focus-visible"
+                    :aria-pressed="currentTool === 'rotate'"
+                    aria-label="Select rotate PDF tool"
+                    type="button"
+                >
+                    <i class="fas fa-redo text-3xl" :class="currentTool === 'rotate' ? 'text-white' : 'text-orange-500'"></i>
+                    <span class="font-semibold text-sm">Rotate PDF</span>
+                    <span class="text-xs opacity-75 text-center">Rotate all pages</span>
+                </button>
+                
+                <button 
+                    @click="setTool('encrypt')" 
+                    :class="currentTool === 'encrypt' ? 'bg-gradient-to-br from-primary-500 to-primary-600 text-white shadow-strong tool-card active' : 'bg-white/80 text-gray-700 hover:bg-white border border-gray-200 tool-card'"
+                    class="p-6 rounded-xl flex flex-col items-center space-y-3 transition-all duration-300 focus-visible"
+                    :aria-pressed="currentTool === 'encrypt'"
+                    aria-label="Select encrypt PDF tool"
+                    type="button"
+                >
+                    <i class="fas fa-lock text-3xl" :class="currentTool === 'encrypt' ? 'text-white' : 'text-red-500'"></i>
+                    <span class="font-semibold text-sm">Encrypt PDF</span>
+                    <span class="text-xs opacity-75 text-center">Password protect</span>
+                </button>
+                
+                <button 
+                    @click="setTool('decrypt')" 
+                    :class="currentTool === 'decrypt' ? 'bg-gradient-to-br from-primary-500 to-primary-600 text-white shadow-strong tool-card active' : 'bg-white/80 text-gray-700 hover:bg-white border border-gray-200 tool-card'"
+                    class="p-6 rounded-xl flex flex-col items-center space-y-3 transition-all duration-300 focus-visible"
+                    :aria-pressed="currentTool === 'decrypt'"
+                    aria-label="Select decrypt PDF tool"
+                    type="button"
+                >
+                    <i class="fas fa-unlock text-3xl" :class="currentTool === 'decrypt' ? 'text-white' : 'text-purple-500'"></i>
+                    <span class="font-semibold text-sm">Decrypt PDF</span>
+                    <span class="text-xs opacity-75 text-center">Remove passwords</span>
+                </button>
+                
+                <button 
+                    @click="setTool('resize')" 
+                    :class="currentTool === 'resize' ? 'bg-gradient-to-br from-primary-500 to-primary-600 text-white shadow-strong tool-card active' : 'bg-white/80 text-gray-700 hover:bg-white border border-gray-200 tool-card'"
+                    class="p-6 rounded-xl flex flex-col items-center space-y-3 transition-all duration-300 focus-visible"
+                    :aria-pressed="currentTool === 'resize'"
+                    aria-label="Select resize PDF tool"
+                    type="button"
+                >
+                    <i class="fas fa-compress-alt text-3xl" :class="currentTool === 'resize' ? 'text-white' : 'text-teal-500'"></i>
+                    <span class="font-semibold text-sm">Resize PDF</span>
+                    <span class="text-xs opacity-75 text-center">Compress file size</span>
+                </button>
+                
+                <button 
+                    @click="setTool('signature')" 
+                    :class="currentTool === 'signature' ? 'bg-gradient-to-br from-primary-500 to-primary-600 text-white shadow-strong tool-card active' : 'bg-white/80 text-gray-700 hover:bg-white border border-gray-200 tool-card'"
+                    class="p-6 rounded-xl flex flex-col items-center space-y-3 transition-all duration-300 focus-visible"
+                    :aria-pressed="currentTool === 'signature'"
+                    aria-label="Select signature PDF tool"
+                    type="button"
+                >
+                    <i class="fas fa-signature text-3xl" :class="currentTool === 'signature' ? 'text-white' : 'text-purple-500'"></i>
+                    <span class="font-semibold text-sm">Add Signature</span>
+                    <span class="text-xs opacity-75 text-center">Sign documents</span>
+                </button>
+                
+                <button 
+                    @click="setTool('watermark')" 
+                    :class="currentTool === 'watermark' ? 'bg-gradient-to-br from-primary-500 to-primary-600 text-white shadow-strong tool-card active' : 'bg-white/80 text-gray-700 hover:bg-white border border-gray-200 tool-card'"
+                    class="p-6 rounded-xl flex flex-col items-center space-y-3 transition-all duration-300 focus-visible"
+                    :aria-pressed="currentTool === 'watermark'"
+                    aria-label="Select watermark PDF tool"
+                    type="button"
+                >
+                    <i class="fas fa-water text-3xl" :class="currentTool === 'watermark' ? 'text-white' : 'text-indigo-500'"></i>
+                    <span class="font-semibold text-sm">Add Watermark</span>
+                    <span class="text-xs opacity-75 text-center">Brand documents</span>
+                </button>
+                
+                <button 
+                    @click="setTool('extract')" 
+                    :class="currentTool === 'extract' ? 'bg-gradient-to-br from-primary-500 to-primary-600 text-white shadow-strong tool-card active' : 'bg-white/80 text-gray-700 hover:bg-white border border-gray-200 tool-card'"
+                    class="p-6 rounded-xl flex flex-col items-center space-y-3 transition-all duration-300 focus-visible"
+                    :aria-pressed="currentTool === 'extract'"
+                    aria-label="Select page extract PDF tool"
+                    type="button"
+                >
+                    <i class="fas fa-file-export text-3xl" :class="currentTool === 'extract' ? 'text-white' : 'text-pink-500'"></i>
+                    <span class="font-semibold text-sm">Extract Pages</span>
+                    <span class="text-xs opacity-75 text-center">Extract specific pages</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- Tool Content -->
+        <section class="bg-white/80 backdrop-blur-sm rounded-2xl shadow-soft border border-white/20 p-8" aria-live="polite" aria-atomic="true">
+            
+            <!-- Error/Success Message Display -->
+            <div x-show="message.show" x-cloak 
+                 :class="message.type === 'error' ? 'bg-red-50 border-red-200 text-red-800' : 'bg-green-50 border-green-200 text-green-800'"
+                 class="mb-6 p-4 rounded-xl border-2 shadow-soft" 
+                 x-transition:enter="transition ease-out duration-300"
+                 x-transition:enter-start="opacity-0 scale-95"
+                 x-transition:enter-end="opacity-100 scale-100"
+                 x-transition:leave="transition ease-in duration-200"
+                 x-transition:leave-start="opacity-100 scale-100"
+                 x-transition:leave-end="opacity-0 scale-95">
+                <div class="flex items-start space-x-3">
+                    <i :class="message.type === 'error' ? 'fas fa-exclamation-triangle text-red-500' : 'fas fa-check-circle text-green-500'" class="text-xl flex-shrink-0 mt-0.5"></i>
+                    <div>
+                        <h4 x-text="message.type === 'error' ? 'Oops! Something went wrong' : 'Success!'" class="font-semibold mb-1"></h4>
+                        <p x-text="message.text" class="text-sm leading-relaxed"></p>
+                        <button @click="message.show = false" 
+                                class="mt-2 text-xs underline hover:no-underline focus:outline-none"
+                                :class="message.type === 'error' ? 'text-red-600 hover:text-red-700' : 'text-green-600 hover:text-green-700'">
+                            Dismiss
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <!-- Merge Tool -->
+            <div x-show="currentTool === 'merge'" x-cloak class="animate-scale-in" x-transition>
+                <header class="mb-6">
+                    <h3 class="text-2xl font-bold text-gray-900 mb-3 flex items-center">
+                        <i class="fas fa-compress-arrows-alt mr-3 text-primary-500"></i>
+                        Merge Multiple PDFs
+                    </h3>
+                    <p class="text-gray-600 leading-relaxed">
+                        Combine multiple PDF files into a single document. Upload at least 2 files to merge them in the order you specify.
+                    </p>
+                </header>
+                
+                <div 
+                    @drop.prevent="handleDrop($event, 'merge')"
+                    @dragover.prevent
+                    @dragenter.prevent="dragOver = true"
+                    @dragleave.prevent="dragOver = false"
+                    :class="dragOver ? 'drag-over' : ''"
+                    class="upload-area border-2 border-dashed border-gray-300 rounded-2xl p-12 text-center cursor-pointer group"
+                    @click="$refs.mergeFiles.click()"
+                    role="button"
+                    tabindex="0"
+                    @keydown.enter="$refs.mergeFiles.click()"
+                    @keydown.space.prevent="$refs.mergeFiles.click()"
+                    aria-label="Upload PDF files for merging"
+                >
+                    <div class="space-y-4">
+                        <i class="fas fa-cloud-upload-alt text-6xl text-gray-400 group-hover:text-primary-500 transition-colors duration-300"></i>
+                        <div>
+                            <p class="text-xl font-semibold text-gray-700 mb-2">Drop PDF files here or click to browse</p>
+                            <p class="text-sm text-gray-500">Support for multiple files, max 20MB each</p>
+                        </div>
+                        <div class="flex justify-center space-x-2 text-xs text-gray-400">
+                            <span class="flex items-center space-x-1">
+                                <i class="fas fa-file-pdf"></i>
+                                <span>PDF Only</span>
+                            </span>
+                            <span class="flex items-center space-x-1">
+                                <i class="fas fa-weight-hanging"></i>
+                                <span>20MB Max</span>
+                            </span>
+                            <span class="flex items-center space-x-1">
+                                <i class="fas fa-layer-group"></i>
+                                <span>Multiple Files</span>
+                            </span>
+                        </div>
+                    </div>
+                    <input 
+                        type="file" 
+                        x-ref="mergeFiles" 
+                        multiple 
+                        accept="application/pdf" 
+                        @change="handleFileSelect($event, 'merge')" 
+                        class="file-input"
+                        aria-label="Select PDF files to merge"
+                    >
+                </div>
+
+                <div x-show="files.merge.length > 0" class="mt-6 animate-slide-up" x-transition>
+                    <h4 class="font-semibold text-gray-900 mb-4 flex items-center">
+                        <i class="fas fa-list mr-2 text-gray-500"></i>
+                        Selected Files 
+                        <span class="ml-2 bg-primary-100 text-primary-800 px-2 py-1 rounded-full text-xs font-bold" x-text="files.merge.length"></span>
+                    </h4>
+                    <div class="space-y-3 max-h-64 overflow-y-auto pr-2">
+                        <template x-for="(file, index) in files.merge" :key="index">
+                            <div class="flex items-center justify-between bg-gray-50/80 hover:bg-gray-100/80 p-4 rounded-xl border border-gray-200 transition-colors group">
+                                <div class="flex items-center space-x-4 flex-1 min-w-0">
+                                    <div class="flex-shrink-0">
+                                        <i class="fas fa-file-pdf text-red-500 text-xl"></i>
+                                    </div>
+                                    <div class="min-w-0 flex-1">
+                                        <p x-text="file.name" class="text-sm font-medium text-gray-900 truncate"></p>
+                                        <p x-text="formatFileSize(file.size)" class="text-xs text-gray-500"></p>
+                                    </div>
+                                    <div class="flex-shrink-0 text-xs text-gray-400">
+                                        #<span x-text="index + 1"></span>
+                                    </div>
+                                </div>
+                                <button 
+                                    @click="removeFile('merge', index)" 
+                                    class="flex-shrink-0 ml-4 text-gray-400 hover:text-red-600 transition-colors p-2 rounded-lg hover:bg-red-50 group-hover:opacity-100 opacity-0 focus-visible"
+                                    :aria-label="'Remove file ' + file.name"
+                                    type="button"
+                                >
+                                    <i class="fas fa-times text-sm"></i>
+                                </button>
+                            </div>
+                        </template>
+                    </div>
+                    
+                    <div class="mt-4 p-4 bg-blue-50/50 rounded-xl border border-blue-200">
+                        <p class="text-sm text-blue-800 flex items-center">
+                            <i class="fas fa-info-circle mr-2"></i>
+                            Files will be merged in the order shown above. Drag to reorder if needed.
+                        </p>
+                    </div>
+                </div>
+
+                <button 
+                    @click="processFiles('merge')"
+                    :disabled="files.merge.length < 2 || loading"
+                    :class="files.merge.length < 2 || loading ? 'bg-gray-300 cursor-not-allowed text-gray-500' : 'bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 text-white shadow-medium hover:shadow-strong'"
+                    class="w-full mt-8 py-4 font-semibold rounded-xl transition-all duration-300 transform hover:scale-[1.02] focus-visible disabled:transform-none disabled:hover:shadow-none"
+                    :aria-label="files.merge.length < 2 ? 'Upload at least 2 files to merge' : 'Merge selected PDF files'"
+                    type="button"
+                >
+                    <span x-show="!loading" class="flex items-center justify-center space-x-2">
+                        <i class="fas fa-compress-arrows-alt"></i>
+                        <span>Merge <span x-text="files.merge.length"></span> PDFs</span>
+                    </span>
+                    <span x-show="loading" class="flex items-center justify-center space-x-2">
+                        <svg class="animate-spin h-5 w-5" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        <span>Processing...</span>
+                    </span>
+                </button>
+            </div>
+
+            <!-- Split Tool -->
+            <div x-show="currentTool === 'split'" x-cloak>
+                <h3 class="text-lg font-semibold text-gray-900 mb-4">
+                    <i class="fas fa-cut mr-2"></i>
+                    Split PDF by Page Range
+                </h3>
+                <p class="text-gray-600 mb-6">Extract specific pages from your PDF. Enter the page range you want to keep.</p>
+                
+                <div 
+                    @drop.prevent="handleDrop($event, 'split')"
+                    @dragover.prevent
+                    @dragenter.prevent="dragOver = true"
+                    @dragleave.prevent="dragOver = false"
+                    :class="dragOver ? 'drag-over' : ''"
+                    class="upload-area border-2 border-dashed border-gray-300 rounded-lg p-8 text-center cursor-pointer"
+                    @click="$refs.splitFile.click()"
+                >
+                    <i class="fas fa-cloud-upload-alt text-4xl text-gray-400 mb-4"></i>
+                    <p class="text-lg font-medium text-gray-700 mb-2">Drop a PDF file here or click to browse</p>
+                    <p class="text-sm text-gray-500">Single PDF file, max 20MB</p>
+                    <input type="file" x-ref="splitFile" accept="application/pdf" @change="handleFileSelect($event, 'split')" class="file-input">
+                </div>
+
+                <div x-show="files.split.length > 0" class="mt-6 space-y-4">
+                    <div class="flex items-center space-x-3 bg-gray-50 p-3 rounded-lg">
+                        <i class="fas fa-file-pdf text-red-600"></i>
+                        <span x-text="files.split[0]?.name" class="text-sm font-medium"></span>
+                        <span x-text="formatFileSize(files.split[0]?.size)" class="text-xs text-gray-500"></span>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Start Page</label>
+                            <input 
+                                type="number" 
+                                x-model="splitOptions.start" 
+                                min="1" 
+                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                                placeholder="1"
+                            >
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">End Page</label>
+                            <input 
+                                type="number" 
+                                x-model="splitOptions.end" 
+                                min="1" 
+                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                                placeholder="10"
+                            >
+                        </div>
+                    </div>
+                </div>
+
+                <button 
+                    @click="processFiles('split')"
+                    :disabled="files.split.length === 0 || !splitOptions.start || !splitOptions.end || loading"
+                    :class="files.split.length === 0 || !splitOptions.start || !splitOptions.end || loading ? 'bg-gray-300 cursor-not-allowed text-gray-500' : 'bg-primary-500 hover:bg-primary-600 text-white'"
+                    class="w-full mt-6 py-3 font-medium rounded-lg transition-colors"
+                >
+                    <span x-show="!loading">
+                        <i class="fas fa-cut mr-2"></i>
+                        Split PDF
+                    </span>
+                    <span x-show="loading">
+                        <i class="fas fa-spinner fa-spin mr-2"></i>
+                        Processing...
+                    </span>
+                </button>
+            </div>
+
+            <!-- Rotate Tool -->
+            <div x-show="currentTool === 'rotate'" x-cloak>
+                <h3 class="text-lg font-semibold text-gray-900 mb-4">
+                    <i class="fas fa-redo mr-2"></i>
+                    Rotate PDF Pages
+                </h3>
+                <p class="text-gray-600 mb-6">Rotate all pages in your PDF document by 90, 180, or 270 degrees.</p>
+                
+                <div 
+                    @drop.prevent="handleDrop($event, 'rotate')"
+                    @dragover.prevent
+                    @dragenter.prevent="dragOver = true"
+                    @dragleave.prevent="dragOver = false"
+                    :class="dragOver ? 'drag-over' : ''"
+                    class="upload-area border-2 border-dashed border-gray-300 rounded-lg p-8 text-center cursor-pointer"
+                    @click="$refs.rotateFile.click()"
+                >
+                    <i class="fas fa-cloud-upload-alt text-4xl text-gray-400 mb-4"></i>
+                    <p class="text-lg font-medium text-gray-700 mb-2">Drop a PDF file here or click to browse</p>
+                    <p class="text-sm text-gray-500">Single PDF file, max 20MB</p>
+                    <input type="file" x-ref="rotateFile" accept="application/pdf" @change="handleFileSelect($event, 'rotate')" class="file-input">
+                </div>
+
+                <div x-show="files.rotate.length > 0" class="mt-6 space-y-4">
+                    <div class="flex items-center space-x-3 bg-gray-50 p-3 rounded-lg">
+                        <i class="fas fa-file-pdf text-red-600"></i>
+                        <span x-text="files.rotate[0]?.name" class="text-sm font-medium"></span>
+                        <span x-text="formatFileSize(files.rotate[0]?.size)" class="text-xs text-gray-500"></span>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-3">Rotation Angle</label>
+                        <div class="grid grid-cols-3 gap-3">
+                            <button 
+                                @click="rotateOptions.angle = 90"
+                                :class="rotateOptions.angle === 90 ? 'bg-primary-500 text-white border-primary-500' : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'"
+                                class="p-3 border-2 rounded-lg text-center transition-all"
+                            >
+                                <i class="fas fa-redo text-xl mb-1"></i>
+                                <div class="text-sm font-medium">90°</div>
+                            </button>
+                            <button 
+                                @click="rotateOptions.angle = 180"
+                                :class="rotateOptions.angle === 180 ? 'bg-primary-500 text-white border-primary-500' : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'"
+                                class="p-3 border-2 rounded-lg text-center transition-all"
+                            >
+                                <i class="fas fa-sync text-xl mb-1"></i>
+                                <div class="text-sm font-medium">180°</div>
+                            </button>
+                            <button 
+                                @click="rotateOptions.angle = 270"
+                                :class="rotateOptions.angle === 270 ? 'bg-primary-500 text-white border-primary-500' : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'"
+                                class="p-3 border-2 rounded-lg text-center transition-all"
+                            >
+                                <i class="fas fa-undo text-xl mb-1"></i>
+                                <div class="text-sm font-medium">270°</div>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <button 
+                    @click="processFiles('rotate')"
+                    :disabled="files.rotate.length === 0 || !rotateOptions.angle || loading"
+                    :class="files.rotate.length === 0 || !rotateOptions.angle || loading ? 'bg-gray-300 cursor-not-allowed text-gray-500' : 'bg-primary-500 hover:bg-primary-600 text-white'"
+                    class="w-full mt-6 py-3 font-medium rounded-lg transition-colors"
+                >
+                    <span x-show="!loading">
+                        <i class="fas fa-redo mr-2"></i>
+                        Rotate PDF
+                    </span>
+                    <span x-show="loading">
+                        <i class="fas fa-spinner fa-spin mr-2"></i>
+                        Processing...
+                    </span>
+                </button>
+            </div>
+
+            <!-- Encrypt Tool -->
+            <div x-show="currentTool === 'encrypt'" x-cloak>
+                <h3 class="text-lg font-semibold text-gray-900 mb-4">
+                    <i class="fas fa-lock mr-2"></i>
+                    Encrypt PDF with Password
+                </h3>
+                <p class="text-gray-600 mb-6">Protect your PDF with a password. The encrypted file will require the password to open.</p>
+                
+                <div 
+                    @drop.prevent="handleDrop($event, 'encrypt')"
+                    @dragover.prevent
+                    @dragenter.prevent="dragOver = true"
+                    @dragleave.prevent="dragOver = false"
+                    :class="dragOver ? 'drag-over' : ''"
+                    class="upload-area border-2 border-dashed border-gray-300 rounded-lg p-8 text-center cursor-pointer"
+                    @click="$refs.encryptFile.click()"
+                >
+                    <i class="fas fa-cloud-upload-alt text-4xl text-gray-400 mb-4"></i>
+                    <p class="text-lg font-medium text-gray-700 mb-2">Drop a PDF file here or click to browse</p>
+                    <p class="text-sm text-gray-500">Single PDF file, max 20MB</p>
+                    <input type="file" x-ref="encryptFile" accept="application/pdf" @change="handleFileSelect($event, 'encrypt')" class="file-input">
+                </div>
+
+                <div x-show="files.encrypt.length > 0" class="mt-6 space-y-4">
+                    <div class="flex items-center space-x-3 bg-gray-50 p-3 rounded-lg">
+                        <i class="fas fa-file-pdf text-red-600"></i>
+                        <span x-text="files.encrypt[0]?.name" class="text-sm font-medium"></span>
+                        <span x-text="formatFileSize(files.encrypt[0]?.size)" class="text-xs text-gray-500"></span>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Password</label>
+                        <input 
+                            type="password" 
+                            x-model="encryptOptions.password" 
+                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                            placeholder="Enter a strong password (min. 4 characters)"
+                            minlength="4"
+                        >
+                        <p class="text-xs text-gray-500 mt-1">Password must be at least 4 characters long</p>
+                    </div>
+                </div>
+
+                <button 
+                    @click="processFiles('encrypt')"
+                    :disabled="files.encrypt.length === 0 || !encryptOptions.password || encryptOptions.password.length < 4 || loading"
+                    :class="files.encrypt.length === 0 || !encryptOptions.password || encryptOptions.password.length < 4 || loading ? 'bg-gray-300 cursor-not-allowed text-gray-500' : 'bg-primary-500 hover:bg-primary-600 text-white'"
+                    class="w-full mt-6 py-3 font-medium rounded-lg transition-colors"
+                >
+                    <span x-show="!loading">
+                        <i class="fas fa-lock mr-2"></i>
+                        Encrypt PDF
+                    </span>
+                    <span x-show="loading">
+                        <i class="fas fa-spinner fa-spin mr-2"></i>
+                        Processing...
+                    </span>
+                </button>
+            </div>
+
+            <!-- Decrypt Tool -->
+            <div x-show="currentTool === 'decrypt'" x-cloak>
+                <h3 class="text-lg font-semibold text-gray-900 mb-4">
+                    <i class="fas fa-unlock mr-2"></i>
+                    Decrypt Password-Protected PDF
+                </h3>
+                <p class="text-gray-600 mb-6">Remove password protection from your PDF. You'll need the current password.</p>
+                
+                <div 
+                    @drop.prevent="handleDrop($event, 'decrypt')"
+                    @dragover.prevent
+                    @dragenter.prevent="dragOver = true"
+                    @dragleave.prevent="dragOver = false"
+                    :class="dragOver ? 'drag-over' : ''"
+                    class="upload-area border-2 border-dashed border-gray-300 rounded-lg p-8 text-center cursor-pointer"
+                    @click="$refs.decryptFile.click()"
+                >
+                    <i class="fas fa-cloud-upload-alt text-4xl text-gray-400 mb-4"></i>
+                    <p class="text-lg font-medium text-gray-700 mb-2">Drop a PDF file here or click to browse</p>
+                    <p class="text-sm text-gray-500">Single encrypted PDF file, max 20MB</p>
+                    <input type="file" x-ref="decryptFile" accept="application/pdf" @change="handleFileSelect($event, 'decrypt')" class="file-input">
+                </div>
+
+                <div x-show="files.decrypt.length > 0" class="mt-6 space-y-4">
+                    <div class="flex items-center space-x-3 bg-gray-50 p-3 rounded-lg">
+                        <i class="fas fa-file-pdf text-red-600"></i>
+                        <span x-text="files.decrypt[0]?.name" class="text-sm font-medium"></span>
+                        <span x-text="formatFileSize(files.decrypt[0]?.size)" class="text-xs text-gray-500"></span>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Password</label>
+                        <input 
+                            type="password" 
+                            x-model="decryptOptions.password" 
+                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                            placeholder="Enter the PDF password"
+                        >
+                    </div>
+                </div>
+
+                <button 
+                    @click="processFiles('decrypt')"
+                    :disabled="files.decrypt.length === 0 || !decryptOptions.password || loading"
+                    :class="files.decrypt.length === 0 || !decryptOptions.password || loading ? 'bg-gray-300 cursor-not-allowed text-gray-500' : 'bg-primary-500 hover:bg-primary-600 text-white'"
+                    class="w-full mt-6 py-3 font-medium rounded-lg transition-colors"
+                >
+                    <span x-show="!loading">
+                        <i class="fas fa-unlock mr-2"></i>
+                        Decrypt PDF
+                    </span>
+                    <span x-show="loading">
+                        <i class="fas fa-spinner fa-spin mr-2"></i>
+                        Processing...
+                    </span>
+                </button>
+            </div>
+
+            <!-- Resize Tool -->
+            <div x-show="currentTool === 'resize'" x-cloak class="animate-scale-in" x-transition>
+                <header class="mb-6">
+                    <h3 class="text-2xl font-bold text-gray-900 mb-3 flex items-center">
+                        <i class="fas fa-compress-alt mr-3 text-teal-500"></i>
+                        Resize PDF - Compress File Size
+                    </h3>
+                    <p class="text-gray-600 leading-relaxed">
+                        Reduce the file size of your PDF documents while maintaining quality. Perfect for optimizing files for web sharing, email attachments, or storage.
+                    </p>
+                </header>
+                
+                <div 
+                    @drop.prevent="handleDrop($event, 'resize')"
+                    @dragover.prevent
+                    @dragenter.prevent="dragOver = true"
+                    @dragleave.prevent="dragOver = false"
+                    :class="dragOver ? 'drag-over' : ''"
+                    class="upload-area border-2 border-dashed border-gray-300 rounded-xl p-8 text-center cursor-pointer transition-all duration-300"
+                    @click="$refs.resizeFile.click()"
+                >
+                    <i class="fas fa-cloud-upload-alt text-4xl text-gray-400 mb-4"></i>
+                    <p class="text-lg font-medium text-gray-700 mb-2">Drop a PDF file here or click to browse</p>
+                    <p class="text-sm text-gray-500">Single PDF file, max 20MB</p>
+                    <input type="file" x-ref="resizeFile" accept="application/pdf" @change="handleFileSelect($event, 'resize')" class="file-input">
+                </div>
+
+                <!-- Quality Settings -->
+                <div x-show="files.resize.length > 0" class="mt-6 p-4 bg-gray-50 rounded-lg border">
+                    <h4 class="font-semibold text-gray-900 mb-3">Compression Quality</h4>
+                    <div class="space-y-3">
+                        <label class="flex items-center cursor-pointer">
+                            <input type="radio" x-model="resizeOptions.quality" value="high" class="mr-3">
+                            <div>
+                                <span class="font-medium">High Quality</span>
+                                <span class="text-sm text-gray-500 block">Minimal compression, best for important documents</span>
+                            </div>
+                        </label>
+                        <label class="flex items-center cursor-pointer">
+                            <input type="radio" x-model="resizeOptions.quality" value="medium" class="mr-3">
+                            <div>
+                                <span class="font-medium">Medium Quality</span>
+                                <span class="text-sm text-gray-500 block">Balanced compression, good for most uses</span>
+                            </div>
+                        </label>
+                        <label class="flex items-center cursor-pointer">
+                            <input type="radio" x-model="resizeOptions.quality" value="low" class="mr-3">
+                            <div>
+                                <span class="font-medium">Maximum Compression</span>
+                                <span class="text-sm text-gray-500 block">Smallest file size, suitable for web sharing</span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- File List -->
+                <div x-show="files.resize.length > 0" class="mt-6 space-y-3">
+                    <template x-for="(file, index) in files.resize" :key="index">
+                        <div class="flex items-center justify-between p-4 bg-white rounded-lg border border-gray-200 shadow-sm">
+                            <div class="flex items-center space-x-3">
+                                <i class="fas fa-file-pdf text-red-500 text-xl"></i>
+                                <div>
+                                    <span class="font-medium text-gray-900" x-text="file.name"></span>
+                                    <div class="text-sm text-gray-500" x-text="formatFileSize(file.size)"></div>
+                                </div>
+                            </div>
+                            <button 
+                                @click="removeFile('resize', index)" 
+                                class="text-red-500 hover:text-red-700 p-2 hover:bg-red-50 rounded-full transition-colors"
+                                aria-label="Remove file"
+                                type="button"
+                            >
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    </template>
+                </div>
+
+                <!-- Process Button -->
+                <button 
+                    x-show="files.resize.length > 0" 
+                    @click="processFiles('resize')"
+                    :disabled="loading || !files.resize.length"
+                    :class="loading || !files.resize.length ? 'bg-gray-300 cursor-not-allowed text-gray-500' : 'bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 text-white'"
+                    class="mt-6 w-full py-3 px-6 rounded-lg font-semibold transition-all duration-300 flex items-center justify-center space-x-2 shadow-medium hover:shadow-strong"
+                    type="button"
+                >
+                    <span x-show="loading && currentTool === 'resize'" class="loading-dots">
+                        <span></span><span></span><span></span>
+                    </span>
+                    <span x-text="loading && currentTool === 'resize' ? 'Compressing PDF...' : 'Compress PDF'"></span>
+                </button>
+            </div>
+            
+            <!-- Signature Tool -->
+            <div x-show="currentTool === 'signature'" x-cloak class="animate-scale-in" x-transition>
+                <header class="mb-6">
+                    <h3 class="text-2xl font-bold text-gray-900 mb-3 flex items-center">
+                        <i class="fas fa-signature mr-3 text-purple-500"></i>
+                        Add Signature to PDF
+                    </h3>
+                    <p class="text-gray-600 leading-relaxed">
+                        Add your signature or text to all pages of your PDF document. Choose the position and customize your signature text.
+                    </p>
+                </header>
+                
+                <div 
+                    @drop.prevent="handleDrop($event, 'signature')"
+                    @dragover.prevent
+                    @dragenter.prevent="dragOver = true"
+                    @dragleave.prevent="dragOver = false"
+                    :class="dragOver ? 'drag-over' : ''"
+                    class="upload-area border-2 border-dashed border-gray-300 rounded-2xl p-12 text-center cursor-pointer group"
+                    @click="$refs.signatureFile.click()"
+                    role="button"
+                    tabindex="0"
+                    @keydown.enter="$refs.signatureFile.click()"
+                    @keydown.space.prevent="$refs.signatureFile.click()"
+                    aria-label="Upload PDF file for signature"
+                >
+                    <input type="file" x-ref="signatureFile" accept="application/pdf" @change="handleFileSelect($event, 'signature')" class="file-input">
+                    <i class="fas fa-cloud-upload-alt text-4xl text-gray-400 mb-4 group-hover:text-purple-500 transition-colors"></i>
+                    <p class="text-xl font-semibold text-gray-700 mb-2">Drop your PDF here or click to browse</p>
+                    <p class="text-gray-500">Upload a single PDF file to add signature</p>
+                </div>
+
+                <div x-show="files.signature.length > 0" class="mt-6 p-4 bg-gray-50 rounded-lg border">
+                    <h4 class="font-semibold text-gray-900 mb-4">Signature Options</h4>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <label for="signatureText" class="block text-sm font-medium text-gray-700 mb-2">Signature Text</label>
+                            <input 
+                                type="text" 
+                                id="signatureText"
+                                x-model="signatureOptions.text"
+                                placeholder="Enter your signature text"
+                                maxlength="100"
+                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+                            >
+                            <p class="text-xs text-gray-500 mt-1">Maximum 100 characters</p>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Position</label>
+                            <div class="grid grid-cols-2 gap-2">
+                                <label class="flex items-center">
+                                    <input type="radio" x-model="signatureOptions.position" value="bottom-right" class="mr-2">
+                                    <span class="text-sm">Bottom Right</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="radio" x-model="signatureOptions.position" value="bottom-left" class="mr-2">
+                                    <span class="text-sm">Bottom Left</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="radio" x-model="signatureOptions.position" value="top-right" class="mr-2">
+                                    <span class="text-sm">Top Right</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="radio" x-model="signatureOptions.position" value="top-left" class="mr-2">
+                                    <span class="text-sm">Top Left</span>
+                                </label>
+                                <label class="flex items-center col-span-2">
+                                    <input type="radio" x-model="signatureOptions.position" value="center" class="mr-2">
+                                    <span class="text-sm">Center</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div x-show="files.signature.length > 0" class="mt-6 space-y-3">
+                    <template x-for="(file, index) in files.signature" :key="index">
+                        <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg border">
+                            <div class="flex items-center space-x-3">
+                                <i class="fas fa-file-pdf text-2xl text-red-500"></i>
+                                <div>
+                                    <span class="font-medium text-gray-900" x-text="file.name"></span>
+                                    <div class="text-sm text-gray-500" x-text="formatFileSize(file.size)"></div>
+                                </div>
+                            </div>
+                            <button 
+                                @click="removeFile('signature', index)" 
+                                class="text-red-500 hover:text-red-700 p-2 hover:bg-red-50 rounded-full transition-colors"
+                                aria-label="Remove file"
+                                type="button"
+                            >
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    </template>
+                </div>
+
+                <!-- Process Button -->
+                <button 
+                    x-show="files.signature.length > 0 && signatureOptions.text.trim().length > 0" 
+                    @click="processFiles('signature')"
+                    :disabled="loading || !files.signature.length || !signatureOptions.text.trim().length"
+                    :class="loading || !files.signature.length || !signatureOptions.text.trim().length ? 'bg-gray-300 cursor-not-allowed text-gray-500' : 'bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white'"
+                    class="mt-6 w-full py-3 px-6 rounded-lg font-semibold transition-all duration-300 flex items-center justify-center space-x-2 shadow-medium hover:shadow-strong"
+                    type="button"
+                >
+                    <span x-show="loading && currentTool === 'signature'" class="loading-dots">
+                        <span></span><span></span><span></span>
+                    </span>
+                    <span x-text="loading && currentTool === 'signature' ? 'Adding Signature...' : 'Add Signature'"></span>
+                </button>
+            </div>
+            
+            <!-- Watermark Tool -->
+            <div x-show="currentTool === 'watermark'" x-cloak class="animate-scale-in" x-transition>
+                <header class="mb-6">
+                    <h3 class="text-2xl font-bold text-gray-900 mb-3 flex items-center">
+                        <i class="fas fa-water mr-3 text-indigo-500"></i>
+                        Add Watermark to PDF
+                    </h3>
+                    <p class="text-gray-600 leading-relaxed">
+                        Add a watermark to all pages of your PDF document. Customize the text and opacity for perfect branding.
+                    </p>
+                </header>
+                
+                <div 
+                    @drop.prevent="handleDrop($event, 'watermark')"
+                    @dragover.prevent
+                    @dragenter.prevent="dragOver = true"
+                    @dragleave.prevent="dragOver = false"
+                    :class="dragOver ? 'drag-over' : ''"
+                    class="upload-area border-2 border-dashed border-gray-300 rounded-2xl p-12 text-center cursor-pointer group"
+                    @click="$refs.watermarkFile.click()"
+                    role="button"
+                    tabindex="0"
+                    @keydown.enter="$refs.watermarkFile.click()"
+                    @keydown.space.prevent="$refs.watermarkFile.click()"
+                    aria-label="Upload PDF file for watermark"
+                >
+                    <input type="file" x-ref="watermarkFile" accept="application/pdf" @change="handleFileSelect($event, 'watermark')" class="file-input">
+                    <i class="fas fa-cloud-upload-alt text-4xl text-gray-400 mb-4 group-hover:text-indigo-500 transition-colors"></i>
+                    <p class="text-xl font-semibold text-gray-700 mb-2">Drop your PDF here or click to browse</p>
+                    <p class="text-gray-500">Upload a single PDF file to add watermark</p>
+                </div>
+
+                <div x-show="files.watermark.length > 0" class="mt-6 p-4 bg-gray-50 rounded-lg border">
+                    <h4 class="font-semibold text-gray-900 mb-4">Watermark Options</h4>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <label for="watermarkText" class="block text-sm font-medium text-gray-700 mb-2">Watermark Text</label>
+                            <input 
+                                type="text" 
+                                id="watermarkText"
+                                x-model="watermarkOptions.text"
+                                placeholder="Enter watermark text"
+                                maxlength="50"
+                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                            >
+                            <p class="text-xs text-gray-500 mt-1">Maximum 50 characters</p>
+                        </div>
+                        
+                        <div>
+                            <label for="watermarkOpacity" class="block text-sm font-medium text-gray-700 mb-2">
+                                Opacity: <span x-text="Math.round(watermarkOptions.opacity * 100) + '%'"></span>
+                            </label>
+                            <input 
+                                type="range" 
+                                id="watermarkOpacity"
+                                x-model="watermarkOptions.opacity"
+                                min="0.1"
+                                max="1.0"
+                                step="0.1"
+                                class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer slider"
+                            >
+                            <div class="flex justify-between text-xs text-gray-500 mt-1">
+                                <span>10% (Light)</span>
+                                <span>100% (Solid)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div x-show="files.watermark.length > 0" class="mt-6 space-y-3">
+                    <template x-for="(file, index) in files.watermark" :key="index">
+                        <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg border">
+                            <div class="flex items-center space-x-3">
+                                <i class="fas fa-file-pdf text-2xl text-red-500"></i>
+                                <div>
+                                    <span class="font-medium text-gray-900" x-text="file.name"></span>
+                                    <div class="text-sm text-gray-500" x-text="formatFileSize(file.size)"></div>
+                                </div>
+                            </div>
+                            <button 
+                                @click="removeFile('watermark', index)" 
+                                class="text-red-500 hover:text-red-700 p-2 hover:bg-red-50 rounded-full transition-colors"
+                                aria-label="Remove file"
+                                type="button"
+                            >
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    </template>
+                </div>
+
+                <!-- Process Button -->
+                <button 
+                    x-show="files.watermark.length > 0 && watermarkOptions.text.trim().length > 0" 
+                    @click="processFiles('watermark')"
+                    :disabled="loading || !files.watermark.length || !watermarkOptions.text.trim().length"
+                    :class="loading || !files.watermark.length || !watermarkOptions.text.trim().length ? 'bg-gray-300 cursor-not-allowed text-gray-500' : 'bg-gradient-to-r from-indigo-500 to-indigo-600 hover:from-indigo-600 hover:to-indigo-700 text-white'"
+                    class="mt-6 w-full py-3 px-6 rounded-lg font-semibold transition-all duration-300 flex items-center justify-center space-x-2 shadow-medium hover:shadow-strong"
+                    type="button"
+                >
+                    <span x-show="loading && currentTool === 'watermark'" class="loading-dots">
+                        <span></span><span></span><span></span>
+                    </span>
+                    <span x-text="loading && currentTool === 'watermark' ? 'Adding Watermark...' : 'Add Watermark'"></span>
+                </button>
+            </div>
+
+            <!-- Extract Tool -->
+            <div x-show="currentTool === 'extract'" x-cloak class="animate-scale-in" x-transition>
+                <header class="mb-6">
+                    <h3 class="text-2xl font-bold text-gray-900 mb-3 flex items-center">
+                        <i class="fas fa-file-export mr-3 text-pink-500"></i>
+                        Extract Specific Pages
+                    </h3>
+                    <p class="text-gray-600 leading-relaxed">
+                        Extract specific pages from your PDF and create a new document with only those pages. Enter page numbers or ranges.
+                    </p>
+                </header>
+                
+                <div 
+                    @drop.prevent="handleDrop($event, 'extract')"
+                    @dragover.prevent
+                    @dragenter.prevent="dragOver = true"
+                    @dragleave.prevent="dragOver = false"
+                    :class="dragOver ? 'drag-over' : ''"
+                    class="upload-area border-2 border-dashed border-gray-300 rounded-2xl p-12 text-center cursor-pointer group"
+                    @click="$refs.extractFile.click()"
+                    role="button"
+                    tabindex="0"
+                    @keydown.enter="$refs.extractFile.click()"
+                    @keydown.space.prevent="$refs.extractFile.click()"
+                    aria-label="Upload PDF file for page extraction"
+                >
+                    <div class="space-y-4">
+                        <i class="fas fa-cloud-upload-alt text-6xl text-gray-400 group-hover:text-pink-500 transition-colors duration-300"></i>
+                        <div>
+                            <p class="text-xl font-semibold text-gray-700 mb-2">Drop a PDF file here or click to browse</p>
+                            <p class="text-sm text-gray-500">Single PDF file, max 20MB</p>
+                        </div>
+                        <div class="flex justify-center space-x-2 text-xs text-gray-400">
+                            <span class="flex items-center space-x-1">
+                                <i class="fas fa-file-pdf"></i>
+                                <span>PDF Only</span>
+                            </span>
+                            <span class="flex items-center space-x-1">
+                                <i class="fas fa-weight-hanging"></i>
+                                <span>20MB Max</span>
+                            </span>
+                        </div>
+                    </div>
+                    <input 
+                        type="file" 
+                        x-ref="extractFile" 
+                        accept="application/pdf" 
+                        @change="handleFileSelect($event, 'extract')" 
+                        class="file-input"
+                        aria-label="Select PDF file for page extraction"
+                    >
+                </div>
+
+                <div x-show="files.extract.length > 0" class="mt-6 animate-slide-up" x-transition>
+                    <div class="flex items-center space-x-3 bg-gray-50/80 hover:bg-gray-100/80 p-4 rounded-xl border border-gray-200 transition-colors mb-4">
+                        <div class="flex-shrink-0">
+                            <i class="fas fa-file-pdf text-red-500 text-xl"></i>
+                        </div>
+                        <div class="min-w-0 flex-1">
+                            <p x-text="files.extract[0]?.name" class="text-sm font-medium text-gray-900 truncate"></p>
+                            <p x-text="formatFileSize(files.extract[0]?.size)" class="text-xs text-gray-500"></p>
+                        </div>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div>
+                            <label for="extractPages" class="block text-sm font-medium text-gray-700 mb-2">
+                                Page Numbers to Extract
+                            </label>
+                            <input 
+                                id="extractPages"
+                                type="text" 
+                                x-model="extractOptions.pages" 
+                                class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-pink-500 focus:border-transparent transition-all duration-200"
+                                placeholder="e.g., 1,3,5-7,10"
+                                aria-describedby="extractPagesHelp"
+                            >
+                            <p id="extractPagesHelp" class="mt-2 text-xs text-gray-500">
+                                Enter page numbers separated by commas. Use ranges like "5-10" for consecutive pages.
+                                Examples: "1,3,5" or "2-4,8,12-15"
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <button 
+                    @click="processFiles('extract')"
+                    :disabled="loading || !files.extract.length || !extractOptions.pages.trim().length"
+                    :class="loading || !files.extract.length || !extractOptions.pages.trim().length ? 'bg-gray-300 cursor-not-allowed text-gray-500' : 'bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 text-white'"
+                    class="mt-6 w-full py-3 px-6 rounded-lg font-semibold transition-all duration-300 flex items-center justify-center space-x-2 shadow-medium hover:shadow-strong"
+                    type="button"
+                >
+                    <span x-show="loading && currentTool === 'extract'" class="loading-dots">
+                        <span></span><span></span><span></span>
+                    </span>
+                    <span x-text="loading && currentTool === 'extract' ? 'Extracting Pages...' : 'Extract Pages'"></span>
+                </button>
+            </div>
+        </section>
+        
+        <!-- Features Section -->
+        <section class="mt-16 mb-12" aria-labelledby="features-heading">
+            <div class="text-center mb-12">
+                <h2 id="features-heading" class="text-3xl font-bold text-gray-900 mb-4">Why Choose Our PDF Tools?</h2>
+                <p class="text-lg text-gray-600 max-w-3xl mx-auto">Professional-grade PDF processing with security and privacy at the core of everything we do.</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <article class="bg-white/60 backdrop-blur-sm p-6 rounded-2xl shadow-soft border border-white/20 hover:shadow-medium transition-all duration-300">
+                    <div class="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center mb-4">
+                        <i class="fas fa-shield-alt text-green-600 text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Privacy First</h3>
+                    <p class="text-gray-600">All files are processed in memory and automatically deleted. No data is ever stored on our servers, ensuring complete privacy.</p>
+                </article>
+                
+                <article class="bg-white/60 backdrop-blur-sm p-6 rounded-2xl shadow-soft border border-white/20 hover:shadow-medium transition-all duration-300">
+                    <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center mb-4">
+                        <i class="fas fa-zap text-blue-600 text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Lightning Fast</h3>
+                    <p class="text-gray-600">Optimized processing algorithms ensure your PDFs are handled quickly and efficiently, even for large files.</p>
+                </article>
+                
+                <article class="bg-white/60 backdrop-blur-sm p-6 rounded-2xl shadow-soft border border-white/20 hover:shadow-medium transition-all duration-300">
+                    <div class="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center mb-4">
+                        <i class="fas fa-mobile-alt text-purple-600 text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Mobile Friendly</h3>
+                    <p class="text-gray-600">Works seamlessly on all devices - desktop, tablet, and mobile. Process PDFs anywhere, anytime.</p>
+                </article>
+                
+                <article class="bg-white/60 backdrop-blur-sm p-6 rounded-2xl shadow-soft border border-white/20 hover:shadow-medium transition-all duration-300">
+                    <div class="w-12 h-12 bg-red-100 rounded-xl flex items-center justify-center mb-4">
+                        <i class="fas fa-lock text-red-600 text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Secure Processing</h3>
+                    <p class="text-gray-600">Enterprise-grade security ensures your sensitive documents are protected throughout the entire processing workflow.</p>
+                </article>
+                
+                <article class="bg-white/60 backdrop-blur-sm p-6 rounded-2xl shadow-soft border border-white/20 hover:shadow-medium transition-all duration-300">
+                    <div class="w-12 h-12 bg-yellow-100 rounded-xl flex items-center justify-center mb-4">
+                        <i class="fas fa-tools text-yellow-600 text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Professional Tools</h3>
+                    <p class="text-gray-600">Complete suite of PDF tools including merge, split, rotate, encrypt, and decrypt for all your document needs.</p>
+                </article>
+                
+                <article class="bg-white/60 backdrop-blur-sm p-6 rounded-2xl shadow-soft border border-white/20 hover:shadow-medium transition-all duration-300">
+                    <div class="w-12 h-12 bg-indigo-100 rounded-xl flex items-center justify-center mb-4">
+                        <i class="fas fa-globe text-indigo-600 text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-2">No Installation</h3>
+                    <p class="text-gray-600">Browser-based solution means no software to download or install. Access powerful PDF tools instantly from any browser.</p>
+                </article>
+            </div>
+        </section>
+    </main>
+
+    <!-- Progress Modal -->
+    <div x-show="loading" x-cloak class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-white rounded-lg p-6 max-w-sm mx-4 text-center">
+            <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+            <h3 class="text-lg font-semibold mb-2">Processing your PDF...</h3>
+            <p class="text-gray-600 text-sm">Please wait while we process your file in memory.</p>
+        </div>
+    </div>
+
+    <!-- Success/Error Messages -->
+    <div x-show="message.show" x-cloak 
+         x-transition:enter="transition ease-out duration-300"
+         x-transition:enter-start="opacity-0 transform translate-y-2"
+         x-transition:enter-end="opacity-100 transform translate-y-0"
+         x-transition:leave="transition ease-in duration-200"
+         x-transition:leave-start="opacity-100 transform translate-y-0"
+         x-transition:leave-end="opacity-0 transform translate-y-2"
+         class="fixed bottom-4 right-4 z-50">
+        <div :class="message.type === 'error' ? 'bg-red-500' : 'bg-green-500'" 
+             class="text-white px-6 py-3 rounded-lg shadow-lg flex items-center space-x-2">
+            <i :class="message.type === 'error' ? 'fas fa-exclamation-circle' : 'fas fa-check-circle'"></i>
+            <span x-text="message.text"></span>
+            <button @click="message.show = false" class="ml-2 text-white hover:text-gray-200">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-white/80 backdrop-blur-sm border-t border-gray-200/50 mt-16" role="contentinfo">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
+                <!-- Company Info -->
+                <div class="lg:col-span-2">
+                    <div class="flex items-center space-x-3 mb-4">
+                        <i class="fas fa-file-pdf text-3xl text-red-500"></i>
+                        <h3 class="text-xl font-bold text-gray-900">PDF Tools</h3>
+                    </div>
+                    <p class="text-gray-600 mb-4 leading-relaxed">
+                        Professional PDF processing platform designed for privacy, security, and efficiency. 
+                        Process your documents with confidence knowing your data never leaves the secure processing environment.
+                    </p>
+                    <div class="flex space-x-4">
+                        <a @click="window.open('https://twitter.com/pdftools', '_blank')" class="text-gray-400 hover:text-primary-500 transition-colors cursor-pointer" aria-label="Follow us on Twitter">
+                            <i class="fab fa-twitter text-xl"></i>
+                        </a>
+                        <a @click="window.open('https://linkedin.com/company/pdftools', '_blank')" class="text-gray-400 hover:text-primary-500 transition-colors cursor-pointer" aria-label="Follow us on LinkedIn">
+                            <i class="fab fa-linkedin text-xl"></i>
+                        </a>
+                        <a @click="window.location.href='mailto:support@pdftools.app'" class="text-gray-400 hover:text-primary-500 transition-colors cursor-pointer" aria-label="Contact us via email">
+                            <i class="fas fa-envelope text-xl"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Tools -->
+                <div>
+                    <h4 class="font-semibold text-gray-900 mb-4">PDF Tools</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#" @click.prevent="setTool('merge')" class="text-gray-600 hover:text-primary-500 transition-colors">Merge PDFs</a></li>
+                        <li><a href="#" @click.prevent="setTool('split')" class="text-gray-600 hover:text-primary-500 transition-colors">Split PDF</a></li>
+                        <li><a href="#" @click.prevent="setTool('rotate')" class="text-gray-600 hover:text-primary-500 transition-colors">Rotate PDF</a></li>
+                        <li><a href="#" @click.prevent="setTool('encrypt')" class="text-gray-600 hover:text-primary-500 transition-colors">Encrypt PDF</a></li>
+                        <li><a href="#" @click.prevent="setTool('decrypt')" class="text-gray-600 hover:text-primary-500 transition-colors">Decrypt PDF</a></li>
+                        <li><a href="#" @click.prevent="setTool('resize')" class="text-gray-600 hover:text-primary-500 transition-colors">Resize PDF</a></li>
+                        <li><a href="#" @click.prevent="setTool('signature')" class="text-gray-600 hover:text-primary-500 transition-colors">Add Signature</a></li>
+                        <li><a href="#" @click.prevent="setTool('watermark')" class="text-gray-600 hover:text-primary-500 transition-colors">Add Watermark</a></li>
+                        <li><a href="#" @click.prevent="setTool('extract')" class="text-gray-600 hover:text-primary-500 transition-colors">Extract Pages</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Support -->
+                <div>
+                    <h4 class="font-semibold text-gray-900 mb-4">Support & Legal</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#" @click.prevent="showPrivacy = true" class="text-gray-600 hover:text-primary-500 transition-colors">Privacy Policy</a></li>
+                        <li><a href="terms.html" class="text-gray-600 hover:text-primary-500 transition-colors">Terms of Service</a></li>
+                        <li><a href="help.html" class="text-gray-600 hover:text-primary-500 transition-colors">Help & FAQ</a></li>
+                        <li><a href="contact.html" class="text-gray-600 hover:text-primary-500 transition-colors">Contact Support</a></li>
+                        <li><a href="/sitemap.xml" class="text-gray-600 hover:text-primary-500 transition-colors">Sitemap</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Bottom bar -->
+            <div class="border-t border-gray-200 pt-8 flex flex-col md:flex-row md:items-center md:justify-between">
+                <div class="flex items-center space-x-6 mb-4 md:mb-0">
+                    <div class="flex items-center space-x-2 text-sm text-green-600 bg-green-50 px-3 py-1 rounded-full">
+                        <i class="fas fa-shield-alt"></i>
+                        <span class="font-medium">Privacy First</span>
+                    </div>
+                    <div class="flex items-center space-x-2 text-sm text-blue-600 bg-blue-50 px-3 py-1 rounded-full">
+                        <i class="fas fa-memory"></i>
+                        <span class="font-medium">Zero Storage</span>
+                    </div>
+                    <div class="flex items-center space-x-2 text-sm text-purple-600 bg-purple-50 px-3 py-1 rounded-full">
+                        <i class="fas fa-lock"></i>
+                        <span class="font-medium">Secure</span>
+                    </div>
+                </div>
+                
+                <div class="text-sm text-gray-500">
+                    <p>&copy; 2024 PDF Tools. Professional PDF Processing Platform.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function pdfTools() {
+            return {
+                currentTool: 'merge',
+                loading: false,
+                dragOver: false,
+                showPrivacy: false,
+                files: {
+                    merge: [],
+                    split: [],
+                    rotate: [],
+                    encrypt: [],
+                    decrypt: [],
+                    resize: [],
+                    signature: [],
+                    watermark: [],
+                    extract: []
+                },
+                splitOptions: {
+                    start: '',
+                    end: ''
+                },
+                rotateOptions: {
+                    angle: 90
+                },
+                encryptOptions: {
+                    password: ''
+                },
+                decryptOptions: {
+                    password: ''
+                },
+                resizeOptions: {
+                    quality: 'medium'
+                },
+                signatureOptions: {
+                    text: '',
+                    position: 'bottom-right'
+                },
+                watermarkOptions: {
+                    text: '',
+                    opacity: 0.3
+                },
+                extractOptions: {
+                    pages: ''
+                },
+                message: {
+                    show: false,
+                    type: 'success',
+                    text: ''
+                },
+                backendStatus: {
+                    checked: false,
+                    available: false,
+                    error: null
+                },
+
+                // Check if backend is available
+                async checkBackendConnection() {
+                    // Reset status to allow retry
+                    this.backendStatus = { checked: false, available: false, error: null };
+                    
+                    const apiBaseUrl = this.getApiBaseUrl();
+                    if (!apiBaseUrl) {
+                        // In production mode, assume backend is available through proxy
+                        this.backendStatus = { checked: true, available: true, error: null };
+                        return;
+                    }
+                    
+                    const healthUrl = `${apiBaseUrl}/health`;
+                    console.log('Checking backend health at:', healthUrl);
+                    
+                    try {
+                        const response = await fetch(healthUrl, {
+                            method: 'GET',
+                            cache: 'no-cache',
+                            // Add timeout to avoid hanging
+                            signal: AbortSignal.timeout(5000)
+                        });
+                        
+                        if (response.ok) {
+                            const data = await response.json();
+                            console.log('Backend health check successful:', data);
+                            this.backendStatus = { checked: true, available: true, error: null };
+                        } else {
+                            throw new Error(`Backend returned status ${response.status} (${response.statusText})`);
+                        }
+                    } catch (error) {
+                        console.error('Backend health check failed:', error);
+                        console.error('Health URL attempted:', healthUrl);
+                        
+                        let errorDetail = error.message;
+                        if (error.name === 'TypeError' && (error.message.includes('fetch') || error.message.includes('NetworkError'))) {
+                            errorDetail = 'Network connection failed - backend server may not be running or accessible';
+                        } else if (error.name === 'TimeoutError') {
+                            errorDetail = 'Connection timeout - backend server is not responding';
+                        }
+                        
+                        this.backendStatus = { 
+                            checked: true, 
+                            available: false, 
+                            error: errorDetail 
+                        };
+                        
+                        // Show warning message with environment-specific guidance
+                        let setupMessage = 'Backend server not available. Please start the backend server on port 8000.';
+                        
+                        if (window.location.hostname.includes('.preview.app.github.dev') || 
+                            window.location.hostname.includes('.app.github.dev')) {
+                            setupMessage += ' In GitHub Codespaces, ensure port 8000 is forwarded and set to public visibility.';
+                        }
+                        
+                        setupMessage += ' See the README for setup instructions.';
+                        
+                        this.showMessage('error', setupMessage);
+                    }
+                },
+
+                // Determine API base URL based on environment
+                getApiBaseUrl() {
+                    const currentHost = window.location.hostname;
+                    const currentPort = window.location.port;
+                    const currentProtocol = window.location.protocol;
+                    const currentUrl = window.location.href;
+                    
+                    console.log('Current location:', { 
+                        host: currentHost, 
+                        port: currentPort, 
+                        protocol: currentProtocol,
+                        fullUrl: currentUrl
+                    });
+                    
+                    // GitHub Codespaces detection - hostname contains specific patterns
+                    if (currentHost.includes('.preview.app.github.dev') || 
+                        currentHost.includes('.app.github.dev') ||
+                        currentHost.includes('codespace')) {
+                        
+                        // In Codespaces, ports are part of the subdomain
+                        // e.g., https://username-repo-hash-3000.preview.app.github.dev/
+                        // Backend should be: https://username-repo-hash-8000.preview.app.github.dev/
+                        
+                        let backendHost;
+                        if (currentHost.includes('-3000.')) {
+                            backendHost = currentHost.replace('-3000.', '-8000.');
+                        } else if (currentHost.includes('-3001.')) {
+                            backendHost = currentHost.replace('-3001.', '-8000.');
+                        } else {
+                            // Fallback: try to append 8000 to the base hostname
+                            const baseName = currentHost.split('.')[0];
+                            backendHost = currentHost.replace(baseName, baseName.replace(/-\d+$/, '') + '-8000');
+                        }
+                        
+                        const backendUrl = `${currentProtocol}//${backendHost}`;
+                        console.log('GitHub Codespace detected, using backend URL:', backendUrl);
+                        return backendUrl;
+                    }
+                    
+                    // Gitpod detection
+                    if (currentHost.includes('.gitpod.io')) {
+                        // Similar to Codespaces, Gitpod uses port-based subdomains
+                        let backendHost = currentHost.replace(/3000-/, '8000-').replace(/3001-/, '8000-');
+                        const backendUrl = `${currentProtocol}//${backendHost}`;
+                        console.log('Gitpod detected, using backend URL:', backendUrl);
+                        return backendUrl;
+                    }
+                    
+                    // Local development with explicit port
+                    if (currentPort === '3000' || currentPort === '3001') {
+                        const backendUrl = `${currentProtocol}//${currentHost}:8000`;
+                        console.log('Local development with port detected, using backend URL:', backendUrl);
+                        return backendUrl;
+                    }
+                    
+                    // Local development without explicit port (e.g., localhost, 127.0.0.1)
+                    if (currentHost === 'localhost' || currentHost === '127.0.0.1') {
+                        const backendUrl = `${currentProtocol}//${currentHost}:8000`;
+                        console.log('Local development detected, using backend URL:', backendUrl);
+                        return backendUrl;
+                    }
+                    
+                    // For production/Docker, use relative URLs (nginx proxy handles routing)
+                    console.log('Production environment detected, using relative URLs');
+                    return '';
+                },
+
+                setTool(tool) {
+                    this.currentTool = tool;
+                    this.clearFiles();
+                    // Scroll to main content when tool is selected from footer
+                    document.getElementById('main-content').scrollIntoView({ behavior: 'smooth' });
+                },
+
+                clearFiles() {
+                    this.files = {
+                        merge: [],
+                        split: [],
+                        rotate: [],
+                        encrypt: [],
+                        decrypt: [],
+                        resize: [],
+                        signature: [],
+                        watermark: [],
+                        extract: []
+                    };
+                    this.splitOptions = { start: '', end: '' };
+                    this.rotateOptions = { angle: 90 };
+                    this.encryptOptions = { password: '' };
+                    this.decryptOptions = { password: '' };
+                    this.resizeOptions = { quality: 'medium' };
+                    this.signatureOptions = { text: '', position: 'bottom-right' };
+                    this.watermarkOptions = { text: '', opacity: 0.3 };
+                    this.extractOptions = { pages: '' };
+                },
+
+                handleDrop(event, tool) {
+                    this.dragOver = false;
+                    const droppedFiles = Array.from(event.dataTransfer.files);
+                    this.addFiles(tool, droppedFiles);
+                },
+
+                handleFileSelect(event, tool) {
+                    const selectedFiles = Array.from(event.target.files);
+                    this.addFiles(tool, selectedFiles);
+                },
+
+                addFiles(tool, newFiles) {
+                    const validFiles = newFiles.filter(file => {
+                        if (file.type !== 'application/pdf') {
+                            this.showMessage('error', 'Only PDF files are allowed');
+                            return false;
+                        }
+                        if (file.size > 20 * 1024 * 1024) {
+                            this.showMessage('error', `File "${file.name}" is too large. Maximum size is 20MB`);
+                            return false;
+                        }
+                        return true;
+                    });
+
+                    if (tool === 'merge') {
+                        this.files[tool] = [...this.files[tool], ...validFiles];
+                    } else {
+                        this.files[tool] = validFiles.slice(0, 1); // Only one file for non-merge tools
+                    }
+                },
+
+                removeFile(tool, index) {
+                    this.files[tool].splice(index, 1);
+                },
+
+                formatFileSize(bytes) {
+                    if (bytes === 0) return '0 Bytes';
+                    const k = 1024;
+                    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+                    const i = Math.floor(Math.log(bytes) / Math.log(k));
+                    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+                },
+
+                async processFiles(tool) {
+                    this.loading = true;
+                    const startTime = Date.now();
+                    
+                    try {
+                        console.log(`🚀 Starting ${tool} operation...`);
+                        
+                        const formData = new FormData();
+                        
+                        if (tool === 'merge') {
+                            this.files[tool].forEach(file => {
+                                formData.append('files', file);
+                            });
+                            console.log(`📄 Merging ${this.files[tool].length} files`);
+                        } else {
+                            formData.append('file', this.files[tool][0]);
+                            const fileSize = this.files[tool][0].size;
+                            console.log(`📄 Processing ${this.files[tool][0].name} (${this.formatFileSize(fileSize)})`);
+                            
+                            if (tool === 'split') {
+                                formData.append('start', this.splitOptions.start);
+                                formData.append('end', this.splitOptions.end);
+                                console.log(`✂️ Splitting pages ${this.splitOptions.start}-${this.splitOptions.end}`);
+                            } else if (tool === 'rotate') {
+                                formData.append('angle', this.rotateOptions.angle);
+                                console.log(`🔄 Rotating by ${this.rotateOptions.angle}°`);
+                            } else if (tool === 'encrypt') {
+                                formData.append('password', this.encryptOptions.password);
+                                console.log(`🔒 Encrypting with password`);
+                            } else if (tool === 'decrypt') {
+                                formData.append('password', this.decryptOptions.password);
+                                console.log(`🔓 Decrypting with password`);
+                            } else if (tool === 'resize') {
+                                formData.append('quality', this.resizeOptions.quality);
+                                console.log(`🗜️ Compressing with ${this.resizeOptions.quality} quality`);
+                            } else if (tool === 'signature') {
+                                formData.append('signature_text', this.signatureOptions.text);
+                                formData.append('position', this.signatureOptions.position);
+                                console.log(`✍️ Adding signature: "${this.signatureOptions.text}" at ${this.signatureOptions.position}`);
+                            } else if (tool === 'watermark') {
+                                formData.append('watermark_text', this.watermarkOptions.text);
+                                formData.append('opacity', this.watermarkOptions.opacity);
+                                console.log(`💧 Adding watermark: "${this.watermarkOptions.text}" with ${Math.round(this.watermarkOptions.opacity * 100)}% opacity`);
+                            } else if (tool === 'extract') {
+                                formData.append('pages', this.extractOptions.pages);
+                                console.log(`📄 Extracting pages: ${this.extractOptions.pages}`);
+                            }
+                        }
+
+                        // Use dynamic API base URL that works in all environments
+                        const apiBaseUrl = this.getApiBaseUrl();
+                        const fullUrl = `${apiBaseUrl}/${tool}`;
+                        console.log('📡 Making API request to:', fullUrl);
+                        
+                        // Add timeout for better error handling
+                        const controller = new AbortController();
+                        const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 second timeout
+                        
+                        const response = await fetch(fullUrl, {
+                            method: 'POST',
+                            body: formData,
+                            signal: controller.signal
+                        });
+                        
+                        clearTimeout(timeoutId);
+
+                        if (response.ok) {
+                            const blob = await response.blob();
+                            const processingTime = Date.now() - startTime;
+                            console.log(`✅ ${tool} completed in ${processingTime}ms, output size: ${this.formatFileSize(blob.size)}`);
+                            
+                            const url = URL.createObjectURL(blob);
+                            const a = document.createElement('a');
+                            a.href = url;
+                            
+                            // Get filename from response headers or use default
+                            const contentDisposition = response.headers.get('Content-Disposition');
+                            let filename = `${tool}_output.pdf`;
+                            if (contentDisposition) {
+                                const filenameMatch = contentDisposition.match(/filename=(.+)/);
+                                if (filenameMatch) {
+                                    filename = filenameMatch[1].replace(/"/g, '');
+                                }
+                            }
+                            
+                            a.download = filename;
+                            document.body.appendChild(a);
+                            a.click();
+                            document.body.removeChild(a);
+                            URL.revokeObjectURL(url);
+                            
+                            this.showMessage('success', `PDF processed successfully in ${(processingTime/1000).toFixed(1)}s!`);
+                            this.clearFiles();
+                        } else {
+                            // Handle different error responses
+                            let errorData;
+                            try {
+                                errorData = await response.json();
+                            } catch (jsonError) {
+                                // If JSON parsing fails, it might be HTML error page from frontend server
+                                console.error('Failed to parse error response as JSON:', jsonError);
+                                if (response.status === 501) {
+                                    throw new Error('Request hit frontend server instead of backend. The API calls are not properly configured to reach the backend server on port 8000.');
+                                }
+                                throw new Error(`Server error (${response.status}): Unable to process request`);
+                            }
+                            throw new Error(errorData.detail || 'Processing failed');
+                        }
+                    } catch (error) {
+                        console.error('Error processing PDF:', error);
+                        console.error('Full URL attempted:', fullUrl);
+                        console.error('Current environment details:', {
+                            host: window.location.hostname,
+                            port: window.location.port,
+                            protocol: window.location.protocol,
+                            userAgent: navigator.userAgent
+                        });
+                        
+                        // Provide more helpful error messages
+                        let errorMessage = 'An error occurred while processing the PDF';
+                        
+                        if (error.name === 'TypeError' && (error.message.includes('fetch') || error.message.includes('NetworkError'))) {
+                            errorMessage = `Cannot connect to the backend server. Please ensure the backend server is running on port 8000. In GitHub Codespaces, make sure both ports 3000 and 8000 are forwarded and set to public visibility.`;
+                        } else if (error.message.includes('NetworkError')) {
+                            errorMessage = `Network error when trying to reach the server. This is likely a connectivity issue. Check that the backend server is accessible and ports are properly configured.`;
+                        } else if (error.message.includes('501') || error.message.includes('frontend server')) {
+                            errorMessage = 'Request hit frontend server instead of backend. Please check that the backend server is running on port 8000 and refresh the page.';
+                        } else if (error.message.includes('JSON.parse') || error.message.includes('JSON')) {
+                            errorMessage = 'Invalid response from server. This usually means the request hit the frontend server instead of the backend. Please ensure the backend server is running on port 8000.';
+                        } else if (error.message.includes('corrupted') || error.message.includes('invalid') || error.message.includes('password')) {
+                            errorMessage = error.message; // Use the friendly backend message
+                        } else if (error.message.includes('page') && error.message.includes('exceed')) {
+                            errorMessage = error.message; // Use the friendly backend message
+                        } else if (error.message) {
+                            // For known error types, provide friendly explanations
+                            if (error.message.includes('File too large')) {
+                                errorMessage = 'Your file is too large to process. Please try with a smaller file (maximum 20MB).';
+                            } else if (error.message.includes('Only PDF files')) {
+                                errorMessage = 'Please select a valid PDF file. Other file types are not supported.';
+                            } else if (error.message.includes('Password')) {
+                                errorMessage = 'The PDF file is password protected or the password is incorrect. Please check your password and try again.';
+                            } else if (error.message.includes('Invalid page')) {
+                                errorMessage = 'The page numbers you specified are not valid. Please check the page range and try again.';
+                            } else {
+                                errorMessage = error.message;
+                            }
+                        }
+                        
+                        this.showMessage('error', errorMessage);
+                    } finally {
+                        this.loading = false;
+                    }
+                },
+
+                showMessage(type, text) {
+                    this.message = { show: true, type, text };
+                    setTimeout(() => {
+                        this.message.show = false;
+                    }, 5000);
+                },
+
+                // Initialize the application
+                init() {
+                    // Check backend connection after a short delay to let the page load
+                    setTimeout(() => {
+                        this.checkBackendConnection();
+                    }, 1000);
+                }
+            }
+        }
+
+        // Handle Alpine.js cloaking
+        document.addEventListener('alpine:init', () => {
+            const style = document.createElement('style');
+            style.textContent = '[x-cloak] { display: none !important; }';
+            document.head.appendChild(style);
+        });
+
+        // CDN fallback detection and offline mode redirect
+        setTimeout(() => {
+            // Check if Alpine.js loaded
+            if (typeof window.Alpine === 'undefined') {
+                console.warn('Alpine.js failed to load from CDN, redirecting to offline version...');
+                // Show a brief message before redirect
+                const notification = document.createElement('div');
+                notification.style.cssText = `
+                    position: fixed; top: 20px; right: 20px; 
+                    background: #f59e0b; color: white; padding: 15px 20px; 
+                    border-radius: 8px; z-index: 9999; font-family: sans-serif;
+                    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                `;
+                notification.innerHTML = `
+                    <div style="font-weight: bold; margin-bottom: 5px;">⚠️ CDN Resources Blocked</div>
+                    <div style="font-size: 14px;">Redirecting to offline version...</div>
+                `;
+                document.body.appendChild(notification);
+                
+                // Redirect after a short delay
+                setTimeout(() => {
+                    window.location.href = 'index_offline.html';
+                }, 2000);
+            }
+        }, 3000); // Give CDN resources time to load
+    </script>
+</body>
+</html>
