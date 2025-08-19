@@ -1,8 +1,8 @@
-# PDF Tools - Professional PDF Processing Platform
+# PDF Genie - Magical PDF Processing Platform
 
-![PDF Tools Screenshot](https://github.com/user-attachments/assets/5b0ef2e0-ba3e-4b2f-8d4a-8cc0c7d8b5dc)
+![PDF Genie Screenshot](https://github.com/user-attachments/assets/5b0ef2e0-ba3e-4b2f-8d4a-8cc0c7d8b5dc)
 
-A modern, secure, and user-friendly web application for processing PDF documents. Built with FastAPI backend and a responsive frontend, this platform offers professional-grade PDF manipulation tools with privacy-first design.
+A modern, secure, and user-friendly web application for processing PDF documents. Built with FastAPI backend and a responsive frontend, this platform offers magical PDF manipulation tools with privacy-first design.
 
 ## 🔒 Privacy & Security Features
 
@@ -176,11 +176,11 @@ docker-compose up -d
 ### 2. Heroku
 ```bash
 # Install Heroku CLI and login
-heroku create your-pdf-tools-app
+heroku create your-pdf-genie-app
 
 # Set environment variables
 heroku config:set MAX_FILE_SIZE=20971520
-heroku config:set ALLOWED_ORIGINS=https://your-pdf-tools-app.herokuapp.com
+heroku config:set ALLOWED_ORIGINS=https://your-pdf-genie-app.herokuapp.com
 
 # Deploy
 git push heroku main
@@ -210,7 +210,7 @@ railway up
 
 ### Base URL
 - Development: `http://localhost:8000`
-- Production: `https://your-domain.com/api`
+- Production: `https://www.thepdfgenie.com/api`
 
 ### Endpoints
 
